@@ -1,3 +1,4 @@
+import 'package:app/src/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -17,11 +18,13 @@ class MainApp extends StatelessWidget {
       builder: (_, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          theme: ThemeData(textTheme: Typography.englishLike2021),
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: ThemeMode.system,
           home: child,
         );
       },
-      child: Scaffold(body: Center(child: Text('Hello World!'))),
+      child: Scaffold(body: Center(child: Placeholder())),
     );
   }
 }
