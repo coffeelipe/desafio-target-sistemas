@@ -12,6 +12,7 @@ dependencies:
   flutter_mobx: ^2.3.0
   mobx: ^2.6.0
   mobx_codegen: ^2.7.7
+  flutter_screenutil: ^5.9.3
 
 dev_dependencies:
   flutter_test:
