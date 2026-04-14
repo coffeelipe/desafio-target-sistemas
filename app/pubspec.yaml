@@ -9,6 +9,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_mobx: ^2.3.0
+  mobx: ^2.6.0
+  mobx_codegen: ^2.7.7
 
 dev_dependencies:
   flutter_test:
