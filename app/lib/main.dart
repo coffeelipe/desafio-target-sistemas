@@ -1,4 +1,6 @@
 import 'package:app/src/core/theme/app_theme.dart';
+import 'package:app/src/pages/authentication/login_page.dart';
+import 'package:app/src/pages/home/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -20,11 +22,14 @@ class MainApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
-          themeMode: ThemeMode.system,
-          home: child,
+          themeMode: ThemeMode.light, // TODO: change to system later
+          routes: {
+            '/': (_) => const HomePage(),
+            '/login': (_) => const LoginPage(),
+          },
+          initialRoute: '/login',
         );
       },
-      child: Scaffold(body: Center(child: Placeholder())),
     );
   }
 }
