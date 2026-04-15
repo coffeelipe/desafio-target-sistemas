@@ -28,7 +28,7 @@ class LoginPage extends StatelessWidget {
                   padding: EdgeInsets.symmetric(
                     horizontal: ResponsiveUtils.spacing(SpacingSize.medium),
                   ),
-                  child: const LoginForm(),
+                  child: const LoginForm(),  // Main component containing the login form and submit button
                 ),
                 SizedBox(height: ResponsiveUtils.spacing(SpacingSize.large)),
                 Align(

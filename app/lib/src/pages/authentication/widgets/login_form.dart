@@ -23,7 +23,11 @@ class LoginForm extends StatelessWidget {
               horizontal: ResponsiveUtils.spacing(SpacingSize.small),
             ),
             child: GradientButton(
-              onPressed: () {},
+              onPressed: () => Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/',
+                (route) => false,
+              ),
               child: const Text(
                 'Entrar',
                 style: TextStyle(
