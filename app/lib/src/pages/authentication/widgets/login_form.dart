@@ -11,12 +11,17 @@ class LoginForm extends StatelessWidget {
     return Form(
       child: Column(
         children: [
-          const CustomTextFormField(
+          CustomTextFormField(
+            controller: TextEditingController(),
             label: 'Email',
             hintText: 'email@exemplo.com',
           ),
           SizedBox(height: ResponsiveUtils.spacing(SpacingSize.small)),
-          const CustomTextFormField(label: 'Senha', hintText: 'Senha'),
+          CustomTextFormField(
+            controller: TextEditingController(),
+            label: 'Senha',
+            hintText: 'Senha',
+          ),
           SizedBox(height: ResponsiveUtils.spacing(SpacingSize.large)),
           Padding(
             padding: EdgeInsets.symmetric(
