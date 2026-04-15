@@ -1,4 +1,5 @@
 import 'package:app/src/core/utils/responsive_utils.dart';
+import 'package:app/src/widgets/custom_elevated_button.dart';
 import 'package:app/src/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,22 @@ class LoginForm extends StatelessWidget {
           SizedBox(height: ResponsiveUtils.spacing(SpacingSize.small)),
           const CustomTextFormField(label: 'Senha', hintText: 'Senha'),
           SizedBox(height: ResponsiveUtils.spacing(SpacingSize.large)),
-          ElevatedButton(onPressed: () {}, child: const Text('Login')),
+          Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: ResponsiveUtils.spacing(SpacingSize.small),
+            ),
+            child: GradientButton(
+              onPressed: () {},
+              child: const Text(
+                'Entrar',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
