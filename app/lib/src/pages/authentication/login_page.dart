@@ -4,6 +4,7 @@ import 'package:app/src/core/utils/responsive_utils.dart';
 import 'package:app/src/pages/authentication/widgets/login_form.dart';
 import 'package:app/src/widgets/foreground_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -17,6 +18,10 @@ class LoginPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SvgPicture.asset('assets/images/logo.svg', height: 60),
+                SizedBox(
+                  height: ResponsiveUtils.spacing(SpacingSize.extraLarge),
+                ),
                 _buildWelcomeHeader(),
                 SizedBox(height: ResponsiveUtils.spacing(SpacingSize.large)),
                 Padding(
