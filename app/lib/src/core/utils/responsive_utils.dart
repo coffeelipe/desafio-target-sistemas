@@ -14,8 +14,10 @@ class ResponsiveUtils {
         return 24.0;
       case SpacingSize.large:
         return 32.0;
+      case SpacingSize.extraLarge:
+        return 48.0;
     }
   }
 }
 
-enum SpacingSize { small, medium, large }
+enum SpacingSize { small, medium, large, extraLarge }
