@@ -20,10 +20,36 @@ class LoginPage extends StatelessWidget {
                 _buildWelcomeHeader(),
                 SizedBox(height: ResponsiveUtils.spacing(SpacingSize.large)),
                 Padding(
-                  padding: EdgeInsets.all(
-                    ResponsiveUtils.spacing(SpacingSize.medium),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: ResponsiveUtils.spacing(SpacingSize.medium),
                   ),
                   child: const LoginForm(),
+                ),
+                SizedBox(height: ResponsiveUtils.spacing(SpacingSize.large)),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: RichText(
+                    text: TextSpan(
+                      text: 'Novo aqui? ',
+                      style: const TextStyle(color: Colors.black),
+                      children: [
+                        WidgetSpan(
+                          alignment: PlaceholderAlignment.middle,
+                          child: GestureDetector(
+                            onTap: () =>
+                                Navigator.pushNamed(context, '/register'),
+                            child: const Text(
+                              'Crie uma conta',
+                              style: TextStyle(
+                                color: AppPalette.primary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
