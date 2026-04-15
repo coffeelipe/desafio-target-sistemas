@@ -14,6 +14,7 @@ dependencies:
   flutter_screenutil: ^5.9.3
   flutter_svg: ^2.2.4
   remixicon: ^4.9.3
+  firebase_core: ^4.7.0
 
 dev_dependencies:
   flutter_test:
