@@ -2,15 +2,21 @@ import 'package:app/src/core/theme/app_palette.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextFormField extends StatelessWidget {
+  final TextEditingController controller;
   final String? label;
   final String? hintText;
   final bool obscureText;
+  final Widget? suffixIcon;
+  final TextInputType? keyboardType;
 
   const CustomTextFormField({
     super.key,
+    required this.controller,
     this.label,
     this.hintText,
     this.obscureText = false,
+    this.suffixIcon,
+    this.keyboardType,
   });
 
   @override
@@ -33,9 +39,14 @@ class CustomTextFormField extends StatelessWidget {
           ),
         ],
         TextFormField(
+          controller: controller,
           onTapOutside: (event) => FocusScope.of(context).unfocus(),
-          decoration: InputDecoration(hintText: hintText),
+          decoration: InputDecoration(
+            hintText: hintText,
+            suffixIcon: suffixIcon,
+          ),
           obscureText: obscureText,
+          keyboardType: keyboardType,
         ),
       ],
     );
