@@ -1,7 +1,6 @@
 import 'package:app/src/core/theme/app_theme.dart';
 import 'package:app/src/pages/authentication/login_page.dart';
 import 'package:app/src/pages/authentication/registration_page.dart';
-import 'package:app/src/pages/home/home_page.dart';
 import 'package:app/src/pages/main_scaffold/main_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
