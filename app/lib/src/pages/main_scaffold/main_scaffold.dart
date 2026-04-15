@@ -1,3 +1,4 @@
+import 'package:app/src/core/extensions/mediaquery_extension.dart';
 import 'package:app/src/pages/dashboard/dashboard.dart';
 import 'package:app/src/pages/home/home_page.dart';
 import 'package:app/src/pages/main_scaffold/stores/pageview_state.dart';
@@ -34,22 +35,31 @@ class _MainScaffoldState extends State<MainScaffold> {
       builder: (_) {
         final int pageIndex = _pageviewState.pageIndex;
         return Scaffold(
-          bottomNavigationBar: CustomNavBar(
-            pageController: _pageController,
-            index: pageIndex,
-            onDestinationSelected: (value) {
-              _pageviewState.setIndex(value);
-              _pageController.animateToPage(
-                value,
-                duration: Durations.short3,
-                curve: Curves.easeInOut,
-              );
-            },
-          ),
-          body: PageView(
-            controller: _pageController,
-            onPageChanged: (value) => _pageviewState.setIndex(value),
-            children: const [HomePage(), Dashboard()],
+          body: Stack(
+            children: [
+              PageView(
+                controller: _pageController,
+                onPageChanged: (value) => _pageviewState.setIndex(value),
+                children: const [HomePage(), Dashboard()],
+              ),
+              Positioned(
+                bottom: context.safeBottom + 32,
+                left: 0,
+                right: 0,
+                child: CustomNavBar(
+                  pageController: _pageController,
+                  onDestinationSelected: (value) {
+                    _pageviewState.setIndex(value);
+                    _pageController.animateToPage(
+                      _pageviewState.pageIndex,
+                      duration: Durations.short3,
+                      curve: Curves.easeInOut,
+                    );
+                  },
+                  selectedIndex: pageIndex,
+                ),
+              ),
+            ],
           ),
         );
       },
