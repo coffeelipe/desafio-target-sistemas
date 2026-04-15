@@ -1,5 +1,6 @@
 import 'package:app/src/core/theme/app_theme.dart';
 import 'package:app/src/pages/authentication/login_page.dart';
+import 'package:app/src/pages/authentication/registration_page.dart';
 import 'package:app/src/pages/home/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,6 +27,7 @@ class MainApp extends StatelessWidget {
           routes: {
             '/': (_) => const HomePage(),
             '/login': (_) => const LoginPage(),
+            '/register': (_) => const RegistrationPage(),
           },
           initialRoute: '/login',
         );
