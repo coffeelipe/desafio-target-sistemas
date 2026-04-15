@@ -1,4 +1,4 @@
-package com.example.app
+package com.coffeelipe.target
 
 import io.flutter.embedding.android.FlutterActivity
 
