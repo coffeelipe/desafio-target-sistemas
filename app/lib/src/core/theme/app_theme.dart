@@ -14,6 +14,21 @@ class AppTheme {
   static final lightTheme = ThemeData.light().copyWith(
     scaffoldBackgroundColor: AppPalette.scaffoldColor,
     textTheme: ThemeData.light().textTheme.apply(fontFamily: 'Poppins'),
+    textSelectionTheme: TextSelectionThemeData(
+      cursorColor: AppPalette.primaryVariant,
+      selectionColor: AppPalette.primaryVariant.withValues(alpha: 0.5),
+      selectionHandleColor: AppPalette.primaryVariant,
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      focusedBorder: _inputBorder,
+      enabledBorder: _inputBorder,
+      errorBorder: _errorInputBorder,
+      focusedErrorBorder: _inputBorder,
+      filled: true,
+      fillColor: AppPalette.scaffoldColor,
+      floatingLabelBehavior: FloatingLabelBehavior.never,
+      hintStyle: TextStyle(color: AppPalette.caption.withValues(alpha: 0.5)),
+    ),
   );
 
   static final darkTheme = ThemeData.dark().copyWith();
