@@ -24,6 +24,17 @@ class MainApp extends StatelessWidget {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: ThemeMode.light, // TODO: change to system later
+          onGenerateInitialRoutes: (String initialRouteName) {
+            Widget page = initialRouteName == '/login'
+                ? const LoginPage()
+                : const HomePage();
+            return [
+              MaterialPageRoute(
+                builder: (_) => page,
+                settings: RouteSettings(name: initialRouteName),
+              ),
+            ];
+          },
           routes: {
             '/': (_) => const HomePage(),
             '/login': (_) => const LoginPage(),
