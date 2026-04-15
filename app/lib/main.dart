@@ -28,7 +28,7 @@ class MainApp extends StatelessWidget {
           onGenerateInitialRoutes: (String initialRouteName) {
             Widget page = initialRouteName == '/login'
                 ? const LoginPage()
-                : const HomePage();
+                : const MainScaffold();
             return [
               MaterialPageRoute(
                 builder: (_) => page,
@@ -41,7 +41,7 @@ class MainApp extends StatelessWidget {
             '/login': (_) => const LoginPage(),
             '/register': (_) => const RegistrationPage(),
           },
-          initialRoute: '/login',
+          initialRoute: '/',
         );
       },
     );
