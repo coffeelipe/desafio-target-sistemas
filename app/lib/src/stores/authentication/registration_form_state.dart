@@ -19,13 +19,23 @@ abstract class _RegistrationFormStateBase with Store {
   @action
   void togglePasswordVisibility() => isPasswordObscured = !isPasswordObscured;
 
-  // validators
-  
-
+  @action
   void dispose() {
     usernameController.dispose();
     emailController.dispose();
     passwordController.dispose();
     passwordConfirmationController.dispose();
+  }
+
+  // validators
+  @action
+  String? validateUsername(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Por favor, insira um nome de usuário';
+    } else if (RegExp(r'^(?=.{3,16}$)[A-Za-z](?:[A-Za-z0-9]|[-_](?=[A-Za-z0-9]))*$').hasMatch(value)) {
+      return null;
+    } else {
+
+    }
   }
 }

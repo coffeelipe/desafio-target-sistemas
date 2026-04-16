@@ -44,7 +44,7 @@ class MainApp extends StatelessWidget {
             '/login': (_) => const LoginPage(),
             '/register': (_) => const RegistrationPage(),
           },
-          initialRoute: '/',
+          initialRoute: '/login',
         );
       },
     );

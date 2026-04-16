@@ -1,5 +1,5 @@
 import 'package:app/src/core/utils/responsive_utils.dart';
-import 'package:app/src/pages/authentication/stores/registration_form_state.dart';
+import 'package:app/src/stores/authentication/registration_form_state.dart';
 import 'package:app/src/widgets/custom_elevated_button.dart';
 import 'package:app/src/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +38,9 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 controller: _registrationFormState.usernameController,
                 label: 'Usuário',
                 hintText: 'seu_usuário',
+                validator: (value) {
+
+                },
               ),
               SizedBox(height: ResponsiveUtils.spacing(SpacingSize.small)),
               CustomTextFormField(

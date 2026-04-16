@@ -1,7 +1,7 @@
 import 'package:app/src/core/extensions/mediaquery_extension.dart';
 import 'package:app/src/pages/dashboard/dashboard.dart';
 import 'package:app/src/pages/home/home_page.dart';
-import 'package:app/src/pages/main_scaffold/stores/pageview_state.dart';
+import 'package:app/src/stores/main_scaffold/pageview_state.dart';
 import 'package:app/src/pages/main_scaffold/widgets/custom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
