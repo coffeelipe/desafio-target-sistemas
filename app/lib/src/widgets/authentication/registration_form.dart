@@ -32,15 +32,16 @@ class _RegistrationFormState extends State<RegistrationForm> {
             : RemixIcons.eye_2_fill;
 
         return Form(
+          key: _registrationFormState.registrationFormKey,
           child: Column(
             children: [
               CustomTextFormField(
                 controller: _registrationFormState.usernameController,
                 label: 'Usuário',
                 hintText: 'seu_usuário',
-                validator: (value) {
-
-                },
+                maxLength: 16,
+                validator: (value) =>
+                    _registrationFormState.validateUsername(value),
               ),
               SizedBox(height: ResponsiveUtils.spacing(SpacingSize.small)),
               CustomTextFormField(
