@@ -8,6 +8,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool obscureText;
   final Widget? suffixIcon;
   final TextInputType? keyboardType;
+  final int? maxLength;
   final String? Function(String? value)? validator;
 
   const CustomTextFormField({
@@ -18,6 +19,7 @@ class CustomTextFormField extends StatelessWidget {
     this.obscureText = false,
     this.suffixIcon,
     this.keyboardType,
+    this.maxLength,
     this.validator,
   });
 
@@ -50,6 +52,33 @@ class CustomTextFormField extends StatelessWidget {
           obscureText: obscureText,
           keyboardType: keyboardType,
           validator: validator,
+          maxLength: maxLength,
+          buildCounter:
+              (
+                context, {
+                required currentLength,
+                required isFocused,
+                required maxLength,
+              }) {
+                if (maxLength == null) {
+                  return null;
+                }
+                return Offstage(
+                  offstage: !isFocused,
+                  child: Text(
+                    '$currentLength/$maxLength',
+                    style: TextStyle(
+                      color: currentLength >= maxLength
+                          ? AppPalette.primary
+                          : null,
+                      fontSize: 12,
+                    ),
+                  ),
+                );
+              },
+          errorBuilder: (context, errorText) {
+            return Text(errorText, maxLines: 2);
+          },
         ),
       ],
     );
