@@ -6,6 +6,8 @@ class ValidationUtils {
     switch (fieldType) {
       case FieldType.username:
         return _computeUsernameErrorMessage(value);
+      case FieldType.password:
+        return _computePasswordErrorMessage(value);
       default:
         return 'Algo deu errado';
     }
@@ -32,6 +34,22 @@ class ValidationUtils {
     } else {
       return RegistrationValidationError
           .usernameErrorMessages[UsernameValidationErrors.invalidStartOrEnd]!;
+    }
+  }
+
+  static String _computePasswordErrorMessage(String value) {
+    if (value.length < 6) {
+      return RegistrationValidationError
+          .passwordErrorMessages[PasswordValidationErrors
+          .insufficientCharacters]!;
+    } else if (RegExp(r'\s').hasMatch(value)) {
+      return RegistrationValidationError
+          .passwordErrorMessages[PasswordValidationErrors.containsSpace]!;
+    } else if (RegExp(r'[^a-zA-Z0-9!@#$%^&*]').hasMatch(value)) {
+      return RegistrationValidationError
+          .passwordErrorMessages[PasswordValidationErrors.invalidCharacters]!;
+    } else {
+      return 'Algo deu errado';
     }
   }
 }

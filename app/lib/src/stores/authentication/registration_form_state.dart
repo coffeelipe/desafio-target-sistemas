@@ -36,6 +36,8 @@ abstract class _RegistrationFormStateBase with Store {
     switch (fieldType) {
       case FieldType.username:
         validationPattern = ValidationPatterns.usernameRegex;
+      case FieldType.password:
+        validationPattern = ValidationPatterns.passwordRegex;
       default:
         throw Exception("Failed to define a validation pattern");
     }

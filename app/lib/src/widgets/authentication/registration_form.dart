@@ -61,6 +61,10 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 suffixIcon: _buildToggleVisibilityButton(
                   passwordVisibilityIcon,
                 ),
+                validator: (value) => _registrationFormState.validateField(
+                  value,
+                  FieldType.password,
+                ),
               ),
               SizedBox(height: ResponsiveUtils.spacing(SpacingSize.small)),
               CustomTextFormField(
