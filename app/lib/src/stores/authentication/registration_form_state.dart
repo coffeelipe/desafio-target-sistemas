@@ -1,3 +1,6 @@
+import 'package:app/src/core/error/validation_errors.dart';
+import 'package:app/src/core/error/validation_patterns.dart';
+import 'package:app/src/core/utils/validation_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 part 'registration_form_state.g.dart';
@@ -11,7 +14,7 @@ abstract class _RegistrationFormStateBase with Store {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController passwordConfirmationController =
       TextEditingController();
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> registrationFormKey = GlobalKey<FormState>();
 
   @observable
   bool isPasswordObscured = true;
@@ -31,11 +34,12 @@ abstract class _RegistrationFormStateBase with Store {
   @action
   String? validateUsername(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Por favor, insira um nome de usuário';
-    } else if (RegExp(r'^(?=.{3,16}$)[A-Za-z](?:[A-Za-z0-9]|[-_](?=[A-Za-z0-9]))*$').hasMatch(value)) {
+      return RegistrationValidationError
+          .usernameErrorMessages[UsernameValidationErrors.emptyField];
+    } else if (ValidationPatterns.usernameRegex.hasMatch(value)) {
       return null;
     } else {
-
+      return ValidationUtils.computeErrorMessage(FieldType.username, value);
     }
   }
 }
