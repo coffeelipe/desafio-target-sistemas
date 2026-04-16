@@ -1,8 +1,7 @@
 class RegistrationValidationError {
   RegistrationValidationError._();
-  
+
   static const Map<UsernameValidationErrors, String> usernameErrorMessages = {
-    UsernameValidationErrors.emptyField: 'Este campo é obrigatório',
     UsernameValidationErrors.insufficientCharacters:
         'Deve conter no mínimo 3 caracteres',
     UsernameValidationErrors.invalidCharacters:
@@ -16,8 +15,13 @@ class RegistrationValidationError {
   };
 }
 
+class GlobalValidationError {
+  GlobalValidationError._();
+
+  static const String emptyFieldErrorMessage = 'Este campo é obrigatório';
+}
+
 enum UsernameValidationErrors {
-  emptyField,
   insufficientCharacters,
   invalidCharacters,
   containsSpace,

@@ -1,4 +1,3 @@
-import 'package:app/src/core/error/validation_errors.dart';
 import 'package:app/src/core/error/validation_patterns.dart';
 import 'package:app/src/core/utils/validation_utils.dart';
 import 'package:flutter/material.dart';
@@ -33,13 +32,16 @@ abstract class _RegistrationFormStateBase with Store {
   // validators
   @action
   String? validateUsername(String? value) {
-    if (value == null || value.isEmpty) {
-      return RegistrationValidationError
-          .usernameErrorMessages[UsernameValidationErrors.emptyField];
-    } else if (ValidationPatterns.usernameRegex.hasMatch(value)) {
-      return null;
-    } else {
+    if (value == null ||
+        value.isEmpty ||
+        !ValidationPatterns.usernameRegex.hasMatch(value)) {
       return ValidationUtils.computeErrorMessage(FieldType.username, value);
     }
+    return null;
+  }
+
+  @action
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {}
   }
 }
