@@ -13,5 +13,6 @@ abstract class _PageViewStateBase with Store {
   @action
   void setIndex(int value) => pageIndex = value;
 
+  @action
   void dispose() => controller.dispose();
 }
