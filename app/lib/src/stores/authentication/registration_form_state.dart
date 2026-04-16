@@ -31,17 +31,18 @@ abstract class _RegistrationFormStateBase with Store {
 
   // validators
   @action
-  String? validateUsername(String? value) {
-    if (value == null ||
-        value.isEmpty ||
-        !ValidationPatterns.usernameRegex.hasMatch(value)) {
-      return ValidationUtils.computeErrorMessage(FieldType.username, value);
+  String? validateField(String? value, FieldType fieldType) {
+    RegExp validationPattern;
+    switch (fieldType) {
+      case FieldType.username:
+        validationPattern = ValidationPatterns.usernameRegex;
+      default:
+        throw Exception("Failed to define a validation pattern");
+    }
+
+    if (value == null || value.isEmpty || !validationPattern.hasMatch(value)) {
+      return ValidationUtils.computeErrorMessage(fieldType, value);
     }
     return null;
-  }
-
-  @action
-  String? validatePassword(String? value) {
-    if (value == null || value.isEmpty) {}
   }
 }

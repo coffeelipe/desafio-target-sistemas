@@ -1,4 +1,5 @@
 import 'package:app/src/core/utils/responsive_utils.dart';
+import 'package:app/src/core/utils/validation_utils.dart';
 import 'package:app/src/stores/authentication/registration_form_state.dart';
 import 'package:app/src/widgets/global/custom_elevated_button.dart';
 import 'package:app/src/widgets/global/custom_text_form_field.dart';
@@ -40,8 +41,10 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 label: 'Usuário',
                 hintText: 'seu_usuário',
                 maxLength: 16,
-                validator: (value) =>
-                    _registrationFormState.validateUsername(value),
+                validator: (value) => _registrationFormState.validateField(
+                  value,
+                  FieldType.username,
+                ),
               ),
               SizedBox(height: ResponsiveUtils.spacing(SpacingSize.small)),
               CustomTextFormField(
@@ -80,7 +83,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                     if (_registrationFormState.registrationFormKey.currentState!
                         .validate()) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('FORMULARIO VALIDADO')),
+                        const SnackBar(content: Text('FORMULARIO VALIDADO')),
                       );
                     }
                   },

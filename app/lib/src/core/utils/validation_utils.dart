@@ -3,7 +3,6 @@ import 'package:app/src/core/error/validation_errors.dart';
 class ValidationUtils {
   static String computeErrorMessage(FieldType fieldType, String? value) {
     if (value == null || value.isEmpty) return GlobalValidationError.emptyFieldErrorMessage;
-
     switch (fieldType) {
       case FieldType.username:
         return _computeUsernameErrorMessage(value);
