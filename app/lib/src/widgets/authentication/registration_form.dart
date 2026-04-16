@@ -76,7 +76,14 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   horizontal: ResponsiveUtils.spacing(SpacingSize.small),
                 ),
                 child: GradientButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    if (_registrationFormState.registrationFormKey.currentState!
+                        .validate()) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('FORMULARIO VALIDADO')),
+                      );
+                    }
+                  },
                   child: const Text(
                     'Criar Conta',
                     style: TextStyle(
