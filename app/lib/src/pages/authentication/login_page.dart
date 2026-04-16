@@ -1,8 +1,8 @@
 import 'package:app/src/core/theme/app_palette.dart';
 import 'package:app/src/core/theme/app_typography.dart';
 import 'package:app/src/core/utils/responsive_utils.dart';
-import 'package:app/src/pages/authentication/widgets/login_form.dart';
-import 'package:app/src/widgets/foreground_card.dart';
+import 'package:app/src/widgets/authentication/login_form.dart';
+import 'package:app/src/widgets/global/foreground_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 

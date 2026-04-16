@@ -1,6 +1,6 @@
 import 'package:app/src/core/utils/responsive_utils.dart';
-import 'package:app/src/widgets/custom_elevated_button.dart';
-import 'package:app/src/widgets/custom_text_form_field.dart';
+import 'package:app/src/widgets/global/custom_elevated_button.dart';
+import 'package:app/src/widgets/global/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 
 class LoginForm extends StatelessWidget {
