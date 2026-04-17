@@ -2,14 +2,35 @@ import 'package:app/src/core/extensions/mediaquery_extension.dart';
 import 'package:app/src/core/theme/app_palette.dart';
 import 'package:app/src/core/utils/responsive_utils.dart';
 import 'package:app/src/stores/authentication/registration_form_state.dart';
+import 'package:app/src/stores/main/root_store.dart';
 import 'package:app/src/widgets/authentication/registration_form.dart';
 import 'package:app/src/widgets/global/foreground_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
-class RegistrationPage extends StatelessWidget {
+class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
+
+  @override
+  State<RegistrationPage> createState() => _RegistrationPageState();
+}
+
+class _RegistrationPageState extends State<RegistrationPage> {
+  late final RegistrationFormState _formStateStore;
+
+  @override
+  void initState() {
+    super.initState();
+    final authStore = context.read<RootStore>().authStore;
+    _formStateStore = RegistrationFormState(authStore: authStore);
+  }
+
+  @override
+  void dispose() {
+    _formStateStore.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +63,8 @@ class RegistrationPage extends StatelessWidget {
                                   SpacingSize.medium,
                                 ),
                               ),
-                              child: Provider(
-                                create: (_) => RegistrationFormState(),
-                                dispose: (context, store) => store.dispose(),
+                              child: Provider.value(
+                                value: _formStateStore,
                                 child: const RegistrationForm(),
                               ),
                             ),
