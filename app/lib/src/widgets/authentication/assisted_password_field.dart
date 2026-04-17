@@ -1,6 +1,8 @@
+import 'package:app/src/stores/authentication/registration_form_state.dart';
 import 'package:app/src/widgets/authentication/password_assistant.dart';
 import 'package:app/src/widgets/global/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AssistedPasswordField extends StatelessWidget {
   final TextEditingController controller;
@@ -26,6 +28,9 @@ class AssistedPasswordField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final registrationFormStateProvider = Provider.of<RegistrationFormState>(
+      context,
+    );
     return Column(
       children: [
         AnimatedSize(
@@ -38,7 +43,9 @@ class AssistedPasswordField extends StatelessWidget {
         CustomTextFormField(
           controller: controller,
           focusNode: focusNode,
-          label: 'Senha',
+          label: registrationFormStateProvider.isPasswordFieldFocused
+              ? null
+              : 'Senha',
           hintText: 'Senha',
           obscureText: isObscured,
           suffixIcon: suffixIcon,
