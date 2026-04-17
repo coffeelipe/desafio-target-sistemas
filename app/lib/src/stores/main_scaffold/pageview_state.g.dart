@@ -45,6 +45,18 @@ mixin _$PageViewState on _PageViewStateBase, Store {
   }
 
   @override
+  void dispose() {
+    final _$actionInfo = _$_PageViewStateBaseActionController.startAction(
+      name: '_PageViewStateBase.dispose',
+    );
+    try {
+      return super.dispose();
+    } finally {
+      _$_PageViewStateBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 pageIndex: ${pageIndex}
