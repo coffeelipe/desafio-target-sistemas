@@ -1,6 +1,7 @@
 import 'package:mobx/mobx.dart';
 part 'password_assistant_state.g.dart';
 
+// ignore: library_private_types_in_public_api
 class PasswordAssistantState = _PasswordAssistantStateBase
     with _$PasswordAssistantState;
 
