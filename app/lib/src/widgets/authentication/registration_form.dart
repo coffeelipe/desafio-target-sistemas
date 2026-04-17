@@ -1,15 +1,14 @@
-import 'package:app/src/core/theme/app_palette.dart';
 import 'package:app/src/core/utils/responsive_utils.dart';
 import 'package:app/src/core/utils/validation_utils.dart';
 import 'package:app/src/stores/authentication/password_assistant_state.dart';
 import 'package:app/src/stores/authentication/registration_form_state.dart';
 import 'package:app/src/widgets/authentication/assisted_password_field.dart';
+import 'package:app/src/widgets/authentication/password_field.dart';
 import 'package:app/src/widgets/global/custom_elevated_button.dart';
 import 'package:app/src/widgets/global/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
-import 'package:remixicon/remixicon.dart';
 
 class RegistrationForm extends StatefulWidget {
   const RegistrationForm({super.key});
@@ -30,9 +29,6 @@ class _RegistrationFormState extends State<RegistrationForm> {
         bool isPasswordObscured = registrationFormState.isPasswordObscured;
         bool isPasswordFieldFocused =
             registrationFormState.isPasswordFieldFocused;
-        IconData passwordVisibilityIcon = isPasswordObscured
-            ? RemixIcons.eye_close_fill
-            : RemixIcons.eye_2_fill;
 
         return Form(
           key: registrationFormState.registrationFormKey,
@@ -41,7 +37,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
               CustomTextFormField(
                 controller: registrationFormState.usernameController,
                 label: 'Usuário*',
-                hintText: 'seu_usuário',
+                hintText: 'Nome de usuário',
                 maxLength: 16,
                 keyboardType: TextInputType.name,
                 validator: (value) => registrationFormState.validateField(
@@ -73,27 +69,19 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   );
                   registrationFormState.setPasswordValidationFlags(value);
                 },
-                suffixIcon: _buildToggleVisibilityButton(
-                  passwordVisibilityIcon,
-                  registrationFormState,
-                ),
                 validator: (value) => registrationFormState.validateField(
                   value,
                   FieldType.password,
                 ),
               ),
               SizedBox(height: ResponsiveUtils.spacing(SpacingSize.small)),
-              CustomTextFormField(
+              PasswordField(
                 controller:
                     registrationFormState.passwordConfirmationController,
-                label: 'Confirmar Senha*',
-                hintText: 'Confirmar Senha',
+                label: 'Confirmar senha*',
+                hintText: 'Confirmar senha',
                 obscureText: isPasswordObscured,
-                suffixIcon: _buildToggleVisibilityButton(
-                  passwordVisibilityIcon,
-                  registrationFormState,
-                ),
-                keyboardType: TextInputType.visiblePassword,
+                onTogglePressed: registrationFormState.togglePasswordVisibility,
                 validator: (value) =>
                     registrationFormState.validatePasswordConfirmation(value),
               ),
@@ -125,20 +113,6 @@ class _RegistrationFormState extends State<RegistrationForm> {
           ),
         );
       },
-    );
-  }
-
-  IconButton _buildToggleVisibilityButton(
-    IconData passwordVisibilityIcon,
-    RegistrationFormState registrationFormState,
-  ) {
-    return IconButton(
-      onPressed: registrationFormState.togglePasswordVisibility,
-      icon: Icon(
-        passwordVisibilityIcon,
-        size: 18,
-        color: AppPalette.blackShade,
-      ),
     );
   }
 }

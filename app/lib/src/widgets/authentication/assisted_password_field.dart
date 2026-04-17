@@ -1,5 +1,6 @@
 import 'package:app/src/stores/authentication/registration_form_state.dart';
 import 'package:app/src/widgets/authentication/password_assistant.dart';
+import 'package:app/src/widgets/authentication/toggle_password_visibility_button.dart';
 import 'package:app/src/widgets/global/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,7 +10,6 @@ class AssistedPasswordField extends StatelessWidget {
   final FocusNode? focusNode;
   final bool showAssistant;
   final bool isObscured;
-  final Widget? suffixIcon;
   final double passwordStrength;
   final void Function(String)? onChanged;
   final String? Function(String? value)? validator;
@@ -20,7 +20,6 @@ class AssistedPasswordField extends StatelessWidget {
     this.focusNode,
     this.showAssistant = false,
     required this.isObscured,
-    this.suffixIcon,
     required this.passwordStrength,
     this.onChanged,
     this.validator,
@@ -48,7 +47,10 @@ class AssistedPasswordField extends StatelessWidget {
               : 'Senha*',
           hintText: 'Senha',
           obscureText: isObscured,
-          suffixIcon: suffixIcon,
+          suffixIcon: TogglePasswordVisibilityButton(
+            isPasswordObscured: isObscured,
+            onPressed: registrationFormStateProvider.togglePasswordVisibility,
+          ),
           keyboardType: TextInputType.visiblePassword,
           onChanged: onChanged,
           validator: validator,
