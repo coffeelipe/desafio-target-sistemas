@@ -1,4 +1,5 @@
 import 'package:app/src/core/theme/app_palette.dart';
+import 'package:app/src/core/utils/validation_utils.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextFormField extends StatelessWidget {
@@ -59,6 +60,7 @@ class CustomTextFormField extends StatelessWidget {
           keyboardType: keyboardType,
           validator: validator,
           maxLength: maxLength,
+          inputFormatters: [ValidationUtils.noEmojiFormatter],
           buildCounter:
               (
                 context, {

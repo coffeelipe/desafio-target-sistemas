@@ -1,4 +1,6 @@
 import 'package:app/src/core/error/validation_errors.dart';
+import 'package:app/src/core/error/validation_patterns.dart';
+import 'package:flutter/services.dart';
 
 class ValidationUtils {
   static String computeErrorMessage(FieldType fieldType, String? value) {
@@ -12,6 +14,9 @@ class ValidationUtils {
         return 'Algo deu errado';
     }
   }
+
+  static FilteringTextInputFormatter noEmojiFormatter =
+      FilteringTextInputFormatter(ValidationPatterns.emojiRegex, allow: false);
 
   static String _computeUsernameErrorMessage(String value) {
     if (value.length < 3) {
