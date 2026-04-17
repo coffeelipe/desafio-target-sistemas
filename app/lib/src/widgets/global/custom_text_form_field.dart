@@ -9,6 +9,8 @@ class CustomTextFormField extends StatelessWidget {
   final Widget? suffixIcon;
   final TextInputType? keyboardType;
   final int? maxLength;
+  final FocusNode? focusNode;
+  final void Function(String)? onChanged;
   final String? Function(String? value)? validator;
 
   const CustomTextFormField({
@@ -20,6 +22,8 @@ class CustomTextFormField extends StatelessWidget {
     this.suffixIcon,
     this.keyboardType,
     this.maxLength,
+    this.focusNode,
+    this.onChanged,
     this.validator,
   });
 
@@ -44,7 +48,9 @@ class CustomTextFormField extends StatelessWidget {
         ],
         TextFormField(
           controller: controller,
+          focusNode: focusNode,
           onTapOutside: (event) => FocusScope.of(context).unfocus(),
+          onChanged: onChanged,
           decoration: InputDecoration(
             hintText: hintText,
             suffixIcon: suffixIcon,
