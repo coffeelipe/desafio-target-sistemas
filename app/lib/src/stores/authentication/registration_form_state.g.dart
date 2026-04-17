@@ -169,6 +169,17 @@ mixin _$RegistrationFormState on _RegistrationFormStateBase, Store {
   }
 
   @override
+  void submitForm(String email, String password, String displayName) {
+    final _$actionInfo = _$_RegistrationFormStateBaseActionController
+        .startAction(name: '_RegistrationFormStateBase.submitForm');
+    try {
+      return super.submitForm(email, password, displayName);
+    } finally {
+      _$_RegistrationFormStateBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String? validateField(String? value, FieldType fieldType) {
     final _$actionInfo = _$_RegistrationFormStateBaseActionController
         .startAction(name: '_RegistrationFormStateBase.validateField');

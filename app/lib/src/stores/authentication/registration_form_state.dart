@@ -1,6 +1,7 @@
 import 'package:app/src/core/error/validation_errors.dart';
 import 'package:app/src/core/error/validation_patterns.dart';
 import 'package:app/src/core/utils/validation_utils.dart';
+import 'package:app/src/stores/authentication/auth_store.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 part 'registration_form_state.g.dart';
@@ -10,6 +11,8 @@ class RegistrationFormState = _RegistrationFormStateBase
     with _$RegistrationFormState;
 
 abstract class _RegistrationFormStateBase with Store {
+  final AuthStore authStore;
+
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -24,7 +27,7 @@ abstract class _RegistrationFormStateBase with Store {
   TextEditingController get passwordConfirmationController =>
       _passwordConfirmationController;
 
-  _RegistrationFormStateBase() {
+  _RegistrationFormStateBase({required this.authStore}) {
     passwordFocusNode.addListener(handleFocusChange);
   }
 
@@ -72,6 +75,10 @@ abstract class _RegistrationFormStateBase with Store {
       r'[^a-zA-Z0-9!@#$%^&*]',
     ).hasMatch(password);
   }
+
+  @action
+  void submitForm(String email, String password, String displayName) =>
+      authStore.createNewUser(email, password, displayName);
 
   // validators
   @action
