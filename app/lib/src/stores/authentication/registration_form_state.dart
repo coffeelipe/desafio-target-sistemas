@@ -90,4 +90,16 @@ abstract class _RegistrationFormStateBase with Store {
     }
     return null;
   }
+
+  @action
+  String? validatePasswordConfirmation(String? value) {
+    if (value == null || value.isEmpty) {
+      return GlobalValidationError.emptyFieldErrorMessage;
+    } else if (value != _passwordController.text) {
+      return RegistrationValidationError
+          .passwordErrorMessages[PasswordValidationErrors
+          .notMatchingConfirmation];
+    }
+    return null;
+  }
 }

@@ -180,6 +180,19 @@ mixin _$RegistrationFormState on _RegistrationFormStateBase, Store {
   }
 
   @override
+  String? validatePasswordConfirmation(String? value) {
+    final _$actionInfo = _$_RegistrationFormStateBaseActionController
+        .startAction(
+          name: '_RegistrationFormStateBase.validatePasswordConfirmation',
+        );
+    try {
+      return super.validatePasswordConfirmation(value);
+    } finally {
+      _$_RegistrationFormStateBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 isPasswordObscured: ${isPasswordObscured},
