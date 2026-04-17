@@ -24,6 +24,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
   @override
   Widget build(BuildContext context) {
     final registrationFormState = Provider.of<RegistrationFormState>(context);
+
     return Observer(
       builder: (_) {
         bool isPasswordObscured = registrationFormState.isPasswordObscured;
@@ -94,19 +95,23 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   onPressed: () {
                     if (registrationFormState.registrationFormKey.currentState!
                         .validate()) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('FORMULARIO VALIDADO')),
+                      registrationFormState.submitForm(
+                        registrationFormState.emailController.text,
+                        registrationFormState.passwordController.text,
+                        registrationFormState.usernameController.text,
                       );
                     }
                   },
-                  child: const Text(
-                    'Criar Conta',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
+                  child: registrationFormState.authStore.isLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : const Text(
+                          'Criar Conta',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
                 ),
               ),
             ],
