@@ -1,3 +1,4 @@
+import 'package:app/src/core/extensions/mediaquery_extension.dart';
 import 'package:app/src/core/theme/app_palette.dart';
 import 'package:app/src/core/theme/app_typography.dart';
 import 'package:app/src/core/utils/responsive_utils.dart';
@@ -13,50 +14,58 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Center(
-          child: ForegroundCard(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SvgPicture.asset('assets/images/logo.svg', height: 60),
-                SizedBox(
-                  height: ResponsiveUtils.spacing(SpacingSize.extraLarge),
-                ),
-                _buildWelcomeHeader(),
-                SizedBox(height: ResponsiveUtils.spacing(SpacingSize.large)),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: ResponsiveUtils.spacing(SpacingSize.medium),
-                  ),
-                  child: const LoginForm(),  // Main component containing the login form and submit button
-                ),
-                SizedBox(height: ResponsiveUtils.spacing(SpacingSize.large)),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: RichText(
-                    text: TextSpan(
-                      text: 'Novo aqui? ',
-                      style: const TextStyle(color: Colors.black),
-                      children: [
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: GestureDetector(
-                            onTap: () =>
-                                Navigator.pushNamed(context, '/register'),
-                            child: const Text(
-                              'Crie uma conta',
-                              style: TextStyle(
-                                color: AppPalette.primary,
-                                fontWeight: FontWeight.bold,
+        child: SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: context.mediaQuery.size.height
+            ),
+            child: Center(
+              child: ForegroundCard(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset('assets/images/logo.svg', height: 60),
+                    SizedBox(
+                      height: ResponsiveUtils.spacing(SpacingSize.extraLarge),
+                    ),
+                    _buildWelcomeHeader(),
+                    SizedBox(height: ResponsiveUtils.spacing(SpacingSize.large)),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: ResponsiveUtils.spacing(SpacingSize.medium),
+                      ),
+                      child:
+                          const LoginForm(), // Main component containing the login form and submit button
+                    ),
+                    SizedBox(height: ResponsiveUtils.spacing(SpacingSize.large)),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: RichText(
+                        text: TextSpan(
+                          text: 'Novo aqui? ',
+                          style: const TextStyle(color: Colors.black),
+                          children: [
+                            WidgetSpan(
+                              alignment: PlaceholderAlignment.middle,
+                              child: GestureDetector(
+                                onTap: () =>
+                                    Navigator.pushNamed(context, '/register'),
+                                child: const Text(
+                                  'Crie uma conta',
+                                  style: TextStyle(
+                                    color: AppPalette.primary,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
