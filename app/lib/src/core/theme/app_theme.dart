@@ -13,7 +13,11 @@ class AppTheme {
 
   static final lightTheme = ThemeData.light().copyWith(
     scaffoldBackgroundColor: AppPalette.scaffoldColor,
-    textTheme: ThemeData.light().textTheme.apply(fontFamily: 'Poppins'),
+    textTheme: ThemeData.light().textTheme.apply(
+      fontFamily: 'Poppins',
+      bodyColor: AppPalette.blackShade,
+      displayColor: AppPalette.blackShade,
+    ),
     textSelectionTheme: TextSelectionThemeData(
       cursorColor: AppPalette.primaryVariant,
       selectionColor: AppPalette.primaryVariant.withValues(alpha: 0.5),

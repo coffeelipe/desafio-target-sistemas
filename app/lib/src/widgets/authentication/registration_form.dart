@@ -1,3 +1,4 @@
+import 'package:app/src/core/theme/app_palette.dart';
 import 'package:app/src/core/utils/responsive_utils.dart';
 import 'package:app/src/core/utils/validation_utils.dart';
 import 'package:app/src/stores/authentication/password_assistant_state.dart';
@@ -133,7 +134,11 @@ class _RegistrationFormState extends State<RegistrationForm> {
   ) {
     return IconButton(
       onPressed: registrationFormState.togglePasswordVisibility,
-      icon: Icon(passwordVisibilityIcon, size: 18),
+      icon: Icon(
+        passwordVisibilityIcon,
+        size: 18,
+        color: AppPalette.blackShade,
+      ),
     );
   }
 }
