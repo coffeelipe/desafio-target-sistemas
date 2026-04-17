@@ -1,3 +1,4 @@
+import 'package:app/src/core/extensions/mediaquery_extension.dart';
 import 'package:app/src/core/theme/app_palette.dart';
 import 'package:app/src/core/utils/responsive_utils.dart';
 import 'package:app/src/widgets/authentication/registration_form.dart';
@@ -18,16 +19,30 @@ class RegistrationPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SvgPicture.asset('assets/images/logo.svg', height: 50),
-                SizedBox(
-                  height: ResponsiveUtils.spacing(SpacingSize.medium),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: ResponsiveUtils.spacing(SpacingSize.medium),
+                SizedBox(height: ResponsiveUtils.spacing(SpacingSize.medium)),
+                ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxHeight: context.mediaQuery.size.height * 0.65,
                   ),
-                  child: const RegistrationForm(),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: ResponsiveUtils.spacing(
+                              SpacingSize.medium,
+                            ),
+                          ),
+                          child: const RegistrationForm(),
+                        ),
+                        SizedBox(
+                          height: ResponsiveUtils.spacing(SpacingSize.large),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                SizedBox(height: ResponsiveUtils.spacing(SpacingSize.large)),
+                SizedBox(height: ResponsiveUtils.spacing(SpacingSize.small)),
                 Align(
                   alignment: Alignment.bottomCenter,
                   child: RichText(
