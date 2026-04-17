@@ -42,6 +42,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 label: 'Usuário*',
                 hintText: 'seu_usuário',
                 maxLength: 16,
+                keyboardType: TextInputType.name,
                 validator: (value) => registrationFormState.validateField(
                   value,
                   FieldType.username,
@@ -52,6 +53,9 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 controller: registrationFormState.emailController,
                 label: 'Email*',
                 hintText: 'email@exemplo.com',
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) =>
+                    registrationFormState.validateField(value, FieldType.email),
               ),
               SizedBox(height: ResponsiveUtils.spacing(SpacingSize.small)),
               AssistedPasswordField(
@@ -88,6 +92,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   passwordVisibilityIcon,
                   registrationFormState,
                 ),
+                keyboardType: TextInputType.visiblePassword,
                 validator: (value) =>
                     registrationFormState.validatePasswordConfirmation(value),
               ),

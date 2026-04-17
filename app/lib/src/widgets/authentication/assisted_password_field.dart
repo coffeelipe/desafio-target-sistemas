@@ -49,6 +49,7 @@ class AssistedPasswordField extends StatelessWidget {
           hintText: 'Senha',
           obscureText: isObscured,
           suffixIcon: suffixIcon,
+          keyboardType: TextInputType.visiblePassword,
           onChanged: onChanged,
           validator: validator,
         ),
