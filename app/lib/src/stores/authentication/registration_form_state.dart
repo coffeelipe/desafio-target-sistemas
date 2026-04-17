@@ -20,11 +20,17 @@ abstract class _RegistrationFormStateBase with Store {
     passwordFocusNode.addListener(handleFocusChange);
   }
 
+  // password field related observables
   @observable
   bool isPasswordObscured = true;
-
   @observable
   bool isPasswordFieldFocused = false;
+  @observable
+  bool isPasswordOverSixCharacters = false;
+  @observable
+  bool passwordContainsNoSpaces = false;
+  @observable
+  bool passwordContainsOnlyValidCharacters = false;
 
   @action
   void dispose() {
@@ -42,6 +48,22 @@ abstract class _RegistrationFormStateBase with Store {
   @action
   void handleFocusChange() =>
       isPasswordFieldFocused = passwordFocusNode.hasFocus;
+
+  @action
+  void setPasswordValidationFlags(String password) {
+    if (password.isEmpty) {
+      isPasswordOverSixCharacters = false;
+      passwordContainsNoSpaces = false;
+      passwordContainsOnlyValidCharacters = false;
+      return;
+    }
+
+    isPasswordOverSixCharacters = password.length >= 6;
+    passwordContainsNoSpaces = !RegExp(r'\s').hasMatch(password);
+    passwordContainsOnlyValidCharacters = !RegExp(
+      r'[^a-zA-Z0-9!@#$%^&*]',
+    ).hasMatch(password);
+  }
 
   // validators
   @action

@@ -49,6 +49,72 @@ mixin _$RegistrationFormState on _RegistrationFormStateBase, Store {
     );
   }
 
+  late final _$isPasswordOverSixCharactersAtom = Atom(
+    name: '_RegistrationFormStateBase.isPasswordOverSixCharacters',
+    context: context,
+  );
+
+  @override
+  bool get isPasswordOverSixCharacters {
+    _$isPasswordOverSixCharactersAtom.reportRead();
+    return super.isPasswordOverSixCharacters;
+  }
+
+  @override
+  set isPasswordOverSixCharacters(bool value) {
+    _$isPasswordOverSixCharactersAtom.reportWrite(
+      value,
+      super.isPasswordOverSixCharacters,
+      () {
+        super.isPasswordOverSixCharacters = value;
+      },
+    );
+  }
+
+  late final _$passwordContainsNoSpacesAtom = Atom(
+    name: '_RegistrationFormStateBase.passwordContainsNoSpaces',
+    context: context,
+  );
+
+  @override
+  bool get passwordContainsNoSpaces {
+    _$passwordContainsNoSpacesAtom.reportRead();
+    return super.passwordContainsNoSpaces;
+  }
+
+  @override
+  set passwordContainsNoSpaces(bool value) {
+    _$passwordContainsNoSpacesAtom.reportWrite(
+      value,
+      super.passwordContainsNoSpaces,
+      () {
+        super.passwordContainsNoSpaces = value;
+      },
+    );
+  }
+
+  late final _$passwordContainsOnlyValidCharactersAtom = Atom(
+    name: '_RegistrationFormStateBase.passwordContainsOnlyValidCharacters',
+    context: context,
+  );
+
+  @override
+  bool get passwordContainsOnlyValidCharacters {
+    _$passwordContainsOnlyValidCharactersAtom.reportRead();
+    return super.passwordContainsOnlyValidCharacters;
+  }
+
+  @override
+  set passwordContainsOnlyValidCharacters(bool value) {
+    _$passwordContainsOnlyValidCharactersAtom.reportWrite(
+      value,
+      super.passwordContainsOnlyValidCharacters,
+      () {
+        super.passwordContainsOnlyValidCharacters = value;
+      },
+    );
+  }
+
   late final _$_RegistrationFormStateBaseActionController = ActionController(
     name: '_RegistrationFormStateBase',
     context: context,
@@ -90,6 +156,19 @@ mixin _$RegistrationFormState on _RegistrationFormStateBase, Store {
   }
 
   @override
+  void setPasswordValidationFlags(String password) {
+    final _$actionInfo = _$_RegistrationFormStateBaseActionController
+        .startAction(
+          name: '_RegistrationFormStateBase.setPasswordValidationFlags',
+        );
+    try {
+      return super.setPasswordValidationFlags(password);
+    } finally {
+      _$_RegistrationFormStateBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String? validateField(String? value, FieldType fieldType) {
     final _$actionInfo = _$_RegistrationFormStateBaseActionController
         .startAction(name: '_RegistrationFormStateBase.validateField');
@@ -104,7 +183,10 @@ mixin _$RegistrationFormState on _RegistrationFormStateBase, Store {
   String toString() {
     return '''
 isPasswordObscured: ${isPasswordObscured},
-isPasswordFieldFocused: ${isPasswordFieldFocused}
+isPasswordFieldFocused: ${isPasswordFieldFocused},
+isPasswordOverSixCharacters: ${isPasswordOverSixCharacters},
+passwordContainsNoSpaces: ${passwordContainsNoSpaces},
+passwordContainsOnlyValidCharacters: ${passwordContainsOnlyValidCharacters}
     ''';
   }
 }
