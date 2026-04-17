@@ -27,10 +27,43 @@ mixin _$RegistrationFormState on _RegistrationFormStateBase, Store {
     });
   }
 
+  late final _$isPasswordFieldFocusedAtom = Atom(
+    name: '_RegistrationFormStateBase.isPasswordFieldFocused',
+    context: context,
+  );
+
+  @override
+  bool get isPasswordFieldFocused {
+    _$isPasswordFieldFocusedAtom.reportRead();
+    return super.isPasswordFieldFocused;
+  }
+
+  @override
+  set isPasswordFieldFocused(bool value) {
+    _$isPasswordFieldFocusedAtom.reportWrite(
+      value,
+      super.isPasswordFieldFocused,
+      () {
+        super.isPasswordFieldFocused = value;
+      },
+    );
+  }
+
   late final _$_RegistrationFormStateBaseActionController = ActionController(
     name: '_RegistrationFormStateBase',
     context: context,
   );
+
+  @override
+  void dispose() {
+    final _$actionInfo = _$_RegistrationFormStateBaseActionController
+        .startAction(name: '_RegistrationFormStateBase.dispose');
+    try {
+      return super.dispose();
+    } finally {
+      _$_RegistrationFormStateBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void togglePasswordVisibility() {
@@ -46,9 +79,32 @@ mixin _$RegistrationFormState on _RegistrationFormStateBase, Store {
   }
 
   @override
+  void handleFocusChange() {
+    final _$actionInfo = _$_RegistrationFormStateBaseActionController
+        .startAction(name: '_RegistrationFormStateBase.handleFocusChange');
+    try {
+      return super.handleFocusChange();
+    } finally {
+      _$_RegistrationFormStateBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  String? validateField(String? value, FieldType fieldType) {
+    final _$actionInfo = _$_RegistrationFormStateBaseActionController
+        .startAction(name: '_RegistrationFormStateBase.validateField');
+    try {
+      return super.validateField(value, fieldType);
+    } finally {
+      _$_RegistrationFormStateBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
-isPasswordObscured: ${isPasswordObscured}
+isPasswordObscured: ${isPasswordObscured},
+isPasswordFieldFocused: ${isPasswordFieldFocused}
     ''';
   }
 }

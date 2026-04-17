@@ -14,12 +14,17 @@ abstract class _RegistrationFormStateBase with Store {
   final TextEditingController passwordConfirmationController =
       TextEditingController();
   final GlobalKey<FormState> registrationFormKey = GlobalKey<FormState>();
+  final FocusNode passwordFocusNode = FocusNode();
+
+  _RegistrationFormStateBase() {
+    passwordFocusNode.addListener(handleFocusChange);
+  }
 
   @observable
   bool isPasswordObscured = true;
 
-  @action
-  void togglePasswordVisibility() => isPasswordObscured = !isPasswordObscured;
+  @observable
+  bool isPasswordFieldFocused = false;
 
   @action
   void dispose() {
@@ -27,7 +32,16 @@ abstract class _RegistrationFormStateBase with Store {
     emailController.dispose();
     passwordController.dispose();
     passwordConfirmationController.dispose();
+    passwordFocusNode.dispose();
+    passwordFocusNode.removeListener(handleFocusChange);
   }
+
+  @action
+  void togglePasswordVisibility() => isPasswordObscured = !isPasswordObscured;
+
+  @action
+  void handleFocusChange() =>
+      isPasswordFieldFocused = passwordFocusNode.hasFocus;
 
   // validators
   @action
