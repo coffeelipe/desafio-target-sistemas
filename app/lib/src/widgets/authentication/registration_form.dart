@@ -1,6 +1,8 @@
 import 'package:app/src/core/utils/responsive_utils.dart';
 import 'package:app/src/core/utils/validation_utils.dart';
+import 'package:app/src/stores/authentication/password_assistant_state.dart';
 import 'package:app/src/stores/authentication/registration_form_state.dart';
+import 'package:app/src/widgets/authentication/assisted_password_field.dart';
 import 'package:app/src/widgets/global/custom_elevated_button.dart';
 import 'package:app/src/widgets/global/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,8 @@ class RegistrationForm extends StatefulWidget {
 
 class _RegistrationFormState extends State<RegistrationForm> {
   final RegistrationFormState _registrationFormState = RegistrationFormState();
+  final PasswordAssistantState _passwordAssistantState =
+      PasswordAssistantState();
 
   @override
   void dispose() {
@@ -28,6 +32,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
     return Observer(
       builder: (_) {
         bool isPasswordObscured = _registrationFormState.isPasswordObscured;
+        bool isPasswordFieldFocused =
+            _registrationFormState.isPasswordFieldFocused;
         IconData passwordVisibilityIcon = isPasswordObscured
             ? RemixIcons.eye_close_fill
             : RemixIcons.eye_2_fill;
@@ -53,11 +59,19 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 hintText: 'email@exemplo.com',
               ),
               SizedBox(height: ResponsiveUtils.spacing(SpacingSize.small)),
-              CustomTextFormField(
+              AssistedPasswordField(
                 controller: _registrationFormState.passwordController,
-                label: 'Senha',
-                hintText: 'Senha',
-                obscureText: isPasswordObscured,
+                focusNode: _registrationFormState.passwordFocusNode,
+                showAssistant: isPasswordFieldFocused,
+                isObscured: isPasswordObscured,
+                passwordStrength: _passwordAssistantState.passwordStrength,
+                onChanged: (value) {
+                  _passwordAssistantState.evaluatePasswordStrength(
+                    value,
+                    _registrationFormState.usernameController.text,
+                    _registrationFormState.emailController.text,
+                  );
+                },
                 suffixIcon: _buildToggleVisibilityButton(
                   passwordVisibilityIcon,
                 ),
