@@ -1,4 +1,3 @@
-import 'package:app/src/core/theme/app_palette.dart';
 import 'package:flutter/material.dart';
 
 class PasswordStrengthMeter extends StatelessWidget {
@@ -9,7 +8,16 @@ class PasswordStrengthMeter extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text('Força da senha: ${_computePasswordStrengthString(strength)}'),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            "Senha ${_computePasswordStrengthString(strength)}",
+            style: const TextStyle(
+              color: Colors.black87,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
         const SizedBox(height: 4),
         TweenAnimationBuilder(
           tween: Tween(end: strength),
@@ -18,7 +26,9 @@ class PasswordStrengthMeter extends StatelessWidget {
           builder: (context, animatedStrength, _) {
             return LinearProgressIndicator(
               value: animatedStrength,
-              backgroundColor: AppPalette.scaffoldColor,
+              backgroundColor: Colors.black12,
+              borderRadius: BorderRadius.circular(20),
+              minHeight: 6,
               valueColor: AlwaysStoppedAnimation(
                 _computePasswordStrengthColor(animatedStrength),
               ),
@@ -31,15 +41,15 @@ class PasswordStrengthMeter extends StatelessWidget {
 
   String _computePasswordStrengthString(double strength) {
     if (strength <= 0.2) {
-      return 'Muito fraca';
+      return 'muito fraca';
     } else if (strength < 0.4) {
-      return 'Fraca';
+      return 'fraca';
     } else if (strength < 0.7) {
-      return 'Média';
+      return 'moderada';
     } else if (strength < 0.9) {
-      return 'Forte';
+      return 'forte';
     } else {
-      return 'Muito forte';
+      return 'muito forte';
     }
   }
 
@@ -49,7 +59,7 @@ class PasswordStrengthMeter extends StatelessWidget {
     } else if (strength < 0.4) {
       return Colors.orange;
     } else if (strength < 0.7) {
-      return Colors.yellow;
+      return Colors.amber;
     } else if (strength < 0.9) {
       return Colors.lightGreen;
     } else {
