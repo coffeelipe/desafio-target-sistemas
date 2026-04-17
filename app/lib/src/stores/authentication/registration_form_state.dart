@@ -1,3 +1,4 @@
+import 'package:app/src/core/error/validation_errors.dart';
 import 'package:app/src/core/error/validation_patterns.dart';
 import 'package:app/src/core/utils/validation_utils.dart';
 import 'package:flutter/material.dart';
@@ -8,13 +9,19 @@ class RegistrationFormState = _RegistrationFormStateBase
     with _$RegistrationFormState;
 
 abstract class _RegistrationFormStateBase with Store {
-  final TextEditingController usernameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController passwordConfirmationController =
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _passwordConfirmationController =
       TextEditingController();
   final GlobalKey<FormState> registrationFormKey = GlobalKey<FormState>();
   final FocusNode passwordFocusNode = FocusNode();
+
+  TextEditingController get usernameController => _usernameController;
+  TextEditingController get emailController => _emailController;
+  TextEditingController get passwordController => _passwordController;
+  TextEditingController get passwordConfirmationController =>
+      _passwordConfirmationController;
 
   _RegistrationFormStateBase() {
     passwordFocusNode.addListener(handleFocusChange);
@@ -34,10 +41,10 @@ abstract class _RegistrationFormStateBase with Store {
 
   @action
   void dispose() {
-    usernameController.dispose();
-    emailController.dispose();
-    passwordController.dispose();
-    passwordConfirmationController.dispose();
+    _usernameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _passwordConfirmationController.dispose();
     passwordFocusNode.dispose();
     passwordFocusNode.removeListener(handleFocusChange);
   }
