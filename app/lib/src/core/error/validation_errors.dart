@@ -20,6 +20,7 @@ class RegistrationValidationError {
     PasswordValidationErrors.invalidCharacters:
         'Apenas letras, números e !@#\$%^&* são permitidos',
     PasswordValidationErrors.containsSpace: 'Não deve conter espaços',
+    PasswordValidationErrors.notMatchingConfirmation: 'As senhas não coincidem',
   };
 }
 
@@ -42,4 +43,5 @@ enum PasswordValidationErrors {
   insufficientCharacters,
   invalidCharacters,
   containsSpace,
+  notMatchingConfirmation
 }
