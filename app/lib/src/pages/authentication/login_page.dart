@@ -2,10 +2,12 @@ import 'package:app/src/core/extensions/mediaquery_extension.dart';
 import 'package:app/src/core/theme/app_palette.dart';
 import 'package:app/src/core/theme/app_typography.dart';
 import 'package:app/src/core/utils/responsive_utils.dart';
+import 'package:app/src/stores/authentication/login_form_state.dart';
 import 'package:app/src/widgets/authentication/login_form.dart';
 import 'package:app/src/widgets/global/foreground_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -17,7 +19,7 @@ class LoginPage extends StatelessWidget {
         child: SingleChildScrollView(
           child: ConstrainedBox(
             constraints: BoxConstraints(
-              minHeight: context.mediaQuery.size.height
+              minHeight: context.mediaQuery.size.height,
             ),
             child: Center(
               child: ForegroundCard(
@@ -29,15 +31,22 @@ class LoginPage extends StatelessWidget {
                       height: ResponsiveUtils.spacing(SpacingSize.extraLarge),
                     ),
                     _buildWelcomeHeader(),
-                    SizedBox(height: ResponsiveUtils.spacing(SpacingSize.large)),
+                    SizedBox(
+                      height: ResponsiveUtils.spacing(SpacingSize.large),
+                    ),
                     Padding(
                       padding: EdgeInsets.symmetric(
                         horizontal: ResponsiveUtils.spacing(SpacingSize.medium),
                       ),
-                      child:
-                          const LoginForm(), // Main component containing the login form and submit button
+                      child: Provider(
+                        create: (context) => LoginFormState(),
+                        dispose: (context, value) => value.dispose(),
+                        child: const LoginForm(),
+                      ),
                     ),
-                    SizedBox(height: ResponsiveUtils.spacing(SpacingSize.large)),
+                    SizedBox(
+                      height: ResponsiveUtils.spacing(SpacingSize.large),
+                    ),
                     Align(
                       alignment: Alignment.bottomCenter,
                       child: RichText(
