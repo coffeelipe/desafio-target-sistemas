@@ -14,6 +14,10 @@ class RegistrationValidationError {
         'Não deve começar ou terminar em caracteres especiais',
   };
 
+  static const Map<EmailValidationErrors, String> emailErrorMessages = {
+    EmailValidationErrors.invalidFormat: 'Por favor, insira um email válido',
+  };
+
   static const Map<PasswordValidationErrors, String> passwordErrorMessages = {
     PasswordValidationErrors.insufficientCharacters:
         'Deve conter no mínimo 6 caracteres',
@@ -39,9 +43,11 @@ enum UsernameValidationErrors {
   invalidStartOrEnd,
 }
 
+enum EmailValidationErrors { invalidFormat }
+
 enum PasswordValidationErrors {
   insufficientCharacters,
   invalidCharacters,
   containsSpace,
-  notMatchingConfirmation
+  notMatchingConfirmation,
 }

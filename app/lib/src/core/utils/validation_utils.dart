@@ -4,20 +4,23 @@ import 'package:flutter/services.dart';
 
 class ValidationUtils {
   static String computeErrorMessage(FieldType fieldType, String? value) {
-    if (value == null || value.isEmpty) return GlobalValidationError.emptyFieldErrorMessage;
+    if (value == null || value.isEmpty)
+      return GlobalValidationError.emptyFieldErrorMessage;
     switch (fieldType) {
       case FieldType.username:
         return _computeUsernameErrorMessage(value);
+      case FieldType.email:
+        return _computeEmailErrorMEssage(value);
       case FieldType.password:
         return _computePasswordErrorMessage(value);
-      default:
-        return 'Algo deu errado';
     }
   }
 
+  // Input formatters
   static FilteringTextInputFormatter noEmojiFormatter =
       FilteringTextInputFormatter(ValidationPatterns.emojiRegex, allow: false);
 
+  // Private utils
   static String _computeUsernameErrorMessage(String value) {
     if (value.length < 3) {
       return RegistrationValidationError
@@ -41,6 +44,10 @@ class ValidationUtils {
           .usernameErrorMessages[UsernameValidationErrors.invalidStartOrEnd]!;
     }
   }
+
+  static String _computeEmailErrorMEssage(String value) =>
+      RegistrationValidationError.emailErrorMessages[EmailValidationErrors
+          .invalidFormat]!;
 
   static String _computePasswordErrorMessage(String value) {
     if (value.length < 6) {
