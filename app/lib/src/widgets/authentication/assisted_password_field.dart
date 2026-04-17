@@ -45,7 +45,7 @@ class AssistedPasswordField extends StatelessWidget {
           focusNode: focusNode,
           label: registrationFormStateProvider.isPasswordFieldFocused
               ? null
-              : 'Senha',
+              : 'Senha*',
           hintText: 'Senha',
           obscureText: isObscured,
           suffixIcon: suffixIcon,

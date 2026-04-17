@@ -39,7 +39,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
             children: [
               CustomTextFormField(
                 controller: registrationFormState.usernameController,
-                label: 'Usuário',
+                label: 'Usuário*',
                 hintText: 'seu_usuário',
                 maxLength: 16,
                 validator: (value) => registrationFormState.validateField(
@@ -50,7 +50,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
               SizedBox(height: ResponsiveUtils.spacing(SpacingSize.small)),
               CustomTextFormField(
                 controller: registrationFormState.emailController,
-                label: 'Email',
+                label: 'Email*',
                 hintText: 'email@exemplo.com',
               ),
               SizedBox(height: ResponsiveUtils.spacing(SpacingSize.small)),
@@ -81,13 +81,15 @@ class _RegistrationFormState extends State<RegistrationForm> {
               CustomTextFormField(
                 controller:
                     registrationFormState.passwordConfirmationController,
-                label: 'Confirmar Senha',
+                label: 'Confirmar Senha*',
                 hintText: 'Confirmar Senha',
                 obscureText: isPasswordObscured,
                 suffixIcon: _buildToggleVisibilityButton(
                   passwordVisibilityIcon,
                   registrationFormState,
                 ),
+                validator: (value) =>
+                    registrationFormState.validatePasswordConfirmation(value),
               ),
               SizedBox(height: ResponsiveUtils.spacing(SpacingSize.large)),
               Padding(
