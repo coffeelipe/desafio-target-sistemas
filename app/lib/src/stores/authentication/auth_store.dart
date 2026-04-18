@@ -87,6 +87,11 @@ abstract class _AuthStoreBase with Store {
   @action
   void _onAuthStateChanged(User? user) {
     isLoggedInServerSide = user != null;
+    if (user == null) {
+      root.userProfileStore.clearUser();
+    } else {
+      root.userProfileStore.setUser(user);
+    }
     isInitializing = false;
   }
 
