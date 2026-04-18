@@ -45,11 +45,72 @@ mixin _$AuthStore on _AuthStoreBase, Store {
     });
   }
 
+  late final _$isLoggedInServerSideAtom = Atom(
+    name: '_AuthStoreBase.isLoggedInServerSide',
+    context: context,
+  );
+
+  @override
+  bool get isLoggedInServerSide {
+    _$isLoggedInServerSideAtom.reportRead();
+    return super.isLoggedInServerSide;
+  }
+
+  @override
+  set isLoggedInServerSide(bool value) {
+    _$isLoggedInServerSideAtom.reportWrite(
+      value,
+      super.isLoggedInServerSide,
+      () {
+        super.isLoggedInServerSide = value;
+      },
+    );
+  }
+
+  late final _$createNewUserAsyncAction = AsyncAction(
+    '_AuthStoreBase.createNewUser',
+    context: context,
+  );
+
+  @override
+  Future<void> createNewUser(
+    String email,
+    String password,
+    String displayName,
+  ) {
+    return _$createNewUserAsyncAction.run(
+      () => super.createNewUser(email, password, displayName),
+    );
+  }
+
+  late final _$loginWithEmailAndPasswordAsyncAction = AsyncAction(
+    '_AuthStoreBase.loginWithEmailAndPassword',
+    context: context,
+  );
+
+  @override
+  Future<void> loginWithEmailAndPassword(String email, String password) {
+    return _$loginWithEmailAndPasswordAsyncAction.run(
+      () => super.loginWithEmailAndPassword(email, password),
+    );
+  }
+
+  late final _$setLoggedInStatusAsyncAction = AsyncAction(
+    '_AuthStoreBase.setLoggedInStatus',
+    context: context,
+  );
+
+  @override
+  Future<void> setLoggedInStatus() {
+    return _$setLoggedInStatusAsyncAction.run(() => super.setLoggedInStatus());
+  }
+
   @override
   String toString() {
     return '''
 isLoading: ${isLoading},
-credential: ${credential}
+credential: ${credential},
+isLoggedInServerSide: ${isLoggedInServerSide}
     ''';
   }
 }
