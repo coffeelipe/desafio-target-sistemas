@@ -1,5 +1,6 @@
 import 'package:app/src/models/note.dart';
 import 'package:app/src/stores/main_scaffold/main_scaffold_store.dart';
+import 'package:app/src/widgets/home/note/note_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:mobx/mobx.dart';
@@ -51,8 +52,20 @@ abstract class _HomeStoreBase with Store {
   }
 
   @action
-  void showNewNoteDialog() {
-    // show the note dialog to create a new note
+  Future<void> showNewNoteDialog(BuildContext context) async {
+    await showDialog(
+      context: context,
+      builder: (_) {
+        return TweenAnimationBuilder<double>(
+          tween: Tween(begin: 0, end: 1),
+          duration: Durations.short4,
+          curve: Curves.easeOutBack,
+          builder: (context, value, child) =>
+              Transform.scale(scale: value, child: child),
+          child: const NoteDialog(),
+        );
+      },
+    );
   }
 
   @action
@@ -85,7 +98,6 @@ abstract class _HomeStoreBase with Store {
   void setGreetingDisplayName(String username) =>
       greetingDisplayName = username;
 
-  // ReactionDisposer _scrollReactionDisposer = reaction((_) => scroll, effect);
   @action
   void _init() {
     _setTimeOfDayGreeting();

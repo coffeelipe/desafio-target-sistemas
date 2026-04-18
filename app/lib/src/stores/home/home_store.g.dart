@@ -68,6 +68,18 @@ mixin _$HomeStore on _HomeStoreBase, Store {
     });
   }
 
+  late final _$showNewNoteDialogAsyncAction = AsyncAction(
+    '_HomeStoreBase.showNewNoteDialog',
+    context: context,
+  );
+
+  @override
+  Future<void> showNewNoteDialog(BuildContext context) {
+    return _$showNewNoteDialogAsyncAction.run(
+      () => super.showNewNoteDialog(context),
+    );
+  }
+
   late final _$_HomeStoreBaseActionController = ActionController(
     name: '_HomeStoreBase',
     context: context,
@@ -116,18 +128,6 @@ mixin _$HomeStore on _HomeStoreBase, Store {
     );
     try {
       return super.updateNote();
-    } finally {
-      _$_HomeStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void showNewNoteDialog() {
-    final _$actionInfo = _$_HomeStoreBaseActionController.startAction(
-      name: '_HomeStoreBase.showNewNoteDialog',
-    );
-    try {
-      return super.showNewNoteDialog();
     } finally {
       _$_HomeStoreBaseActionController.endAction(_$actionInfo);
     }
