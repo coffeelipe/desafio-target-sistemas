@@ -19,7 +19,11 @@ abstract class _AuthStoreBase with Store {
   _AuthStoreBase({required this.root}) : _authService = AuthService() {
     formStateStore = RegistrationFormState(authStore: this as AuthStore);
     loginFormState = LoginFormState(authStore: this as AuthStore);
+    _init();
   }
+
+  @observable
+  bool isInitializing = true;
 
   @observable
   bool isLoading = false;
@@ -78,13 +82,16 @@ abstract class _AuthStoreBase with Store {
   @action
   Future<void> setLoggedInStatus() async {
     try {
-      print('trying to set login status');
       final User? user = await _authService.getCurrentUser();
-      print('Fetched: $user');
       isLoggedInServerSide = user != null;
-      print(isLoggedInServerSide);
     } catch (e) {
       print(e);
     }
+  }
+
+  @action
+  Future<void> _init() async {
+    await setLoggedInStatus();
+    isInitializing = false;
   }
 }
