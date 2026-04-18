@@ -17,21 +17,6 @@ mixin _$HomeStore on _HomeStoreBase, Store {
     name: '_HomeStoreBase.greetingMessage',
   )).value;
 
-  late final _$notesAtom = Atom(name: '_HomeStoreBase.notes', context: context);
-
-  @override
-  List<Note> get notes {
-    _$notesAtom.reportRead();
-    return super.notes;
-  }
-
-  @override
-  set notes(List<Note> value) {
-    _$notesAtom.reportWrite(value, super.notes, () {
-      super.notes = value;
-    });
-  }
-
   late final _$timeOfDayGreetingAtom = Atom(
     name: '_HomeStoreBase.timeOfDayGreeting',
     context: context,
@@ -68,70 +53,10 @@ mixin _$HomeStore on _HomeStoreBase, Store {
     });
   }
 
-  late final _$showNewNoteDialogAsyncAction = AsyncAction(
-    '_HomeStoreBase.showNewNoteDialog',
-    context: context,
-  );
-
-  @override
-  Future<void> showNewNoteDialog(BuildContext context) {
-    return _$showNewNoteDialogAsyncAction.run(
-      () => super.showNewNoteDialog(context),
-    );
-  }
-
   late final _$_HomeStoreBaseActionController = ActionController(
     name: '_HomeStoreBase',
     context: context,
   );
-
-  @override
-  void openNote() {
-    final _$actionInfo = _$_HomeStoreBaseActionController.startAction(
-      name: '_HomeStoreBase.openNote',
-    );
-    try {
-      return super.openNote();
-    } finally {
-      _$_HomeStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void createNote() {
-    final _$actionInfo = _$_HomeStoreBaseActionController.startAction(
-      name: '_HomeStoreBase.createNote',
-    );
-    try {
-      return super.createNote();
-    } finally {
-      _$_HomeStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void deleteNote() {
-    final _$actionInfo = _$_HomeStoreBaseActionController.startAction(
-      name: '_HomeStoreBase.deleteNote',
-    );
-    try {
-      return super.deleteNote();
-    } finally {
-      _$_HomeStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void updateNote() {
-    final _$actionInfo = _$_HomeStoreBaseActionController.startAction(
-      name: '_HomeStoreBase.updateNote',
-    );
-    try {
-      return super.updateNote();
-    } finally {
-      _$_HomeStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
 
   @override
   bool Function(ScrollNotification) onScrollNotification() {
@@ -196,7 +121,6 @@ mixin _$HomeStore on _HomeStoreBase, Store {
   @override
   String toString() {
     return '''
-notes: ${notes},
 timeOfDayGreeting: ${timeOfDayGreeting},
 greetingDisplayName: ${greetingDisplayName},
 greetingMessage: ${greetingMessage}
