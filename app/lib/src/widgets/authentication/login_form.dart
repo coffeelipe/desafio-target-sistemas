@@ -8,29 +8,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 
-class LoginForm extends StatelessWidget {
+class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
 
+  @override
+  State<LoginForm> createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
     final loginFormStateProvider = Provider.of<LoginFormState>(context);
 
     return Observer(
       builder: (context) {
-        final String emailInput = loginFormStateProvider.emailController.text;
-        final String passwordInput =
-            loginFormStateProvider.passwordController.text;
-
         return Form(
           key: loginFormStateProvider.loginFormKey,
           child: Column(
             children: [
               CustomTextFormField(
-                controller: TextEditingController(),
+                controller: loginFormStateProvider.emailController,
                 label: 'Email',
                 hintText: 'email@exemplo.com',
-                validator: (value) => loginFormStateProvider
-                    .validateLoginFields(value, passwordInput)[FieldType.email],
+                validator: (value) =>
+                    loginFormStateProvider.validateLoginFields(
+                      value,
+                      loginFormStateProvider.passwordController.text,
+                    )[FieldType.email],
               ),
               SizedBox(height: ResponsiveUtils.spacing(SpacingSize.small)),
               PasswordField(
@@ -38,34 +42,30 @@ class LoginForm extends StatelessWidget {
                 obscureText: loginFormStateProvider.isPasswordObscured,
                 onTogglePressed:
                     loginFormStateProvider.togglePasswordVisibility,
-                validator: (value) => loginFormStateProvider
-                    .validateLoginFields(emailInput, value)[FieldType.password],
+                validator: (value) =>
+                    loginFormStateProvider.validateLoginFields(
+                      loginFormStateProvider.emailController.text,
+                      value,
+                    )[FieldType.password],
               ),
               SizedBox(height: ResponsiveUtils.spacing(SpacingSize.large)),
               Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: ResponsiveUtils.spacing(SpacingSize.small),
                 ),
-                child: GradientButton(
-                  onPressed: () {
-                    if (loginFormStateProvider.loginFormKey.currentState!
-                        .validate()) {
-                      Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        '/',
-                        (route) => false,
-                      );
-                    }
-                  },
-                  child: const Text(
-                    'Entrar',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
+                child: loginFormStateProvider.authStore.isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : GradientButton(
+                        onPressed: loginFormStateProvider.submitForm,
+                        child: const Text(
+                          'Entrar',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
               ),
             ],
           ),

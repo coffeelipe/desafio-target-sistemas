@@ -15,7 +15,5 @@ abstract class _RootStoreBase with Store {
     authStore = AuthStore(root: this as RootStore);
   }
 
-  void dispose() {
-
-  }
+  void dispose() {}
 }
