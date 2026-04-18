@@ -41,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
         child: SingleChildScrollView(
           child: ConstrainedBox(
             constraints: BoxConstraints(
-              minHeight: context.mediaQuery.size.height,
+              minHeight: context.screenHeight,
             ),
             child: Center(
               child: ForegroundCard(

@@ -23,8 +23,8 @@ class _PasswordAssistantState extends State<PasswordAssistant> {
 
     return ConstrainedBox(
       constraints: BoxConstraints(
-        minHeight: context.mediaQuery.size.height * 0.1,
-        maxWidth: context.mediaQuery.size.width * 0.9,
+        minHeight: context.screenHeight * 0.1,
+        maxWidth: context.screenWidth * 0.9,
       ),
       child: Observer(
         builder: (context) {

@@ -39,7 +39,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
         child: SingleChildScrollView(
           child: ConstrainedBox(
             constraints: BoxConstraints(
-              minHeight: context.mediaQuery.size.height,
+              minHeight: context.screenHeight,
             ),
             child: Center(
               child: ForegroundCard(
@@ -52,7 +52,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     ),
                     ConstrainedBox(
                       constraints: BoxConstraints(
-                        maxHeight: context.mediaQuery.size.height * 0.65,
+                        maxHeight: context.screenHeight * 0.65,
                       ),
                       child: SingleChildScrollView(
                         child: Column(

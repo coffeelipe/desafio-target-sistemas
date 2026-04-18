@@ -18,7 +18,7 @@ class SplashScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: SvgPicture.asset(
                 'assets/images/logo.svg',
-                height: context.mediaQuery.size.height * 0.08,
+                height: context.screenHeight * 0.08,
               ),
             ),
             const SpinKitThreeBounce(color: AppPalette.primary, size: 24),
