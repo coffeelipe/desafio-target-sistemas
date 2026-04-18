@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/src/services/authentication/auth_service.dart';
 import 'package:app/src/stores/authentication/login_form_state.dart';
 import 'package:app/src/stores/authentication/registration_form_state.dart';
@@ -12,6 +14,7 @@ class AuthStore = _AuthStoreBase with _$AuthStore;
 abstract class _AuthStoreBase with Store {
   final RootStore root;
   final AuthService _authService;
+  late final StreamSubscription<User?> _authSubscription;
 
   late final RegistrationFormState formStateStore;
   late final LoginFormState loginFormState;
@@ -19,7 +22,9 @@ abstract class _AuthStoreBase with Store {
   _AuthStoreBase({required this.root}) : _authService = AuthService() {
     formStateStore = RegistrationFormState(authStore: this as AuthStore);
     loginFormState = LoginFormState(authStore: this as AuthStore);
-    _init();
+    _authSubscription = FirebaseAuth.instance.authStateChanges().listen(
+      _onAuthStateChanged,
+    );
   }
 
   @observable
@@ -80,18 +85,12 @@ abstract class _AuthStoreBase with Store {
   }
 
   @action
-  Future<void> setLoggedInStatus() async {
-    try {
-      final User? user = await _authService.getCurrentUser();
-      isLoggedInServerSide = user != null;
-    } catch (e) {
-      print(e);
-    }
+  void _onAuthStateChanged(User? user) {
+    isLoggedInServerSide = user != null;
+    isInitializing = false;
   }
 
-  @action
-  Future<void> _init() async {
-    await setLoggedInStatus();
-    isInitializing = false;
+  void dispose() {
+    _authSubscription.cancel();
   }
 }

@@ -113,24 +113,21 @@ mixin _$AuthStore on _AuthStoreBase, Store {
     );
   }
 
-  late final _$setLoggedInStatusAsyncAction = AsyncAction(
-    '_AuthStoreBase.setLoggedInStatus',
+  late final _$_AuthStoreBaseActionController = ActionController(
+    name: '_AuthStoreBase',
     context: context,
   );
 
   @override
-  Future<void> setLoggedInStatus() {
-    return _$setLoggedInStatusAsyncAction.run(() => super.setLoggedInStatus());
-  }
-
-  late final _$_initAsyncAction = AsyncAction(
-    '_AuthStoreBase._init',
-    context: context,
-  );
-
-  @override
-  Future<void> _init() {
-    return _$_initAsyncAction.run(() => super._init());
+  void _onAuthStateChanged(User? user) {
+    final _$actionInfo = _$_AuthStoreBaseActionController.startAction(
+      name: '_AuthStoreBase._onAuthStateChanged',
+    );
+    try {
+      return super._onAuthStateChanged(user);
+    } finally {
+      _$_AuthStoreBaseActionController.endAction(_$actionInfo);
+    }
   }
 
   @override
