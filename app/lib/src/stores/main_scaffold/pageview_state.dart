@@ -28,6 +28,11 @@ abstract class _PageViewStateBase with Store {
   }
 
   @action
+  ValueChanged<int> onPageChanged(int value) {
+    return (index) => setIndex(value);
+  }
+
+  @action
   void setIndex(int value) => pageIndex = value;
 
   @action

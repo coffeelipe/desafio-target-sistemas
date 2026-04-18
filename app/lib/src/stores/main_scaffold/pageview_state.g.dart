@@ -33,6 +33,30 @@ mixin _$PageViewState on _PageViewStateBase, Store {
   );
 
   @override
+  ValueChanged<int> onDestinationSelected(int value) {
+    final _$actionInfo = _$_PageViewStateBaseActionController.startAction(
+      name: '_PageViewStateBase.onDestinationSelected',
+    );
+    try {
+      return super.onDestinationSelected(value);
+    } finally {
+      _$_PageViewStateBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  ValueChanged<int> onPageChanged(int value) {
+    final _$actionInfo = _$_PageViewStateBaseActionController.startAction(
+      name: '_PageViewStateBase.onPageChanged',
+    );
+    try {
+      return super.onPageChanged(value);
+    } finally {
+      _$_PageViewStateBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setIndex(int value) {
     final _$actionInfo = _$_PageViewStateBaseActionController.startAction(
       name: '_PageViewStateBase.setIndex',
