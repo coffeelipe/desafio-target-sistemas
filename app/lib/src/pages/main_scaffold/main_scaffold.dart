@@ -6,6 +6,7 @@ import 'package:app/src/stores/main_scaffold/main_scaffold_store.dart';
 import 'package:app/src/widgets/main_scaffold/custom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
 
 class MainScaffold extends StatefulWidget {
   const MainScaffold({super.key});
@@ -34,9 +35,15 @@ class _MainScaffoldState extends State<MainScaffold> {
               children: [
                 PageView(
                   controller: _mainScaffoldStore.pageViewState.controller,
-                  onPageChanged: (value) =>
-                      _mainScaffoldStore.pageViewState.setIndex(value),
-                  children: const [HomePage(), Dashboard(), Profile()],
+                  onPageChanged: _mainScaffoldStore.pageViewState.onPageChanged,
+                  children: [
+                    Provider.value(
+                      value: _mainScaffoldStore.homeStore,
+                      child: const HomePage(),
+                    ),
+                    const Dashboard(),
+                    const Profile(),
+                  ],
                 ),
                 Positioned(
                   bottom: context.safeBottom + 32,
