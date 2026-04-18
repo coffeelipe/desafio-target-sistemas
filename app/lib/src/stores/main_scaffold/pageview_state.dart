@@ -16,9 +16,10 @@ abstract class _PageViewStateBase with Store {
   int pageIndex = 0;
 
   @action
-  ValueChanged<int> onDestinationSelected(int value) {
-    return (index) {
-      pageIndex = index;
+  ValueChanged<int> onDestinationSelected() {
+    return (value) {
+      if (pageIndex != value) _resetNavBarVisibility();
+      setIndex(value);
       controller.animateToPage(
         pageIndex,
         duration: Durations.short4,
@@ -28,12 +29,18 @@ abstract class _PageViewStateBase with Store {
   }
 
   @action
-  ValueChanged<int> onPageChanged(int value) {
-    return (index) => setIndex(value);
+  ValueChanged<int> onPageChanged() {
+    return (value) {
+      if (pageIndex != value) _resetNavBarVisibility();
+      setIndex(value);
+    };
   }
 
   @action
-  void setIndex(int value) => pageIndex = value;
+  void setIndex(int index) => pageIndex = index;
+
+  @action
+  void _resetNavBarVisibility() => mainScaffoldStore.setNavBarVisibility(true);
 
   @action
   void dispose() => controller.dispose();
