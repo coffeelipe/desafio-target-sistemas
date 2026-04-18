@@ -33,36 +33,48 @@ mixin _$PageViewState on _PageViewStateBase, Store {
   );
 
   @override
-  ValueChanged<int> onDestinationSelected(int value) {
+  ValueChanged<int> onDestinationSelected() {
     final _$actionInfo = _$_PageViewStateBaseActionController.startAction(
       name: '_PageViewStateBase.onDestinationSelected',
     );
     try {
-      return super.onDestinationSelected(value);
+      return super.onDestinationSelected();
     } finally {
       _$_PageViewStateBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  ValueChanged<int> onPageChanged(int value) {
+  ValueChanged<int> onPageChanged() {
     final _$actionInfo = _$_PageViewStateBaseActionController.startAction(
       name: '_PageViewStateBase.onPageChanged',
     );
     try {
-      return super.onPageChanged(value);
+      return super.onPageChanged();
     } finally {
       _$_PageViewStateBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setIndex(int value) {
+  void setIndex(int index) {
     final _$actionInfo = _$_PageViewStateBaseActionController.startAction(
       name: '_PageViewStateBase.setIndex',
     );
     try {
-      return super.setIndex(value);
+      return super.setIndex(index);
+    } finally {
+      _$_PageViewStateBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void _resetNavBarVisibility() {
+    final _$actionInfo = _$_PageViewStateBaseActionController.startAction(
+      name: '_PageViewStateBase._resetNavBarVisibility',
+    );
+    try {
+      return super._resetNavBarVisibility();
     } finally {
       _$_PageViewStateBaseActionController.endAction(_$actionInfo);
     }
