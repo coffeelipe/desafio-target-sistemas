@@ -2,15 +2,37 @@ import 'package:app/src/core/extensions/mediaquery_extension.dart';
 import 'package:app/src/core/theme/app_palette.dart';
 import 'package:app/src/core/theme/app_typography.dart';
 import 'package:app/src/core/utils/responsive_utils.dart';
+import 'package:app/src/stores/authentication/auth_store.dart';
 import 'package:app/src/stores/authentication/login_form_state.dart';
+import 'package:app/src/stores/main/root_store.dart';
 import 'package:app/src/widgets/authentication/login_form.dart';
 import 'package:app/src/widgets/global/foreground_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  late final LoginFormState _formStateStore;
+
+  @override
+  void initState() {
+    super.initState();
+    final AuthStore authStore = context.read<RootStore>().authStore;
+    _formStateStore = LoginFormState(authStore: authStore);
+  }
+
+  @override
+  void dispose() {
+    _formStateStore.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +60,8 @@ class LoginPage extends StatelessWidget {
                       padding: EdgeInsets.symmetric(
                         horizontal: ResponsiveUtils.spacing(SpacingSize.medium),
                       ),
-                      child: Provider(
-                        create: (context) => LoginFormState(),
-                        dispose: (context, value) => value.dispose(),
+                      child: Provider.value(
+                        value: _formStateStore,
                         child: const LoginForm(),
                       ),
                     ),
