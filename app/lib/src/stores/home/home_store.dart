@@ -1,6 +1,7 @@
 import 'package:app/src/models/note.dart';
 import 'package:app/src/stores/main_scaffold/main_scaffold_store.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:mobx/mobx.dart';
 part 'home_store.g.dart';
 
@@ -50,6 +51,25 @@ abstract class _HomeStoreBase with Store {
   }
 
   @action
+  void showNewNoteDialog() {
+    // show the note dialog to create a new note
+  }
+
+  @action
+  bool Function(ScrollNotification) onScrollNotification() {
+    return (ScrollNotification notification) {
+      if (notification is UserScrollNotification) {
+        if (notification.direction == ScrollDirection.reverse) {
+          mainScaffoldStore.setNavBarVisibility(false);
+        } else if (notification.direction == ScrollDirection.forward) {
+          mainScaffoldStore.setNavBarVisibility(true);
+        }
+      }
+      return false;
+    };
+  }
+
+  @action
   void _setTimeOfDayGreeting() {
     final hour = DateTime.now().hour;
     if (hour < 12) {
@@ -64,11 +84,6 @@ abstract class _HomeStoreBase with Store {
   @action
   void setGreetingDisplayName(String username) =>
       greetingDisplayName = username;
-
-  @action
-  void showNewNoteDialog() {
-    // show the note dialog to create a new note
-  }
 
   // ReactionDisposer _scrollReactionDisposer = reaction((_) => scroll, effect);
   @action

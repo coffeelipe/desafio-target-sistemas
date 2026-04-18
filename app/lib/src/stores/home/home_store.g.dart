@@ -74,42 +74,6 @@ mixin _$HomeStore on _HomeStoreBase, Store {
   );
 
   @override
-  void _setTimeOfDayGreeting() {
-    final _$actionInfo = _$_HomeStoreBaseActionController.startAction(
-      name: '_HomeStoreBase._setTimeOfDayGreeting',
-    );
-    try {
-      return super._setTimeOfDayGreeting();
-    } finally {
-      _$_HomeStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setGreetingDisplayName(String username) {
-    final _$actionInfo = _$_HomeStoreBaseActionController.startAction(
-      name: '_HomeStoreBase.setGreetingDisplayName',
-    );
-    try {
-      return super.setGreetingDisplayName(username);
-    } finally {
-      _$_HomeStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void showNewNoteDialog() {
-    final _$actionInfo = _$_HomeStoreBaseActionController.startAction(
-      name: '_HomeStoreBase.showNewNoteDialog',
-    );
-    try {
-      return super.showNewNoteDialog();
-    } finally {
-      _$_HomeStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   void openNote() {
     final _$actionInfo = _$_HomeStoreBaseActionController.startAction(
       name: '_HomeStoreBase.openNote',
@@ -152,6 +116,66 @@ mixin _$HomeStore on _HomeStoreBase, Store {
     );
     try {
       return super.updateNote();
+    } finally {
+      _$_HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void showNewNoteDialog() {
+    final _$actionInfo = _$_HomeStoreBaseActionController.startAction(
+      name: '_HomeStoreBase.showNewNoteDialog',
+    );
+    try {
+      return super.showNewNoteDialog();
+    } finally {
+      _$_HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  bool Function(ScrollNotification) onScrollNotification() {
+    final _$actionInfo = _$_HomeStoreBaseActionController.startAction(
+      name: '_HomeStoreBase.onScrollNotification',
+    );
+    try {
+      return super.onScrollNotification();
+    } finally {
+      _$_HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void _setTimeOfDayGreeting() {
+    final _$actionInfo = _$_HomeStoreBaseActionController.startAction(
+      name: '_HomeStoreBase._setTimeOfDayGreeting',
+    );
+    try {
+      return super._setTimeOfDayGreeting();
+    } finally {
+      _$_HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setGreetingDisplayName(String username) {
+    final _$actionInfo = _$_HomeStoreBaseActionController.startAction(
+      name: '_HomeStoreBase.setGreetingDisplayName',
+    );
+    try {
+      return super.setGreetingDisplayName(username);
+    } finally {
+      _$_HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void _init() {
+    final _$actionInfo = _$_HomeStoreBaseActionController.startAction(
+      name: '_HomeStoreBase._init',
+    );
+    try {
+      return super._init();
     } finally {
       _$_HomeStoreBaseActionController.endAction(_$actionInfo);
     }
