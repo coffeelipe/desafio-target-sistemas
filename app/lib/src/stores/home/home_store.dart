@@ -1,3 +1,4 @@
+import 'package:app/src/core/extensions/mediaquery_extension.dart';
 import 'package:app/src/models/note.dart';
 import 'package:app/src/stores/main_scaffold/main_scaffold_store.dart';
 import 'package:app/src/widgets/home/note/note_dialog.dart';
@@ -56,13 +57,23 @@ abstract class _HomeStoreBase with Store {
     await showDialog(
       context: context,
       builder: (_) {
+        final bottomInset = context.mediaQuery.viewInsets.bottom;
         return TweenAnimationBuilder<double>(
           tween: Tween(begin: 0, end: 1),
           duration: Durations.short4,
           curve: Curves.easeOutBack,
           builder: (context, value, child) =>
               Transform.scale(scale: value, child: child),
-          child: const NoteDialog(),
+          child: AnimatedPadding(
+            duration: Durations.short4,
+            padding: EdgeInsets.only(bottom: bottomInset),
+            child: const Center(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+                child: NoteDialog(),
+              ),
+            ),
+          ),
         );
       },
     );
