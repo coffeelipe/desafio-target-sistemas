@@ -92,16 +92,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                   horizontal: ResponsiveUtils.spacing(SpacingSize.small),
                 ),
                 child: GradientButton(
-                  onPressed: () {
-                    if (registrationFormState.registrationFormKey.currentState!
-                        .validate()) {
-                      registrationFormState.submitForm(
-                        registrationFormState.emailController.text,
-                        registrationFormState.passwordController.text,
-                        registrationFormState.usernameController.text,
-                      );
-                    }
-                  },
+                  onPressed: registrationFormState.submitForm,
                   child: registrationFormState.authStore.isLoading
                       ? const Center(child: CircularProgressIndicator())
                       : const Text(
