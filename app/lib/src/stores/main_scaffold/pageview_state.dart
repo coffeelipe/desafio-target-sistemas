@@ -16,6 +16,18 @@ abstract class _PageViewStateBase with Store {
   int pageIndex = 0;
 
   @action
+  ValueChanged<int> onDestinationSelected(int value) {
+    return (index) {
+      pageIndex = index;
+      controller.animateToPage(
+        pageIndex,
+        duration: Durations.short4,
+        curve: Curves.fastEaseInToSlowEaseOut,
+      );
+    };
+  }
+
+  @action
   void setIndex(int value) => pageIndex = value;
 
   @action

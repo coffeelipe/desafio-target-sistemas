@@ -44,14 +44,8 @@ class _MainScaffoldState extends State<MainScaffold> {
                   right: 0,
                   child: CustomNavBar(
                     pageController: _mainScaffoldStore.pageViewState.controller,
-                    onDestinationSelected: (value) {
-                      _mainScaffoldStore.pageViewState.setIndex(value);
-                      _mainScaffoldStore.pageViewState.controller.animateToPage(
-                        _mainScaffoldStore.pageViewState.pageIndex,
-                        duration: Durations.short3,
-                        curve: Curves.easeInOut,
-                      );
-                    },
+                    onDestinationSelected: _mainScaffoldStore.pageViewState
+                        .onDestinationSelected(pageIndex),
                     selectedIndex: pageIndex,
                   ),
                 ),
