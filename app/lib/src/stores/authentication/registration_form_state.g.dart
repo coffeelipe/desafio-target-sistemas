@@ -169,11 +169,11 @@ mixin _$RegistrationFormState on _RegistrationFormStateBase, Store {
   }
 
   @override
-  void submitForm(String email, String password, String displayName) {
+  void submitForm() {
     final _$actionInfo = _$_RegistrationFormStateBaseActionController
         .startAction(name: '_RegistrationFormStateBase.submitForm');
     try {
-      return super.submitForm(email, password, displayName);
+      return super.submitForm();
     } finally {
       _$_RegistrationFormStateBaseActionController.endAction(_$actionInfo);
     }

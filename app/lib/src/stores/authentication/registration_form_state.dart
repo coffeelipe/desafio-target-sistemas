@@ -77,8 +77,15 @@ abstract class _RegistrationFormStateBase with Store {
   }
 
   @action
-  void submitForm(String email, String password, String displayName) =>
-      authStore.createNewUser(email, password, displayName);
+  void submitForm() {
+    if (registrationFormKey.currentState!.validate()) {
+      authStore.createNewUser(
+        _emailController.text,
+        _passwordController.text,
+        _usernameController.text,
+      );
+    }
+  }
 
   // validators
   @action
