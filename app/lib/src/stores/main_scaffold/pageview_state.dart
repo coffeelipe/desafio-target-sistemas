@@ -1,3 +1,4 @@
+import 'package:app/src/stores/main_scaffold/main_scaffold_store.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 part 'pageview_state.g.dart';
@@ -6,6 +7,9 @@ part 'pageview_state.g.dart';
 class PageViewState = _PageViewStateBase with _$PageViewState;
 
 abstract class _PageViewStateBase with Store {
+  final MainScaffoldStore mainScaffoldStore;
+  _PageViewStateBase({required this.mainScaffoldStore});
+
   final PageController controller = PageController(initialPage: 0);
 
   @observable

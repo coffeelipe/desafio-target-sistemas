@@ -1,0 +1,19 @@
+import 'package:app/src/stores/main_scaffold/pageview_state.dart';
+import 'package:mobx/mobx.dart';
+part 'main_scaffold_store.g.dart';
+
+// ignore: library_private_types_in_public_api
+class MainScaffoldStore = _MainScaffoldStoreBase with _$MainScaffoldStore;
+
+abstract class _MainScaffoldStoreBase with Store {
+  late final PageViewState pageViewState;
+
+  _MainScaffoldStoreBase() {
+    pageViewState = PageViewState(mainScaffoldStore: this as MainScaffoldStore);
+  }
+
+  @action
+  void dispose() {
+    pageViewState.dispose();
+  }
+}
