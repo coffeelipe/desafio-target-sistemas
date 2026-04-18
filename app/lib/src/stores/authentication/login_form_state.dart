@@ -1,6 +1,6 @@
-
 import 'package:app/src/core/error/validation_errors.dart';
 import 'package:app/src/core/utils/validation_utils.dart';
+import 'package:app/src/stores/authentication/auth_store.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 part 'login_form_state.g.dart';
@@ -9,12 +9,16 @@ part 'login_form_state.g.dart';
 class LoginFormState = _LoginFormStateBase with _$LoginFormState;
 
 abstract class _LoginFormStateBase with Store {
+  final AuthStore authStore;
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
 
   TextEditingController get emailController => _emailController;
   TextEditingController get passwordController => _passwordController;
+
+  _LoginFormStateBase({required this.authStore});
 
   @action
   void dispose() {
@@ -27,6 +31,16 @@ abstract class _LoginFormStateBase with Store {
 
   @action
   void togglePasswordVisibility() => isPasswordObscured = !isPasswordObscured;
+
+  @action
+  void submitForm() {
+    if (loginFormKey.currentState!.validate()) {
+      authStore.loginWithEmailAndPassword(
+        _emailController.text,
+        _passwordController.text,
+      );
+    }
+  }
 
   // validator
   @action

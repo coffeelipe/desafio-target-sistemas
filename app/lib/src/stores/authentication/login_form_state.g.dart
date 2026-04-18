@@ -57,6 +57,18 @@ mixin _$LoginFormState on _LoginFormStateBase, Store {
   }
 
   @override
+  void submitForm() {
+    final _$actionInfo = _$_LoginFormStateBaseActionController.startAction(
+      name: '_LoginFormStateBase.submitForm',
+    );
+    try {
+      return super.submitForm();
+    } finally {
+      _$_LoginFormStateBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   Map<FieldType, String?> validateLoginFields(String? email, String? password) {
     final _$actionInfo = _$_LoginFormStateBaseActionController.startAction(
       name: '_LoginFormStateBase.validateLoginFields',
