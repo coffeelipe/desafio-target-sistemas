@@ -39,6 +39,7 @@ class CustomNavBar extends StatelessWidget {
                 children: [
                   _buildNavButton(onPressed: onDestinationSelected, index: 0),
                   _buildNavButton(onPressed: onDestinationSelected, index: 1),
+                  _buildNavButton(onPressed: onDestinationSelected, index: 2),
                 ],
               ),
             ),
@@ -69,7 +70,9 @@ class CustomNavBar extends StatelessWidget {
     final bool isSelected = index == selectedIndex;
     final IconData iconData = index == 0
         ? RemixIcons.archive_stack_fill
-        : RemixIcons.pie_chart_fill;
+        : index == 1
+        ? RemixIcons.pie_chart_fill
+        : RemixIcons.user_settings_fill;
 
     return IconButton(
       onPressed: () => onPressed(index),
