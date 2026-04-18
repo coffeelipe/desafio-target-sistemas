@@ -47,14 +47,22 @@ class CustomNavBar extends StatelessWidget {
           Positioned(
             right: -15,
             bottom: 70,
-            child: FloatingActionButton(
-              onPressed: () {},
-              shape: const CircleBorder(),
-              backgroundColor: AppPalette.primary,
-              child: const Icon(
-                Icons.add_rounded,
-                color: Colors.white,
-                size: 32,
+            child: AnimatedRotation(
+              turns: selectedIndex == 0 ? 0 : -0.25,
+              duration: Durations.short3,
+              child: AnimatedScale(
+                duration: Durations.short4,
+                scale: selectedIndex == 0 ? 1 : 0,
+                child: FloatingActionButton(
+                  onPressed: selectedIndex == 0 ? () {} : null,
+                  shape: const CircleBorder(),
+                  backgroundColor: AppPalette.primary,
+                  child: const Icon(
+                    Icons.add_rounded,
+                    color: Colors.white,
+                    size: 32,
+                  ),
+                ),
               ),
             ),
           ),

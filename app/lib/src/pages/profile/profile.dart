@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 
 // TODO: Refatorar para usar state management
 // TODO: Adicionar integração com backend (atualizar usuário, excluir conta)
-// TODO: Fazer FAB aparecer somente na primeira pagina do menu inferior
 class Profile extends StatefulWidget {
   const Profile({super.key});
 
