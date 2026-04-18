@@ -21,21 +21,21 @@ class _MainScaffoldState extends State<MainScaffold> {
 
   @override
   void dispose() {
-    super.dispose();
     _mainScaffoldStore.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Observer(
       builder: (_) {
-        final int pageIndex = _mainScaffoldStore.pageViewState.pageIndex;
+        final int selectedIndex = _mainScaffoldStore.pageViewState.pageIndex;
         return Scaffold(
           body: Stack(
             children: [
               PageView(
                 controller: _mainScaffoldStore.pageViewState.controller,
-                onPageChanged: _mainScaffoldStore.pageViewState.onPageChanged,
+                onPageChanged: _mainScaffoldStore.pageViewState.onPageChanged(),
                 children: [
                   Provider.value(
                     value: _mainScaffoldStore.homeStore,
@@ -60,11 +60,23 @@ class _MainScaffoldState extends State<MainScaffold> {
                 bottom: context.safeBottom + 32,
                 left: 0,
                 right: 0,
-                child: CustomNavBar(
-                  pageController: _mainScaffoldStore.pageViewState.controller,
-                  onDestinationSelected: _mainScaffoldStore.pageViewState
-                      .onDestinationSelected(pageIndex),
-                  selectedIndex: pageIndex,
+                child: AnimatedSlide(
+                  duration: Durations.short4,
+                  offset: _mainScaffoldStore.isNavBarVisible
+                      ? Offset.zero
+                      : const Offset(0, 4),
+                  child: AnimatedOpacity(
+                    opacity: _mainScaffoldStore.isNavBarVisible ? 1.0 : 0.0,
+                    duration: Durations.short4,
+                    child: CustomNavBar(
+                      pageController:
+                          _mainScaffoldStore.pageViewState.controller,
+                      onDestinationSelected: _mainScaffoldStore.pageViewState
+                          .onDestinationSelected(),
+                      selectedIndex: selectedIndex,
+                      isFABVisible: _mainScaffoldStore.isFABVisible,
+                    ),
+                  ),
                 ),
               ),
             ],
