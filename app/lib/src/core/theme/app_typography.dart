@@ -1,3 +1,4 @@
+import 'package:app/src/core/theme/app_palette.dart';
 import 'package:flutter/material.dart';
 
 class AppTypography {
@@ -10,5 +11,9 @@ class AppTypography {
     fontWeight: FontWeight.bold,
   );
   static const TextStyle bodyText = TextStyle(fontSize: 16);
+  static const TextStyle subtitle = TextStyle(
+    fontSize: 14,
+    color: AppPalette.primaryVariant,
+  );
   static const TextStyle caption = TextStyle(fontSize: 12, color: Colors.grey);
 }
