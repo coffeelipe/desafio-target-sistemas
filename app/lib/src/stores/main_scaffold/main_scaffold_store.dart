@@ -1,7 +1,9 @@
 import 'package:app/src/stores/home/home_store.dart';
+import 'package:app/src/stores/main/root_store.dart';
 import 'package:app/src/stores/main_scaffold/pageview_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
+import 'package:provider/provider.dart';
 part 'main_scaffold_store.g.dart';
 
 // ignore: library_private_types_in_public_api
@@ -27,7 +29,7 @@ abstract class _MainScaffoldStoreBase with Store {
 
   @action
   void onFabPressed(BuildContext context) {
-    homeStore.showNewNoteDialog(context);
+    context.read<RootStore>().noteStore.showNewNoteDialog(context);
   }
 
   @action
