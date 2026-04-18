@@ -1,5 +1,6 @@
 import 'package:app/src/stores/home/home_store.dart';
 import 'package:app/src/stores/main_scaffold/pageview_state.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
 part 'main_scaffold_store.g.dart';
 
@@ -23,6 +24,11 @@ abstract class _MainScaffoldStoreBase with Store {
 
   @action
   void setNavBarVisibility(bool value) => isNavBarVisible = value;
+
+  @action
+  void onFabPressed(BuildContext context) {
+    homeStore.showNewNoteDialog(context);
+  }
 
   @action
   void dispose() {

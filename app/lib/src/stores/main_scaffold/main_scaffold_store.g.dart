@@ -53,6 +53,18 @@ mixin _$MainScaffoldStore on _MainScaffoldStoreBase, Store {
   }
 
   @override
+  void onFabPressed(BuildContext context) {
+    final _$actionInfo = _$_MainScaffoldStoreBaseActionController.startAction(
+      name: '_MainScaffoldStoreBase.onFabPressed',
+    );
+    try {
+      return super.onFabPressed(context);
+    } finally {
+      _$_MainScaffoldStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void dispose() {
     final _$actionInfo = _$_MainScaffoldStoreBaseActionController.startAction(
       name: '_MainScaffoldStoreBase.dispose',

@@ -73,6 +73,7 @@ class _MainScaffoldState extends State<MainScaffold> {
                           _mainScaffoldStore.pageViewState.controller,
                       onDestinationSelected: _mainScaffoldStore.pageViewState
                           .onDestinationSelected(),
+                      onFabPressed: _mainScaffoldStore.onFabPressed,
                       selectedIndex: selectedIndex,
                       isFABVisible: _mainScaffoldStore.isFABVisible,
                     ),
