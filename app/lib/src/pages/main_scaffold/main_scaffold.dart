@@ -15,7 +15,7 @@ class MainScaffold extends StatefulWidget {
 }
 
 class _MainScaffoldState extends State<MainScaffold> {
-  final _mainScaffoldStore = MainScaffoldStore();
+  final MainScaffoldStore _mainScaffoldStore = MainScaffoldStore();
 
   @override
   void dispose() {
