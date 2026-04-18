@@ -1,3 +1,4 @@
+import 'package:app/src/stores/home/home_store.dart';
 import 'package:app/src/stores/main_scaffold/pageview_state.dart';
 import 'package:mobx/mobx.dart';
 part 'main_scaffold_store.g.dart';
@@ -7,13 +8,16 @@ class MainScaffoldStore = _MainScaffoldStoreBase with _$MainScaffoldStore;
 
 abstract class _MainScaffoldStoreBase with Store {
   late final PageViewState pageViewState;
+  late final HomeStore homeStore;
 
   _MainScaffoldStoreBase() {
     pageViewState = PageViewState(mainScaffoldStore: this as MainScaffoldStore);
+    homeStore = HomeStore(mainScaffoldStore: this as MainScaffoldStore);
   }
 
   @action
   void dispose() {
     pageViewState.dispose();
+    homeStore.dispose();
   }
 }
