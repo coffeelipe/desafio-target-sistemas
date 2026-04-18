@@ -23,18 +23,16 @@ abstract class _UserProfileStoreBase with Store {
   @observable
   String? email;
 
-  void _setUser() {
-    final User? user = root.authStore.credential?.user;
-
-    if (user != null) {
-      uid = user.uid;
-      displayName = user.displayName;
-      email = user.email;
-      isLoggedIn = true;
-    }
+  @action
+  void setUser(User user) {
+    uid = user.uid;
+    displayName = user.displayName;
+    email = user.email;
+    isLoggedIn = true;
   }
 
-  void _clearUser() {
+  @action
+  void clearUser() {
     uid = null;
     displayName = null;
     email = null;

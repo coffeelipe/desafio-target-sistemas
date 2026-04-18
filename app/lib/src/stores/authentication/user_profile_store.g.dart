@@ -81,6 +81,35 @@ mixin _$UserProfileStore on _UserProfileStoreBase, Store {
     });
   }
 
+  late final _$_UserProfileStoreBaseActionController = ActionController(
+    name: '_UserProfileStoreBase',
+    context: context,
+  );
+
+  @override
+  void setUser(User user) {
+    final _$actionInfo = _$_UserProfileStoreBaseActionController.startAction(
+      name: '_UserProfileStoreBase.setUser',
+    );
+    try {
+      return super.setUser(user);
+    } finally {
+      _$_UserProfileStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void clearUser() {
+    final _$actionInfo = _$_UserProfileStoreBaseActionController.startAction(
+      name: '_UserProfileStoreBase.clearUser',
+    );
+    try {
+      return super.clearUser();
+    } finally {
+      _$_UserProfileStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
