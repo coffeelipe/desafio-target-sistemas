@@ -6,11 +6,13 @@ class CustomNavBar extends StatelessWidget {
   final PageController pageController;
   final ValueChanged<int> onDestinationSelected;
   final int selectedIndex;
+  final bool isFABVisible;
   const CustomNavBar({
     super.key,
     required this.pageController,
     required this.onDestinationSelected,
     required this.selectedIndex,
+    required this.isFABVisible,
   });
 
   @override
@@ -48,13 +50,13 @@ class CustomNavBar extends StatelessWidget {
             right: -15,
             bottom: 70,
             child: AnimatedRotation(
-              turns: selectedIndex == 0 ? 0 : -0.25,
+              turns: isFABVisible ? 0 : -0.25,
               duration: Durations.short3,
               child: AnimatedScale(
                 duration: Durations.short4,
-                scale: selectedIndex == 0 ? 1 : 0,
+                scale: isFABVisible ? 1 : 0,
                 child: FloatingActionButton(
-                  onPressed: selectedIndex == 0 ? () {} : null,
+                  onPressed: isFABVisible ? () {} : null,
                   shape: const CircleBorder(),
                   backgroundColor: AppPalette.primary,
                   child: const Icon(
