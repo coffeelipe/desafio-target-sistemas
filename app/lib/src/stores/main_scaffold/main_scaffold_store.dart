@@ -15,6 +15,15 @@ abstract class _MainScaffoldStoreBase with Store {
     homeStore = HomeStore(mainScaffoldStore: this as MainScaffoldStore);
   }
 
+  @observable
+  bool isNavBarVisible = true;
+
+  @computed
+  bool get isFABVisible => isNavBarVisible && pageViewState.pageIndex == 0;
+
+  @action
+  void setNavBarVisibility(bool value) => isNavBarVisible = value;
+
   @action
   void dispose() {
     pageViewState.dispose();
