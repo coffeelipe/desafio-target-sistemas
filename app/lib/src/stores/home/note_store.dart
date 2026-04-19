@@ -107,6 +107,19 @@ abstract class _NoteStoreBase with Store {
       },
     );
   }
+  @action
+  void _parseAndSetNoteContent({
+    required Note note,
+    required String updatedContent,
+    String? updatedTitle,
+  }) {
+    final updatedNote = Note.fromContent(
+      id: note.id,
+      title: updatedTitle,
+      content: updatedContent,
+    );
+    updateNote(updatedNote);
+  }
 
   @action
   int _getNextAvailableId() {
