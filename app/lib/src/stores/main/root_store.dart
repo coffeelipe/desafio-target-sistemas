@@ -19,8 +19,6 @@ abstract class _RootStoreBase with Store {
     authStore = AuthStore(root: this as RootStore);
   }
 
-  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
   void dispose() {
     authStore.dispose();
   }
