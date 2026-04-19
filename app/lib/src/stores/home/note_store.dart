@@ -107,6 +107,16 @@ abstract class _NoteStoreBase with Store {
       },
     );
   }
+
+  @action
+  int _getNextAvailableId() {
+    if (notes.isEmpty) return 1;
+    return notes
+            .map((note) => int.tryParse(note.id) ?? 0)
+            .reduce((prev, curr) => curr > prev ? curr : prev) +
+        1;
+  }
+
   @action
   void dispose() {
     dialogTitleController.dispose();
