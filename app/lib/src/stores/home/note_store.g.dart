@@ -9,6 +9,24 @@ part of 'note_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$NoteStore on _NoteStoreBase, Store {
+  late final _$deletionProgressAtom = Atom(
+    name: '_NoteStoreBase.deletionProgress',
+    context: context,
+  );
+
+  @override
+  ObservableMap<String, double> get deletionProgress {
+    _$deletionProgressAtom.reportRead();
+    return super.deletionProgress;
+  }
+
+  @override
+  set deletionProgress(ObservableMap<String, double> value) {
+    _$deletionProgressAtom.reportWrite(value, super.deletionProgress, () {
+      super.deletionProgress = value;
+    });
+  }
+
   late final _$notesAtom = Atom(name: '_NoteStoreBase.notes', context: context);
 
   @override
@@ -42,6 +60,34 @@ mixin _$NoteStore on _NoteStoreBase, Store {
     });
   }
 
+  late final _$markedForDeletionAtom = Atom(
+    name: '_NoteStoreBase.markedForDeletion',
+    context: context,
+  );
+
+  @override
+  ObservableList<Note> get markedForDeletion {
+    _$markedForDeletionAtom.reportRead();
+    return super.markedForDeletion;
+  }
+
+  @override
+  set markedForDeletion(ObservableList<Note> value) {
+    _$markedForDeletionAtom.reportWrite(value, super.markedForDeletion, () {
+      super.markedForDeletion = value;
+    });
+  }
+
+  late final _$deleteNoteAsyncAction = AsyncAction(
+    '_NoteStoreBase.deleteNote',
+    context: context,
+  );
+
+  @override
+  Future<void> deleteNote(Note note) {
+    return _$deleteNoteAsyncAction.run(() => super.deleteNote(note));
+  }
+
   late final _$showNewNoteDialogAsyncAction = AsyncAction(
     '_NoteStoreBase.showNewNoteDialog',
     context: context,
@@ -72,12 +118,12 @@ mixin _$NoteStore on _NoteStoreBase, Store {
   }
 
   @override
-  void deleteNote(Note note) {
+  void undoDelete(Note note) {
     final _$actionInfo = _$_NoteStoreBaseActionController.startAction(
-      name: '_NoteStoreBase.deleteNote',
+      name: '_NoteStoreBase.undoDelete',
     );
     try {
-      return super.deleteNote(note);
+      return super.undoDelete(note);
     } finally {
       _$_NoteStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -154,8 +200,10 @@ mixin _$NoteStore on _NoteStoreBase, Store {
   @override
   String toString() {
     return '''
+deletionProgress: ${deletionProgress},
 notes: ${notes},
-isFullScreenEditing: ${isFullScreenEditing}
+isFullScreenEditing: ${isFullScreenEditing},
+markedForDeletion: ${markedForDeletion}
     ''';
   }
 }

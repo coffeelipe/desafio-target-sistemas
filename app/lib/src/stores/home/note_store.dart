@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/src/core/extensions/mediaquery_extension.dart';
 import 'package:app/src/models/note.dart';
 import 'package:app/src/stores/main/root_store.dart';
@@ -23,11 +25,19 @@ abstract class _NoteStoreBase with Store {
   final FocusNode fullScreenContentFocusNode = FocusNode();
   final ScrollController fullScreenScrollController = ScrollController();
 
+  final Map<String, Timer> _deletionTimers = {};
+
+  @observable
+  ObservableMap<String, double> deletionProgress = ObservableMap();
+
   @observable
   ObservableList<Note> notes = ObservableList();
 
   @observable
   bool isFullScreenEditing = false;
+
+  @observable
+  ObservableList<Note> markedForDeletion = ObservableList();
 
   @action
   void createNote() {
@@ -43,12 +53,45 @@ abstract class _NoteStoreBase with Store {
       );
       dialogTitleController.clear();
       dialogContentController.clear();
+      print('created note with id: ${notes.last.id}');
     }
   }
 
   @action
-  void deleteNote(Note note) {
-    notes.removeWhere((n) => n.id == note.id);
+  Future<void> deleteNote(Note note) async {
+    markedForDeletion.add(note);
+
+    const duration = Duration(seconds: 10);
+    const tickDuration = Duration(milliseconds: 100);
+    final totalTicks = duration.inMilliseconds / tickDuration.inMilliseconds;
+    int ticks = 0;
+
+    deletionProgress[note.id] = 0.0;
+
+    _deletionTimers[note.id] = Timer.periodic(tickDuration, (timer) {
+      runInAction(() {
+        ticks++;
+        deletionProgress[note.id] = ticks / totalTicks;
+
+        if (ticks >= totalTicks) {
+          timer.cancel();
+          _deletionTimers.remove(note.id);
+          if (markedForDeletion.any((n) => n.id == note.id)) {
+            notes.removeWhere((n) => n.id == note.id);
+            markedForDeletion.removeWhere((n) => n.id == note.id);
+            deletionProgress.remove(note.id);
+          }
+        }
+      });
+    });
+  }
+
+  @action
+  void undoDelete(Note note) {
+    _deletionTimers[note.id]?.cancel();
+    _deletionTimers.remove(note.id);
+    markedForDeletion.removeWhere((n) => n.id == note.id);
+    deletionProgress.remove(note.id);
   }
 
   @action
