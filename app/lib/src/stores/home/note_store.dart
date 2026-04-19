@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 part 'note_store.g.dart';
 
+// ignore: library_private_types_in_public_api
 class NoteStore = _NoteStoreBase with _$NoteStore;
 
 abstract class _NoteStoreBase with Store {
@@ -107,6 +108,27 @@ abstract class _NoteStoreBase with Store {
       },
     );
   }
+
+  @action
+  void handleFullScreenButtonPress(Note note) {
+    isFullScreenEditing = !isFullScreenEditing;
+    if (isFullScreenEditing) {
+      if (note.content != fullScreenContentController.text) {
+        _parseAndSetNoteContent(
+          note: note,
+          updatedContent: fullScreenContentController.text,
+          updatedTitle: fullScreenTitleController.text.trim().isEmpty
+              ? null
+              : fullScreenTitleController.text.trim(),
+        );
+      }
+    } else {
+      fullScreenContentController.text = note.content;
+      fullScreenTitleController.text = note.title ?? 'Sem título';
+      fullScreenContentFocusNode.requestFocus();
+    }
+  }
+
   @action
   void _parseAndSetNoteContent({
     required Note note,
