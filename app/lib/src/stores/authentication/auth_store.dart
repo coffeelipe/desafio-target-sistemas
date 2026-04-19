@@ -172,6 +172,7 @@ abstract class _AuthStoreBase with Store {
     } else {
       root.userProfileStore.setUser(user);
     }
+    root.firestorageStore.onAuthChanged(user);
     isInitializing = false;
   }
 
