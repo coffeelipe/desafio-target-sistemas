@@ -69,7 +69,7 @@ dart run build_runner build --delete-conflicting-outputs
 
 Vou deixar um **APK de release** disponível no repositório para facilitar a demonstração.
 
-- Baixe o arquivo na pasta `apk/` (ou na aba **Releases**, se aplicável)
+- Baixe o arquivo na pasta `apk/` do repositório
 - No Android, habilite a permissão de instalação de fontes desconhecidas quando solicitado
 
 ## Observações finais
