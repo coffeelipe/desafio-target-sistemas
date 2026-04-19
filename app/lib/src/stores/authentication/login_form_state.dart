@@ -34,6 +34,7 @@ abstract class _LoginFormStateBase with Store {
 
   @action
   void submitForm() {
+    if (authStore.isLoading) return;
     if (loginFormKey.currentState!.validate()) {
       authStore.loginWithEmailAndPassword(
         _emailController.text,

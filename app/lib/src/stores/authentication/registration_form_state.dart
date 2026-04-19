@@ -78,6 +78,7 @@ abstract class _RegistrationFormStateBase with Store {
 
   @action
   void submitForm() {
+    if (authStore.isLoading) return;
     if (registrationFormKey.currentState!.validate()) {
       authStore.createNewUser(
         _emailController.text,
