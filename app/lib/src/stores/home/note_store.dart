@@ -107,4 +107,13 @@ abstract class _NoteStoreBase with Store {
       },
     );
   }
+  @action
+  void dispose() {
+    dialogTitleController.dispose();
+    dialogContentController.dispose();
+    fullScreenTitleController.dispose();
+    fullScreenContentController.dispose();
+    fullScreenContentFocusNode.dispose();
+    fullScreenScrollController.dispose();
+  }
 }
