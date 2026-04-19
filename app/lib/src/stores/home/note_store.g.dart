@@ -226,6 +226,30 @@ mixin _$NoteStore on _NoteStoreBase, Store {
   }
 
   @override
+  void hydrateFromRemote(List<Note> remoteNotes) {
+    final _$actionInfo = _$_NoteStoreBaseActionController.startAction(
+      name: '_NoteStoreBase.hydrateFromRemote',
+    );
+    try {
+      return super.hydrateFromRemote(remoteNotes);
+    } finally {
+      _$_NoteStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void clearAll() {
+    final _$actionInfo = _$_NoteStoreBaseActionController.startAction(
+      name: '_NoteStoreBase.clearAll',
+    );
+    try {
+      return super.clearAll();
+    } finally {
+      _$_NoteStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void handleFullScreenButtonPress(Note note) {
     final _$actionInfo = _$_NoteStoreBaseActionController.startAction(
       name: '_NoteStoreBase.handleFullScreenButtonPress',

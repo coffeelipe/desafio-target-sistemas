@@ -94,6 +94,7 @@ abstract class _NoteStoreBase with Store {
       );
       notes.add(note);
       noteEditCounts[note.id] = 0;
+      unawaited(root.firestorageStore.upsertNote(note));
       dialogTitleController.clear();
       dialogContentController.clear();
     }
@@ -123,6 +124,7 @@ abstract class _NoteStoreBase with Store {
             markedForDeletion.removeWhere((n) => n.id == note.id);
             deletionProgress.remove(note.id);
             noteEditCounts.remove(note.id);
+            unawaited(root.firestorageStore.deleteNote(note.id));
           }
         }
       });
@@ -148,10 +150,48 @@ abstract class _NoteStoreBase with Store {
 
       if (didChange) {
         noteEditCounts[note.id] = (noteEditCounts[note.id] ?? 0) + 1;
+        unawaited(root.firestorageStore.upsertNote(note));
       }
     }
     dialogContentController.clear();
     dialogTitleController.clear();
+  }
+
+  @action
+  void hydrateFromRemote(List<Note> remoteNotes) {
+    for (final timer in _deletionTimers.values) {
+      timer.cancel();
+    }
+    _deletionTimers.clear();
+    markedForDeletion.clear();
+    deletionProgress.clear();
+    noteEditCounts.clear();
+
+    notes
+      ..clear()
+      ..addAll(remoteNotes);
+
+    for (final note in remoteNotes) {
+      noteEditCounts[note.id] = 0;
+    }
+  }
+
+  @action
+  void clearAll() {
+    for (final timer in _deletionTimers.values) {
+      timer.cancel();
+    }
+    _deletionTimers.clear();
+    markedForDeletion.clear();
+    deletionProgress.clear();
+    noteEditCounts.clear();
+    notes.clear();
+
+    dialogTitleController.clear();
+    dialogContentController.clear();
+    fullScreenTitleController.clear();
+    fullScreenContentController.clear();
+    isFullScreenEditing = false;
   }
 
   @action
