@@ -15,6 +15,8 @@ class NoteDialog extends StatelessWidget {
   final String cancelActionText;
   final VoidCallback? onPrimaryPressed;
   final VoidCallback? onCancelPressed;
+  final TextEditingController? titleController;
+  final TextEditingController? contentController;
 
   const NoteDialog({
     super.key,
@@ -25,6 +27,8 @@ class NoteDialog extends StatelessWidget {
     this.cancelActionText = 'Cancelar',
     this.onPrimaryPressed,
     this.onCancelPressed,
+    this.titleController,
+    this.contentController,
   });
 
   @override
@@ -61,6 +65,7 @@ class NoteDialog extends StatelessWidget {
               LabeledField(
                 label: 'Título',
                 child: TextFormField(
+                  controller: titleController,
                   initialValue: initialTitle,
                   onTapOutside: (event) => FocusScope.of(context).unfocus(),
                   textInputAction: TextInputAction.next,
@@ -74,6 +79,7 @@ class NoteDialog extends StatelessWidget {
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(minHeight: 160),
                   child: TextFormField(
+                    controller: contentController,
                     initialValue: initialContent,
                     onTapOutside: (event) => FocusScope.of(context).unfocus(),
                     keyboardType: TextInputType.multiline,
@@ -116,8 +122,15 @@ class NoteDialog extends StatelessWidget {
                   const SizedBox(width: 12),
                   Expanded(
                     child: GradientButton(
-                      onPressed:
-                          onPrimaryPressed ?? () => Navigator.of(context).pop(),
+                      onPressed: () {
+                        if (contentController == null ||
+                            contentController!.text.trim().isEmpty ||
+                            onPrimaryPressed == null) {
+                          Navigator.of(context).pop();
+                        } else {
+                          onPrimaryPressed?.call();
+                        }
+                      },
                       child: Text(
                         primaryActionText,
                         style: const TextStyle(
