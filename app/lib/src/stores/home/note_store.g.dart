@@ -24,15 +24,33 @@ mixin _$NoteStore on _NoteStoreBase, Store {
     });
   }
 
+  late final _$isFullScreenEditingAtom = Atom(
+    name: '_NoteStoreBase.isFullScreenEditing',
+    context: context,
+  );
+
+  @override
+  bool get isFullScreenEditing {
+    _$isFullScreenEditingAtom.reportRead();
+    return super.isFullScreenEditing;
+  }
+
+  @override
+  set isFullScreenEditing(bool value) {
+    _$isFullScreenEditingAtom.reportWrite(value, super.isFullScreenEditing, () {
+      super.isFullScreenEditing = value;
+    });
+  }
+
   late final _$showNewNoteDialogAsyncAction = AsyncAction(
     '_NoteStoreBase.showNewNoteDialog',
     context: context,
   );
 
   @override
-  Future<void> showNewNoteDialog(BuildContext context) {
+  Future<void> showNewNoteDialog(BuildContext context, Note? note) {
     return _$showNewNoteDialogAsyncAction.run(
-      () => super.showNewNoteDialog(context),
+      () => super.showNewNoteDialog(context, note),
     );
   }
 
@@ -40,18 +58,6 @@ mixin _$NoteStore on _NoteStoreBase, Store {
     name: '_NoteStoreBase',
     context: context,
   );
-
-  @override
-  void openNote() {
-    final _$actionInfo = _$_NoteStoreBaseActionController.startAction(
-      name: '_NoteStoreBase.openNote',
-    );
-    try {
-      return super.openNote();
-    } finally {
-      _$_NoteStoreBaseActionController.endAction(_$actionInfo);
-    }
-  }
 
   @override
   void createNote() {
@@ -66,24 +72,80 @@ mixin _$NoteStore on _NoteStoreBase, Store {
   }
 
   @override
-  void deleteNote() {
+  void deleteNote(Note note) {
     final _$actionInfo = _$_NoteStoreBaseActionController.startAction(
       name: '_NoteStoreBase.deleteNote',
     );
     try {
-      return super.deleteNote();
+      return super.deleteNote(note);
     } finally {
       _$_NoteStoreBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void updateNote() {
+  void updateNote(Note note) {
     final _$actionInfo = _$_NoteStoreBaseActionController.startAction(
       name: '_NoteStoreBase.updateNote',
     );
     try {
-      return super.updateNote();
+      return super.updateNote(note);
+    } finally {
+      _$_NoteStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void handleFullScreenButtonPress(Note note) {
+    final _$actionInfo = _$_NoteStoreBaseActionController.startAction(
+      name: '_NoteStoreBase.handleFullScreenButtonPress',
+    );
+    try {
+      return super.handleFullScreenButtonPress(note);
+    } finally {
+      _$_NoteStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void _parseAndSetNoteContent({
+    required Note note,
+    required String updatedContent,
+    String? updatedTitle,
+  }) {
+    final _$actionInfo = _$_NoteStoreBaseActionController.startAction(
+      name: '_NoteStoreBase._parseAndSetNoteContent',
+    );
+    try {
+      return super._parseAndSetNoteContent(
+        note: note,
+        updatedContent: updatedContent,
+        updatedTitle: updatedTitle,
+      );
+    } finally {
+      _$_NoteStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  int _getNextAvailableId() {
+    final _$actionInfo = _$_NoteStoreBaseActionController.startAction(
+      name: '_NoteStoreBase._getNextAvailableId',
+    );
+    try {
+      return super._getNextAvailableId();
+    } finally {
+      _$_NoteStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void dispose() {
+    final _$actionInfo = _$_NoteStoreBaseActionController.startAction(
+      name: '_NoteStoreBase.dispose',
+    );
+    try {
+      return super.dispose();
     } finally {
       _$_NoteStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -92,7 +154,8 @@ mixin _$NoteStore on _NoteStoreBase, Store {
   @override
   String toString() {
     return '''
-notes: ${notes}
+notes: ${notes},
+isFullScreenEditing: ${isFullScreenEditing}
     ''';
   }
 }
