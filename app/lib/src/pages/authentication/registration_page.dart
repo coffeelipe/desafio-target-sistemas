@@ -20,6 +20,7 @@ class RegistrationPage extends StatefulWidget {
 class _RegistrationPageState extends State<RegistrationPage> {
   late final RegistrationFormState _formStateStore;
   ReactionDisposer? _authReactionDisposer;
+  ReactionDisposer? _authErrorReactionDisposer;
 
   @override
   void initState() {
@@ -38,11 +39,26 @@ class _RegistrationPageState extends State<RegistrationPage> {
       },
       fireImmediately: true,
     );
+
+    _authErrorReactionDisposer = reaction<String?>(
+      (_) => authStore.authErrorMessage,
+      (message) {
+        if (message == null || !mounted) return;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) return;
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(SnackBar(content: Text(message)));
+          authStore.clearAuthError();
+        });
+      },
+    );
   }
 
   @override
   void dispose() {
     _authReactionDisposer?.call();
+    _authErrorReactionDisposer?.call();
     _formStateStore.dispose();
     super.dispose();
   }

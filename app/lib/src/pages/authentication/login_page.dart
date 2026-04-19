@@ -22,6 +22,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   late final LoginFormState _formStateStore;
   ReactionDisposer? _authReactionDisposer;
+  ReactionDisposer? _authErrorReactionDisposer;
 
   @override
   void initState() {
@@ -40,11 +41,26 @@ class _LoginPageState extends State<LoginPage> {
       },
       fireImmediately: true,
     );
+
+    _authErrorReactionDisposer = reaction<String?>(
+      (_) => authStore.authErrorMessage,
+      (message) {
+        if (message == null || !mounted) return;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) return;
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(SnackBar(content: Text(message)));
+          authStore.clearAuthError();
+        });
+      },
+    );
   }
 
   @override
   void dispose() {
     _authReactionDisposer?.call();
+    _authErrorReactionDisposer?.call();
     _formStateStore.dispose();
     super.dispose();
   }

@@ -85,6 +85,24 @@ mixin _$AuthStore on _AuthStoreBase, Store {
     );
   }
 
+  late final _$authErrorMessageAtom = Atom(
+    name: '_AuthStoreBase.authErrorMessage',
+    context: context,
+  );
+
+  @override
+  String? get authErrorMessage {
+    _$authErrorMessageAtom.reportRead();
+    return super.authErrorMessage;
+  }
+
+  @override
+  set authErrorMessage(String? value) {
+    _$authErrorMessageAtom.reportWrite(value, super.authErrorMessage, () {
+      super.authErrorMessage = value;
+    });
+  }
+
   late final _$createNewUserAsyncAction = AsyncAction(
     '_AuthStoreBase.createNewUser',
     context: context,
@@ -153,6 +171,18 @@ mixin _$AuthStore on _AuthStoreBase, Store {
   );
 
   @override
+  void clearAuthError() {
+    final _$actionInfo = _$_AuthStoreBaseActionController.startAction(
+      name: '_AuthStoreBase.clearAuthError',
+    );
+    try {
+      return super.clearAuthError();
+    } finally {
+      _$_AuthStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void _onAuthStateChanged(User? user) {
     final _$actionInfo = _$_AuthStoreBaseActionController.startAction(
       name: '_AuthStoreBase._onAuthStateChanged',
@@ -170,7 +200,8 @@ mixin _$AuthStore on _AuthStoreBase, Store {
 isInitializing: ${isInitializing},
 isLoading: ${isLoading},
 credential: ${credential},
-isLoggedInServerSide: ${isLoggedInServerSide}
+isLoggedInServerSide: ${isLoggedInServerSide},
+authErrorMessage: ${authErrorMessage}
     ''';
   }
 }

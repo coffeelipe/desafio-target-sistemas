@@ -41,6 +41,37 @@ abstract class _AuthStoreBase with Store {
   @observable
   bool isLoggedInServerSide = false;
 
+  @observable
+  String? authErrorMessage;
+
+  @action
+  void clearAuthError() {
+    authErrorMessage = null;
+  }
+
+  String _mapAuthErrorToMessage(Object error) {
+    if (error is FirebaseAuthException) {
+      switch (error.code) {
+        case 'invalid-credential':
+        case 'wrong-password':
+        case 'user-not-found':
+          return 'Credenciais inválidas. Verifique email e senha.';
+        case 'invalid-email':
+          return 'Email inválido.';
+        case 'email-already-in-use':
+          return 'Este email já está em uso.';
+        case 'weak-password':
+          return 'Senha fraca. Use uma senha mais forte.';
+        case 'network-request-failed':
+          return 'Sem conexão. Verifique sua internet e tente novamente.';
+        default:
+          return error.message ?? 'Não foi possível concluir a autenticação.';
+      }
+    }
+
+    return 'Não foi possível concluir a autenticação.';
+  }
+
   @action
   Future<void> createNewUser(
     String email,
@@ -48,6 +79,7 @@ abstract class _AuthStoreBase with Store {
     String displayName,
   ) async {
     isLoading = true;
+    clearAuthError();
 
     try {
       credential = await _authService.registerUser(
@@ -55,6 +87,12 @@ abstract class _AuthStoreBase with Store {
         password,
         displayName,
       );
+
+      if (credential == null) {
+        authErrorMessage = 'Não foi possível criar sua conta. Tente novamente.';
+        return;
+      }
+
       User? user = await _authService.getCurrentUser();
       if (user == null && credential != null) {
 
@@ -68,8 +106,15 @@ abstract class _AuthStoreBase with Store {
       if (user != null) {
         root.userProfileStore.setUser(user);
         isLoggedInServerSide = true;
+      } else {
+        authErrorMessage =
+            'Conta criada, mas não foi possível autenticar automaticamente.';
       }
     } on FirebaseAuthException catch (e) {
+      authErrorMessage = _mapAuthErrorToMessage(e);
+      print(e);
+    } catch (e) {
+      authErrorMessage = _mapAuthErrorToMessage(e);
       print(e);
     } finally {
       isLoading = false;
@@ -79,6 +124,7 @@ abstract class _AuthStoreBase with Store {
   @action
   Future<void> loginWithEmailAndPassword(String email, String password) async {
     isLoading = true;
+    clearAuthError();
 
     try {
       final User? user;
@@ -88,12 +134,25 @@ abstract class _AuthStoreBase with Store {
         password,
       );
 
+      if (credential == null) {
+        authErrorMessage =
+            'Não foi possível entrar. Verifique suas credenciais e tente novamente.';
+        return;
+      }
+
       user = await _authService.getCurrentUser();
       if (user != null) {
         root.userProfileStore.setUser(user);
         isLoggedInServerSide = true;
+      } else {
+        authErrorMessage =
+            'Login realizado, mas não foi possível carregar o usuário.';
       }
+    } on FirebaseAuthException catch (e) {
+      authErrorMessage = _mapAuthErrorToMessage(e);
+      print(e);
     } catch (e) {
+      authErrorMessage = _mapAuthErrorToMessage(e);
       print(e);
     } finally {
       isLoading = false;
