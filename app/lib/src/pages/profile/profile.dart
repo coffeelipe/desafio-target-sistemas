@@ -2,10 +2,16 @@ import 'package:app/src/core/extensions/mediaquery_extension.dart';
 import 'package:app/src/core/theme/app_palette.dart';
 import 'package:app/src/core/theme/app_typography.dart';
 import 'package:app/src/core/utils/responsive_utils.dart';
+import 'package:app/src/stores/authentication/auth_store.dart';
+import 'package:app/src/stores/main/root_store.dart';
+import 'package:app/src/stores/profile/profile_store.dart';
 import 'package:app/src/widgets/global/custom_elevated_button.dart';
 import 'package:app/src/widgets/global/custom_text_form_field.dart';
+import 'package:app/src/widgets/profile/delete_account_dialog.dart';
 import 'package:app/src/widgets/profile/glassy_profile_section.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:provider/provider.dart';
 
 // TODO: Refatorar para usar state management
 // TODO: Adicionar integração com backend (atualizar usuário, excluir conta)
@@ -17,26 +23,26 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  late final TextEditingController _usernameController;
-  final FocusNode _usernameFocusNode = FocusNode();
-
-  bool _hasUsernameInput = false;
+  late ProfileStore _profileStore;
 
   @override
   void initState() {
     super.initState();
-    _usernameController = TextEditingController();
   }
 
   @override
-  void dispose() {
-    _usernameController.dispose();
-    _usernameFocusNode.dispose();
-    super.dispose();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _profileStore = context.read<RootStore>().profileStore;
+    _profileStore.prefillUsernameIfNeeded();
   }
 
   @override
   Widget build(BuildContext context) {
+    final RootStore rootStore = context.read<RootStore>();
+    final AuthStore authStore = rootStore.authStore;
+    final ProfileStore profileStore = rootStore.profileStore;
+
     return Padding(
       padding: EdgeInsets.fromLTRB(
         ResponsiveUtils.spacing(SpacingSize.medium),
@@ -63,41 +69,92 @@ class _ProfileState extends State<Profile> {
             child: Column(
               children: [
                 CustomTextFormField(
-                  controller: _usernameController,
-                  focusNode: _usernameFocusNode,
+                  controller: profileStore.usernameController,
+                  focusNode: profileStore.usernameFocusNode,
                   label: 'Usuário',
                   hintText: 'Seu novo nome de usuário',
                   maxLength: 16,
                   keyboardType: TextInputType.name,
-                  onChanged: (value) {
-                    final bool hasInput = value.trim().isNotEmpty;
-                    if (hasInput == _hasUsernameInput) {
-                      return;
-                    }
-                    setState(() => _hasUsernameInput = hasInput);
-                  },
+                  onChanged: profileStore.onUsernameChanged,
                 ),
                 SizedBox(height: ResponsiveUtils.spacing(SpacingSize.small)),
-                Opacity(
-                  opacity: _hasUsernameInput ? 1 : 0.45,
-                  child: IgnorePointer(
-                    ignoring: !_hasUsernameInput,
-                    child: GradientButton(
-                      onPressed: () {
-                        _usernameFocusNode.unfocus();
-                        _showTemplateSnackBar(
-                          'Template: atualizar usuário (sem integração).',
-                        );
-                      },
-                      child: const Text(
-                        'Atualizar usuário',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
+                Observer(
+                  builder: (_) {
+                    final bool isBusy = profileStore.isBusy;
+                    final bool canSubmit = profileStore.canSubmitUsername;
+
+                    return Opacity(
+                      opacity: canSubmit ? 1 : 0.45,
+                      child: IgnorePointer(
+                        ignoring: !canSubmit,
+                        child: GradientButton(
+                          onPressed: () => _handleUpdateUsername(profileStore),
+                          child: isBusy
+                              ? const Center(child: CircularProgressIndicator())
+                              : const Text(
+                                  'Atualizar usuário',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
                         ),
                       ),
-                    ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: ResponsiveUtils.spacing(SpacingSize.medium)),
+          GlassyProfileSection(
+            title: 'Sessão',
+            icon: Icons.logout_rounded,
+            iconColor: AppPalette.caption,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Encerre sua sessão neste dispositivo.',
+                  style: TextStyle(
+                    color: AppPalette.caption.withValues(alpha: 0.8),
+                    fontSize: 14,
+                  ),
+                ),
+                SizedBox(height: ResponsiveUtils.spacing(SpacingSize.small)),
+                SizedBox(
+                  width: double.infinity,
+                  height: 48,
+                  child: Observer(
+                    builder: (_) {
+                      final bool isBusy = authStore.isLoading;
+                      return OutlinedButton.icon(
+                        onPressed: isBusy
+                            ? null
+                            : () => _openLogoutDialog(authStore),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: AppPalette.caption,
+                          side: BorderSide(
+                            color: AppPalette.caption.withValues(alpha: 0.6),
+                          ),
+                          shape: const StadiumBorder(),
+                        ),
+                        icon: isBusy
+                            ? const SizedBox(
+                                width: 18,
+                                height: 18,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Icon(Icons.logout_rounded),
+                        label: const Text(
+                          'Sair',
+                          style: TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],
@@ -122,20 +179,37 @@ class _ProfileState extends State<Profile> {
                 SizedBox(
                   width: double.infinity,
                   height: 48,
-                  child: OutlinedButton.icon(
-                    onPressed: _openDeleteAccountDialog,
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: Theme.of(context).colorScheme.error,
-                      side: BorderSide(
-                        color: Theme.of(context).colorScheme.error,
-                      ),
-                      shape: const StadiumBorder(),
-                    ),
-                    icon: const Icon(Icons.delete_forever_rounded),
-                    label: const Text(
-                      'Excluir conta',
-                      style: TextStyle(fontWeight: FontWeight.w600),
-                    ),
+                  child: Observer(
+                    builder: (_) {
+                      final bool isBusy = authStore.isLoading;
+                      final Color errorColor = Theme.of(
+                        context,
+                      ).colorScheme.error;
+
+                      return OutlinedButton.icon(
+                        onPressed: isBusy
+                            ? null
+                            : () => _openDeleteAccountDialog(),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: errorColor,
+                          side: BorderSide(color: errorColor),
+                          shape: const StadiumBorder(),
+                        ),
+                        icon: isBusy
+                            ? const SizedBox(
+                                width: 18,
+                                height: 18,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Icon(Icons.delete_forever_rounded),
+                        label: const Text(
+                          'Excluir conta',
+                          style: TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],
@@ -146,44 +220,65 @@ class _ProfileState extends State<Profile> {
     );
   }
 
-  void _showTemplateSnackBar(String message) {
-    ScaffoldMessenger.of(context)
+  Future<void> _handleUpdateUsername(ProfileStore profileStore) async {
+    final ScaffoldMessengerState messenger = ScaffoldMessenger.of(context);
+
+    final ProfileActionResult result = await profileStore.updateUsername();
+    if (!mounted) {
+      return;
+    }
+
+    messenger
       ..clearSnackBars()
       ..showSnackBar(
-        SnackBar(content: Text(message), behavior: SnackBarBehavior.floating),
+        SnackBar(
+          content: Text(result.message),
+          behavior: SnackBarBehavior.floating,
+        ),
       );
   }
 
-  Future<void> _openDeleteAccountDialog() async {
-    final Color errorColor = Theme.of(context).colorScheme.error;
-
+  Future<void> _openLogoutDialog(AuthStore authStore) async {
     await showDialog<void>(
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          title: const Text('Excluir conta?'),
-          content: const Text(
-            'Tem certeza? Esta ação não pode ser desfeita.\n\n'
-            'Este é apenas um template de UI (sem integração).',
-          ),
+          title: const Text('Sair?'),
+          content: const Text('Tem certeza que deseja encerrar sua sessão?'),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
               child: const Text('Cancelar'),
             ),
             FilledButton(
-              onPressed: () {
+              onPressed: () async {
+                final NavigatorState rootNavigator = Navigator.of(context);
                 Navigator.of(dialogContext).pop();
-                _showTemplateSnackBar(
-                  'Template: excluir conta (sem integração).',
+                await authStore.signOut();
+                if (!mounted) {
+                  return;
+                }
+                rootNavigator.pushNamedAndRemoveUntil(
+                  '/login',
+                  (route) => false,
                 );
               },
-              style: FilledButton.styleFrom(backgroundColor: errorColor),
-              child: const Text('Excluir'),
+              child: const Text('Sair'),
             ),
           ],
         );
       },
+    );
+  }
+
+  Future<void> _openDeleteAccountDialog() async {
+    final Color errorColor = Theme.of(context).colorScheme.error;
+    await showDialog<void>(
+      context: context,
+      builder: (_) => DeleteAccountDialog(
+        profileStore: _profileStore,
+        errorColor: errorColor,
+      ),
     );
   }
 }
