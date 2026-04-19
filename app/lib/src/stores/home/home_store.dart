@@ -8,7 +8,6 @@ part 'home_store.g.dart';
 class HomeStore = _HomeStoreBase with _$HomeStore;
 
 abstract class _HomeStoreBase with Store {
-
   final MainScaffoldStore mainScaffoldStore;
   _HomeStoreBase({required this.mainScaffoldStore}) {
     _init();
@@ -24,7 +23,11 @@ abstract class _HomeStoreBase with Store {
 
   @computed
   String get greetingMessage {
-    return '$timeOfDayGreeting, $greetingDisplayName!\nQue ideias temos para hoje?';
+    final String name = greetingDisplayName.trim();
+    final String greeting = name.isEmpty
+        ? '$timeOfDayGreeting!'
+        : '$timeOfDayGreeting, $name!';
+    return '$greeting\nQue ideias temos para hoje?';
   }
 
   @action
