@@ -47,8 +47,8 @@ abstract class _NoteStoreBase with Store {
   }
 
   @action
-  void deleteNote() {
-    // delete the selected note and remove it from the list of note thumbnails
+  void deleteNote(Note note) {
+    notes.removeWhere((n) => n.id == note.id);
   }
 
   @action
