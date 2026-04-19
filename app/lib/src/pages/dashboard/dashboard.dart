@@ -42,7 +42,7 @@ class Dashboard extends StatelessWidget {
                 ),
                 const SliverToBoxAdapter(
                   child: Header(
-                    title: 'Visão geral',
+                    title: 'Estatísticas',
                     subtitle: 'Resumo estatístico das suas notas.',
                   ),
                 ),
