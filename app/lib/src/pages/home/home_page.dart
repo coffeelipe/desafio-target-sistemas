@@ -4,8 +4,8 @@ import 'package:app/src/pages/fullscreen_note/fullscreen_note.dart';
 import 'package:app/src/stores/home/home_store.dart';
 import 'package:app/src/stores/main/root_store.dart';
 import 'package:app/src/widgets/global/empty_state.dart';
+import 'package:app/src/widgets/global/header.dart';
 import 'package:app/src/widgets/home/animated_grid_layout_builder.dart';
-import 'package:app/src/widgets/home/header.dart';
 import 'package:app/src/widgets/home/note/note_thumbnail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -51,11 +51,15 @@ class _HomePageState extends State<HomePage> {
               slivers: [
                 SliverPadding(
                   padding: EdgeInsets.only(
-                    top: ResponsiveUtils.spacing(SpacingSize.small) +
+                    top:
+                        ResponsiveUtils.spacing(SpacingSize.medium) +
                         context.safeTop,
                   ),
                   sliver: SliverToBoxAdapter(
-                    child: Header(greetingMessage: _homeStore.greetingMessage),
+                    child: Header(
+                      title: 'Biblioteca',
+                      subtitle: _homeStore.greetingMessage,
+                    ),
                   ),
                 ),
                 if (_rootStore.noteStore.notes.isEmpty)
@@ -79,10 +83,12 @@ class _HomePageState extends State<HomePage> {
                         return Observer(
                           builder: (_) {
                             final isMarkedForDeletion = _rootStore
-                                .noteStore.markedForDeletion
+                                .noteStore
+                                .markedForDeletion
                                 .any((n) => n.id == currentNote.id);
                             final deletionProgress = _rootStore
-                                .noteStore.deletionProgress[currentNote.id];
+                                .noteStore
+                                .deletionProgress[currentNote.id];
 
                             return NoteThumbnail(
                               index: index,

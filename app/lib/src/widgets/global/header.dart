@@ -5,16 +5,27 @@ import 'package:app/src/core/utils/responsive_utils.dart';
 import 'package:flutter/material.dart';
 
 class Header extends StatelessWidget {
-  final String greetingMessage;
-  const Header({super.key, required this.greetingMessage});
+  final String title;
+  final String subtitle;
+  const Header({
+    super.key,
+    required this.title,
+    required this.subtitle,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Biblioteca', style: AppTypography.heading1),
-        Text(greetingMessage, style: AppTypography.subtitle),
+        Text(title, style: AppTypography.heading1),
+        Text(
+          subtitle,
+          style: TextStyle(
+            color: AppPalette.caption.withValues(alpha: 0.8),
+            fontSize: 16,
+          ),
+        ),
         Divider(
           height: ResponsiveUtils.spacing(SpacingSize.medium),
           thickness: 2,
