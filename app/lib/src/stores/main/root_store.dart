@@ -1,7 +1,6 @@
 import 'package:app/src/stores/authentication/auth_store.dart';
 import 'package:app/src/stores/authentication/user_profile_store.dart';
 import 'package:app/src/stores/home/note_store.dart';
-import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 part 'root_store.g.dart';
 
