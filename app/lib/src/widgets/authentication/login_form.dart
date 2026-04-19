@@ -6,6 +6,7 @@ import 'package:app/src/widgets/global/custom_elevated_button.dart';
 import 'package:app/src/widgets/global/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 class LoginForm extends StatefulWidget {
@@ -53,11 +54,11 @@ class _LoginFormState extends State<LoginForm> {
                 padding: EdgeInsets.symmetric(
                   horizontal: ResponsiveUtils.spacing(SpacingSize.small),
                 ),
-                child: loginFormStateProvider.authStore.isLoading
-                    ? const Center(child: CircularProgressIndicator())
-                    : GradientButton(
-                        onPressed: loginFormStateProvider.submitForm,
-                        child: const Text(
+                child: GradientButton(
+                  onPressed: loginFormStateProvider.submitForm,
+                  child: loginFormStateProvider.authStore.isLoading
+                      ? const SpinKitThreeBounce(color: Colors.white, size: 20)
+                      : const Text(
                           'Entrar',
                           style: TextStyle(
                             color: Colors.white,
@@ -65,7 +66,7 @@ class _LoginFormState extends State<LoginForm> {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                      ),
+                ),
               ),
             ],
           ),

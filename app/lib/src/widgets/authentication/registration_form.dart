@@ -8,6 +8,7 @@ import 'package:app/src/widgets/global/custom_elevated_button.dart';
 import 'package:app/src/widgets/global/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 class RegistrationForm extends StatefulWidget {
@@ -94,7 +95,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 child: GradientButton(
                   onPressed: registrationFormState.submitForm,
                   child: registrationFormState.authStore.isLoading
-                      ? const Center(child: CircularProgressIndicator())
+                      ? const SpinKitThreeBounce(color: Colors.white, size: 20)
                       : const Text(
                           'Criar Conta',
                           style: TextStyle(
