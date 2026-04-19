@@ -32,6 +32,7 @@ class _MainScaffoldState extends State<MainScaffold> {
         final int selectedIndex = _mainScaffoldStore.pageViewState.pageIndex;
         return Scaffold(
           body: Stack(
+            clipBehavior: Clip.none,
             children: [
               PageView(
                 controller: _mainScaffoldStore.pageViewState.controller,
@@ -64,13 +65,15 @@ class _MainScaffoldState extends State<MainScaffold> {
                 left: 0,
                 right: 0,
                 child: AnimatedSlide(
-                  duration: Durations.short4,
+                  duration: Durations.medium3,
+                  curve: Curves.fastEaseInToSlowEaseOut,
                   offset: _mainScaffoldStore.isNavBarVisible
                       ? Offset.zero
-                      : const Offset(0, 4),
+                      : const Offset(0, 0.7),
                   child: AnimatedOpacity(
                     opacity: _mainScaffoldStore.isNavBarVisible ? 1.0 : 0.0,
                     duration: Durations.short4,
+                    curve: Curves.fastEaseInToSlowEaseOut,
                     child: CustomNavBar(
                       pageController:
                           _mainScaffoldStore.pageViewState.controller,
