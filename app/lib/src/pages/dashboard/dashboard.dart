@@ -42,7 +42,7 @@ class Dashboard extends StatelessWidget {
                 ),
                 const SliverToBoxAdapter(
                   child: Header(
-                    title: 'Dashboard',
+                    title: 'Visão geral',
                     subtitle: 'Resumo estatístico das suas notas.',
                   ),
                 ),
@@ -67,25 +67,9 @@ class Dashboard extends StatelessWidget {
                 else ...[
                   SliverToBoxAdapter(
                     child: SectionCard(
-                      title: 'Letras vs números',
-                      icon: Icons.pie_chart_rounded,
-                      iconColor: AppPalette.tertiary,
-                      child: LettersDigitsPieChart(
-                        letters: noteStore.totalLetters,
-                        digits: noteStore.totalDigits,
-                      ),
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: ResponsiveUtils.spacing(SpacingSize.medium),
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: SectionCard(
                       title: 'Visão geral',
-                      icon: Icons.pie_chart_rounded,
-                      iconColor: AppPalette.primary,
+                      icon: Icons.note_alt_rounded,
+                      iconColor: AppPalette.tertiary,
                       child: Wrap(
                         spacing: ResponsiveUtils.spacing(SpacingSize.small),
                         runSpacing: ResponsiveUtils.spacing(SpacingSize.small),
@@ -103,6 +87,12 @@ class Dashboard extends StatelessWidget {
                             accentColor: AppPalette.primaryVariant,
                           ),
                           StatTile(
+                            label: 'Caracteres totais',
+                            value: noteStore.totalCharacters.toString(),
+                            icon: Icons.text_fields_rounded,
+                            accentColor: AppPalette.tertiary,
+                          ),
+                          StatTile(
                             label: 'Total de palavras',
                             value: noteStore.totalWords.toString(),
                             icon: Icons.short_text_rounded,
@@ -113,12 +103,6 @@ class Dashboard extends StatelessWidget {
                             value: noteStore.totalEdits.toString(),
                             icon: Icons.edit_outlined,
                             accentColor: AppPalette.secondary,
-                          ),
-                          StatTile(
-                            label: 'Caracteres totais',
-                            value: noteStore.totalCharacters.toString(),
-                            icon: Icons.text_fields_rounded,
-                            accentColor: AppPalette.tertiary,
                           ),
                           StatTile(
                             label: 'Caracteres especiais',
@@ -137,10 +121,27 @@ class Dashboard extends StatelessWidget {
                   ),
                   SliverToBoxAdapter(
                     child: SectionCard(
+                      title: 'Letras vs números',
+                      icon: Icons.pie_chart_rounded,
+                      iconColor: AppPalette.primary,
+                      child: LettersDigitsPieChart(
+                        letters: noteStore.totalLetters,
+                        digits: noteStore.totalDigits,
+                      ),
+                    ),
+                  ),
+
+                  SliverToBoxAdapter(
+                    child: SizedBox(
+                      height: ResponsiveUtils.spacing(SpacingSize.medium),
+                    ),
+                  ),
+                  SliverToBoxAdapter(
+                    child: SectionCard(
                       title: 'Composição de caracteres',
                       icon: Icons.donut_large_rounded,
                       iconColor: AppPalette.secondary,
-                    child: CharactersCompositionDonutChart(
+                      child: CharactersCompositionDonutChart(
                         letters: noteStore.totalLetters,
                         digits: noteStore.totalDigits,
                         specialCharacters: noteStore.totalSpecialCharacters,
