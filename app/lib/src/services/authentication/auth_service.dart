@@ -52,6 +52,20 @@ class AuthService {
     }
   }
 
+  Future<bool> deleteCurrentUser() async {
+    try {
+      final User? user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        return false;
+      }
+      await user.delete();
+      return true;
+    } on FirebaseAuthException catch (e) {
+      print('$_serviceTag Caught exception during account deletion: $e');
+      return false;
+    }
+  }
+
   Future<UserCredential?> registerUser(
     String email,
     String password,
