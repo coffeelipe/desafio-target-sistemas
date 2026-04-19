@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
     _homeStore = context.read<HomeStore>();
     _rootStore = context.read<RootStore>();
     _homeStore.setGreetingDisplayName(
-      context.read<RootStore>().userProfileStore.displayName!,
+      _rootStore.userProfileStore.displayName ?? '',
     );
   }
 
