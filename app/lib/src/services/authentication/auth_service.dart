@@ -13,6 +13,22 @@ class AuthService {
     }
   }
 
+  Future<bool> updateUserDisplayName(String newName) async {
+    try {
+      final User? user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        return false;
+      }
+
+      await user.updateDisplayName(newName);
+      await user.reload();
+      return true;
+    } on FirebaseAuthException catch (e) {
+      print('$_serviceTag Caught exception during displayName update: $e');
+      return false;
+    }
+  }
+
   Future<UserCredential?> registerUser(
     String email,
     String password,
