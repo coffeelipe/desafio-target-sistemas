@@ -63,7 +63,7 @@ abstract class _NoteStoreBase with Store {
   }
 
   @action
-  Future<void> showNewNoteDialog(BuildContext context) async {
+  Future<void> showNewNoteDialog(BuildContext context, Note? note) async {
     await showDialog(
       context: context,
       builder: (_) {
@@ -77,10 +77,29 @@ abstract class _NoteStoreBase with Store {
           child: AnimatedPadding(
             duration: Durations.short4,
             padding: EdgeInsets.only(bottom: bottomInset),
-            child: const Center(
+            child: Center(
               child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-                child: NoteDialog(),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 24,
+                ),
+                child: NoteDialog(
+                  onPrimaryPressed: note == null
+                      ? createNote
+                      : () => _parseAndSetNoteContent(
+                          note: note,
+                          updatedContent: dialogContentController.text,
+                          updatedTitle:
+                              dialogTitleController.text.trim().isEmpty
+                              ? null
+                              : dialogTitleController.text.trim(),
+                        ),
+                  dialogTitle: note == null ? 'Nova nota' : 'Editar nota',
+                  initialTitle: note?.title,
+                  initialContent: note?.content,
+                  titleController: dialogTitleController,
+                  contentController: dialogContentController,
+                ),
               ),
             ),
           ),
