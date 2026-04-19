@@ -113,6 +113,40 @@ mixin _$AuthStore on _AuthStoreBase, Store {
     );
   }
 
+  late final _$signOutAsyncAction = AsyncAction(
+    '_AuthStoreBase.signOut',
+    context: context,
+  );
+
+  @override
+  Future<void> signOut() {
+    return _$signOutAsyncAction.run(() => super.signOut());
+  }
+
+  late final _$updateDisplayNameAsyncAction = AsyncAction(
+    '_AuthStoreBase.updateDisplayName',
+    context: context,
+  );
+
+  @override
+  Future<bool> updateDisplayName(String newName) {
+    return _$updateDisplayNameAsyncAction.run(
+      () => super.updateDisplayName(newName),
+    );
+  }
+
+  late final _$deleteAccountWithPasswordAsyncAction = AsyncAction(
+    '_AuthStoreBase.deleteAccountWithPassword',
+    context: context,
+  );
+
+  @override
+  Future<bool> deleteAccountWithPassword(String password) {
+    return _$deleteAccountWithPasswordAsyncAction.run(
+      () => super.deleteAccountWithPassword(password),
+    );
+  }
+
   late final _$_AuthStoreBaseActionController = ActionController(
     name: '_AuthStoreBase',
     context: context,
