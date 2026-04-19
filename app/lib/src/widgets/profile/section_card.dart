@@ -31,7 +31,12 @@ class SectionCard extends StatelessWidget {
               children: [
                 Icon(icon, color: iconColor),
                 const SizedBox(width: 12),
-                Text(title, style: AppTypography.heading2),
+                Expanded(
+                  child: Text(
+                    title,
+                    style: AppTypography.heading2,
+                  ),
+                ),
               ],
             ),
             SizedBox(height: ResponsiveUtils.spacing(SpacingSize.small)),
