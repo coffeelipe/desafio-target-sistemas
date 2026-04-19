@@ -19,7 +19,7 @@ class GlassyProfileSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tileColor = Colors.white70;
+    const tileColor = Colors.white70;
     final tileShadowColor = AppPalette.blackShade.withValues(alpha: 0.06);
 
     final iconGradient = LinearGradient(
