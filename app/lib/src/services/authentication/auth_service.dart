@@ -29,6 +29,29 @@ class AuthService {
     }
   }
 
+  Future<bool> reauthenticateWithPassword({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final User? user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        return false;
+      }
+
+      final AuthCredential credential = EmailAuthProvider.credential(
+        email: email,
+        password: password,
+      );
+
+      await user.reauthenticateWithCredential(credential);
+      return true;
+    } on FirebaseAuthException catch (e) {
+      print('$_serviceTag Caught exception during reauthentication: $e');
+      return false;
+    }
+  }
+
   Future<UserCredential?> registerUser(
     String email,
     String password,
