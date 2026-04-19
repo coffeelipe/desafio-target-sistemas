@@ -15,7 +15,8 @@ class AppRouter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AuthStore authStore = context.read<RootStore>().authStore;
+    final RootStore rootStore = context.read<RootStore>();
+    final AuthStore authStore = rootStore.authStore;
 
     return Observer(
       builder: (_) {
@@ -23,7 +24,12 @@ class AppRouter extends StatelessWidget {
           return const MaterialApp(home: SplashScreen());
         }
 
-        final initialRoute = authStore.isLoggedInServerSide ? '/' : '/login';
+        final bool isSyncingNotes =
+            authStore.isLoggedInServerSide && rootStore.firestorageStore.isSyncing;
+
+        final initialRoute = authStore.isLoggedInServerSide
+            ? (isSyncingNotes ? '/splash' : '/')
+            : '/login';
 
         return ScreenUtilInit(
           designSize: const Size(393, 851),
@@ -31,14 +37,20 @@ class AppRouter extends StatelessWidget {
           splitScreenMode: true,
           builder: (_, child) {
             return MaterialApp(
+              key: ValueKey<String>('app-router:$initialRoute'),
               debugShowCheckedModeBanner: false,
               theme: AppTheme.lightTheme,
               darkTheme: AppTheme.darkTheme,
               themeMode: ThemeMode.light, // TODO: change to system later
               onGenerateInitialRoutes: (String initialRouteName) {
-                Widget page = initialRouteName == '/login'
-                    ? const LoginPage()
-                    : const MainScaffold();
+                Widget page;
+                if (initialRouteName == '/login') {
+                  page = const LoginPage();
+                } else if (initialRouteName == '/splash') {
+                  page = const SplashScreen();
+                } else {
+                  page = const MainScaffold();
+                }
                 return [
                   MaterialPageRoute(
                     builder: (_) => page,
@@ -48,6 +60,7 @@ class AppRouter extends StatelessWidget {
               },
               routes: {
                 '/': (_) => const MainScaffold(),
+                '/splash': (_) => const SplashScreen(),
                 '/login': (_) => const LoginPage(),
                 '/register': (_) => const RegistrationPage(),
               },
