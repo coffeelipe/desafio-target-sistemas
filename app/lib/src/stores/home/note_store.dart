@@ -34,6 +34,49 @@ abstract class _NoteStoreBase with Store {
   ObservableList<Note> notes = ObservableList();
 
   @observable
+  ObservableMap<String, int> noteEditCounts = ObservableMap();
+
+  @computed
+  int get totalLines =>
+      notes.fold(0, (sum, note) => sum + note.numberOfLines);
+
+  @computed
+  int get totalNotes => notes.length;
+
+  @computed
+  int get totalWords =>
+      notes.fold(0, (sum, note) => sum + note.numberOfWords);
+
+  @computed
+  int get totalCharacters =>
+      notes.fold(0, (sum, note) => sum + note.totalCharacters);
+
+  @computed
+  int get totalLetters =>
+      notes.fold(0, (sum, note) => sum + note.totalLetters);
+
+  @computed
+  int get totalDigits =>
+      notes.fold(0, (sum, note) => sum + note.totalDigits);
+
+  @computed
+  int get totalSpecialCharacters =>
+      notes.fold(0, (sum, note) => sum + note.totalSpecialCharacters);
+
+  @computed
+  int get totalWhitespaceCharacters => notes.fold(0, (sum, note) {
+        final value = note.totalCharacters -
+            note.totalLetters -
+            note.totalDigits -
+            note.totalSpecialCharacters;
+        return sum + (value < 0 ? 0 : value);
+      });
+
+  @computed
+  int get totalEdits =>
+      noteEditCounts.values.fold(0, (sum, value) => sum + value);
+
+  @observable
   bool isFullScreenEditing = false;
 
   @observable
@@ -226,5 +269,6 @@ abstract class _NoteStoreBase with Store {
     fullScreenContentController.dispose();
     fullScreenContentFocusNode.dispose();
     fullScreenScrollController.dispose();
+    noteEditCounts.clear();
   }
 }
