@@ -41,7 +41,10 @@ class _MainScaffoldState extends State<MainScaffold> {
                     value: _mainScaffoldStore.homeStore,
                     child: const HomePage(),
                   ),
-                  const Dashboard(),
+                  Provider.value(
+                    value: _mainScaffoldStore.dashboardStore,
+                    child: const Dashboard(),
+                  ),
                   const Profile(),
                 ],
               ),

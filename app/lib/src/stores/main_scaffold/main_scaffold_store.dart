@@ -1,5 +1,6 @@
 import 'package:app/src/stores/home/home_store.dart';
 import 'package:app/src/stores/main/root_store.dart';
+import 'package:app/src/stores/main_scaffold/dashboard_store.dart';
 import 'package:app/src/stores/main_scaffold/pageview_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
@@ -12,10 +13,14 @@ class MainScaffoldStore = _MainScaffoldStoreBase with _$MainScaffoldStore;
 abstract class _MainScaffoldStoreBase with Store {
   late final PageViewState pageViewState;
   late final HomeStore homeStore;
+  late final DashboardStore dashboardStore;
 
   _MainScaffoldStoreBase() {
     pageViewState = PageViewState(mainScaffoldStore: this as MainScaffoldStore);
     homeStore = HomeStore(mainScaffoldStore: this as MainScaffoldStore);
+    dashboardStore = DashboardStore(
+      mainScaffoldStore: this as MainScaffoldStore,
+    );
   }
 
   @observable
