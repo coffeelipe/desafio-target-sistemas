@@ -9,6 +9,8 @@ class NoteThumbnail extends StatelessWidget {
   final VoidCallback? onTap;
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
+  final bool isMarkedForDeletion;
+  final double? deletionProgress;
   const NoteThumbnail({
     super.key,
     required this.note,
@@ -16,6 +18,8 @@ class NoteThumbnail extends StatelessWidget {
     this.onTap,
     this.onEdit,
     this.onDelete,
+    this.isMarkedForDeletion = false,
+    this.deletionProgress,
   });
 
   @override
@@ -41,7 +45,16 @@ class NoteThumbnail extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ThumbOptions(note: note, onEdit: onEdit, onDelete: onDelete),
+            Align(
+              alignment: Alignment.topRight,
+              child: ThumbOptions(
+                note: note,
+                onEdit: onEdit,
+                onDelete: onDelete,
+                isMarkedForDeletion: isMarkedForDeletion,
+                progress: deletionProgress,
+              ),
+            ),
             if (note.title != null && note.title!.trim().isNotEmpty) ...[
               Text(
                 note.title ?? '',
