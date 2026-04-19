@@ -3,8 +3,8 @@ import 'package:app/src/core/theme/app_palette.dart';
 import 'package:app/src/core/utils/responsive_utils.dart';
 import 'package:app/src/stores/main/root_store.dart';
 import 'package:app/src/stores/main_scaffold/dashboard_store.dart';
-import 'package:app/src/widgets/dashboard/characters_composition_pie_chart.dart';
-import 'package:app/src/widgets/dashboard/letters_digits_donut_chart.dart';
+import 'package:app/src/widgets/dashboard/characters_composition_donut_chart.dart';
+import 'package:app/src/widgets/dashboard/letters_digits_pie_chart.dart';
 import 'package:app/src/widgets/dashboard/stat_tile.dart';
 import 'package:app/src/widgets/global/empty_state.dart';
 import 'package:app/src/widgets/global/header.dart';
@@ -70,7 +70,7 @@ class Dashboard extends StatelessWidget {
                       title: 'Letras vs números',
                       icon: Icons.pie_chart_rounded,
                       iconColor: AppPalette.tertiary,
-                      child: LettersDigitsDonutChart(
+                      child: LettersDigitsPieChart(
                         letters: noteStore.totalLetters,
                         digits: noteStore.totalDigits,
                       ),
@@ -140,7 +140,7 @@ class Dashboard extends StatelessWidget {
                       title: 'Composição de caracteres',
                       icon: Icons.donut_large_rounded,
                       iconColor: AppPalette.secondary,
-                      child: CharactersCompositionPieChart(
+                    child: CharactersCompositionDonutChart(
                         letters: noteStore.totalLetters,
                         digits: noteStore.totalDigits,
                         specialCharacters: noteStore.totalSpecialCharacters,

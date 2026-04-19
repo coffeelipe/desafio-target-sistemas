@@ -4,19 +4,23 @@ import 'package:app/src/core/utils/responsive_utils.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-class LettersDigitsDonutChart extends StatelessWidget {
+class CharactersCompositionDonutChart extends StatelessWidget {
   final int letters;
   final int digits;
+  final int specialCharacters;
+  final int whitespaceCharacters;
 
-  const LettersDigitsDonutChart({
+  const CharactersCompositionDonutChart({
     super.key,
     required this.letters,
     required this.digits,
+    required this.specialCharacters,
+    required this.whitespaceCharacters,
   });
 
   @override
   Widget build(BuildContext context) {
-    final total = letters + digits;
+    final total = letters + digits + specialCharacters + whitespaceCharacters;
 
     if (total <= 0) {
       return Padding(
@@ -32,49 +36,58 @@ class LettersDigitsDonutChart extends StatelessWidget {
       );
     }
 
+    final sections = <_SectionSpec>[
+      _SectionSpec(
+        label: 'Letras',
+        value: letters,
+        color: AppPalette.primary,
+      ),
+      _SectionSpec(
+        label: 'Números',
+        value: digits,
+        color: AppPalette.tertiary,
+      ),
+      _SectionSpec(
+        label: 'Especiais',
+        value: specialCharacters,
+        color: AppPalette.secondary,
+      ),
+      _SectionSpec(
+        label: 'Espaços',
+        value: whitespaceCharacters,
+        color: AppPalette.blackShade.withValues(alpha: 0.7),
+      ),
+    ].where((s) => s.value > 0).toList();
+
     return LayoutBuilder(
       builder: (context, constraints) {
-        final isWide = constraints.maxWidth >= 420;
-
-        final lettersPercent = (letters / total) * 100;
-        final digitsPercent = (digits / total) * 100;
+        final isWide = constraints.maxWidth >= 520;
 
         final chart = SizedBox(
-          height: 180,
-          width: 180,
+          height: 200,
+          width: 200,
           child: PieChart(
             PieChartData(
               startDegreeOffset: -90,
-              sectionsSpace: 4,
-              centerSpaceRadius: 0,
+              sectionsSpace: 2,
+              centerSpaceRadius: 62,
               borderData: FlBorderData(show: false),
               pieTouchData: PieTouchData(enabled: false),
-              sections: [
-                PieChartSectionData(
-                  value: letters.toDouble(),
-                  color: AppPalette.primary,
-                  radius: 64,
-                  title: '${lettersPercent.round()}%',
+              sections: sections.map((s) {
+                final percent = (s.value / total) * 100;
+                return PieChartSectionData(
+                  value: s.value.toDouble(),
+                  color: s.color,
+                  radius: 26,
+                  title: percent >= 12 ? '${percent.round()}%' : '',
                   titleStyle: const TextStyle(
-                    fontSize: 12,
+                    fontSize: 11,
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
                   ),
-                  titlePositionPercentageOffset: 0.62,
-                ),
-                PieChartSectionData(
-                  value: digits.toDouble(),
-                  color: AppPalette.tertiary,
-                  radius: 54,
-                  title: '${digitsPercent.round()}%',
-                  titleStyle: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
-                  ),
-                  titlePositionPercentageOffset: 0.62,
-                ),
-              ],
+                  titlePositionPercentageOffset: 0.68,
+                );
+              }).toList(),
             ),
           ),
         );
@@ -82,16 +95,11 @@ class LettersDigitsDonutChart extends StatelessWidget {
         final legend = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _LegendItem(
-              color: AppPalette.primary,
-              label: 'Letras',
-              value: letters,
-            ),
-            const SizedBox(height: 10),
-            _LegendItem(
-              color: AppPalette.tertiary,
-              label: 'Números',
-              value: digits,
+            ...sections.expand(
+              (s) => [
+                _LegendItem(color: s.color, label: s.label, value: s.value),
+                const SizedBox(height: 10),
+              ],
             ),
             SizedBox(height: ResponsiveUtils.spacing(SpacingSize.small)),
             Text(
@@ -127,6 +135,18 @@ class LettersDigitsDonutChart extends StatelessWidget {
       },
     );
   }
+}
+
+class _SectionSpec {
+  final String label;
+  final int value;
+  final Color color;
+
+  const _SectionSpec({
+    required this.label,
+    required this.value,
+    required this.color,
+  });
 }
 
 class _LegendItem extends StatelessWidget {
