@@ -15,8 +15,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
-// TODO: Refatorar para usar state management
-// TODO: Adicionar integração com backend (atualizar usuário, excluir conta)
 class Profile extends StatefulWidget {
   const Profile({super.key});
 
@@ -50,7 +48,8 @@ class _ProfileState extends State<Profile> {
         ResponsiveUtils.spacing(SpacingSize.medium),
         ResponsiveUtils.spacing(SpacingSize.medium),
         ResponsiveUtils.spacing(SpacingSize.medium),
-        context.safeBottom + 140,
+        0,
+        // context.safeBottom + 140,
       ),
       child: ListView(
         children: [
@@ -222,6 +221,12 @@ class _ProfileState extends State<Profile> {
                 ),
               ],
             ),
+          ),
+          SizedBox(
+            height:
+                ResponsiveUtils.spacing(SpacingSize.large) +
+                context.safeBottom +
+                32,
           ),
         ],
       ),
