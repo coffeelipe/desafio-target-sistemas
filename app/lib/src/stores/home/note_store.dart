@@ -24,7 +24,7 @@ abstract class _NoteStoreBase with Store {
   final ScrollController fullScreenScrollController = ScrollController();
 
   @observable
-  List<Note> notes = [];
+  ObservableList<Note> notes = ObservableList();
 
   @observable
   bool isFullScreenEditing = false;
@@ -43,7 +43,6 @@ abstract class _NoteStoreBase with Store {
       );
       dialogTitleController.clear();
       dialogContentController.clear();
-      root.navigatorKey.currentState?.pop();
     }
   }
 
@@ -60,7 +59,6 @@ abstract class _NoteStoreBase with Store {
     }
     dialogContentController.clear();
     dialogTitleController.clear();
-    root.navigatorKey.currentState?.pop();
   }
 
   @action
@@ -86,15 +84,21 @@ abstract class _NoteStoreBase with Store {
                 ),
                 child: NoteDialog(
                   onPrimaryPressed: note == null
-                      ? createNote
-                      : () => _parseAndSetNoteContent(
-                          note: note,
-                          updatedContent: dialogContentController.text,
-                          updatedTitle:
-                              dialogTitleController.text.trim().isEmpty
-                              ? null
-                              : dialogTitleController.text.trim(),
-                        ),
+                      ? () {
+                          createNote();
+                          Navigator.of(context).pop();
+                        }
+                      : () {
+                          _parseAndSetNoteContent(
+                            note: note,
+                            updatedContent: dialogContentController.text,
+                            updatedTitle:
+                                dialogTitleController.text.trim().isEmpty
+                                ? null
+                                : dialogTitleController.text.trim(),
+                          );
+                          Navigator.of(context).pop();
+                        },
                   dialogTitle: note == null ? 'Nova nota' : 'Editar nota',
                   initialTitle: note?.title,
                   initialContent: note?.content,
