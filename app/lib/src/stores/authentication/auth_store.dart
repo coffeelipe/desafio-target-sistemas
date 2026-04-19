@@ -55,6 +55,20 @@ abstract class _AuthStoreBase with Store {
         password,
         displayName,
       );
+      User? user = await _authService.getCurrentUser();
+      if (user == null && credential != null) {
+
+        credential = await _authService.loginWithEmailAndPassword(
+          email,
+          password,
+        );
+        user = await _authService.getCurrentUser();
+      }
+
+      if (user != null) {
+        root.userProfileStore.setUser(user);
+        isLoggedInServerSide = true;
+      }
     } on FirebaseAuthException catch (e) {
       print(e);
     } finally {
@@ -134,10 +148,8 @@ abstract class _AuthStoreBase with Store {
         return false;
       }
 
-      final bool didReauthenticate = await _authService.reauthenticateWithPassword(
-        email: email,
-        password: password,
-      );
+      final bool didReauthenticate = await _authService
+          .reauthenticateWithPassword(email: email, password: password);
       if (!didReauthenticate) {
         return false;
       }
