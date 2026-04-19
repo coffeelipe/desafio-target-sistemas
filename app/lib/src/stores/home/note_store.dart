@@ -166,20 +166,31 @@ abstract class _NoteStoreBase with Store {
 
   @action
   void handleFullScreenButtonPress(Note note) {
-    isFullScreenEditing = !isFullScreenEditing;
+    final currentNote = notes.firstWhere(
+      (n) => n.id == note.id,
+      orElse: () => note,
+    );
+
     if (isFullScreenEditing) {
-      if (note.content != fullScreenContentController.text) {
+      final updatedTitleText = fullScreenTitleController.text.trim();
+      final updatedTitle = updatedTitleText.isEmpty ? null : updatedTitleText;
+      final updatedContent = fullScreenContentController.text;
+
+      if (updatedContent != currentNote.content ||
+          updatedTitle != currentNote.title) {
         _parseAndSetNoteContent(
-          note: note,
-          updatedContent: fullScreenContentController.text,
-          updatedTitle: fullScreenTitleController.text.trim().isEmpty
-              ? null
-              : fullScreenTitleController.text.trim(),
+          note: currentNote,
+          updatedContent: updatedContent,
+          updatedTitle: updatedTitle,
         );
       }
+
+      isFullScreenEditing = false;
+      FocusManager.instance.primaryFocus?.unfocus();
     } else {
-      fullScreenContentController.text = note.content;
-      fullScreenTitleController.text = note.title ?? 'Sem título';
+      fullScreenContentController.text = currentNote.content;
+      fullScreenTitleController.text = currentNote.title ?? '';
+      isFullScreenEditing = true;
       fullScreenContentFocusNode.requestFocus();
     }
   }

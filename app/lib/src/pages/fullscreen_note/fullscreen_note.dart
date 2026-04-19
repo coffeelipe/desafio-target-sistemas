@@ -77,6 +77,7 @@ class _FullscreenNoteState extends State<FullscreenNote> {
           body: SizedBox.expand(
             child: TextFormField(
               controller: _rootStore.noteStore.fullScreenContentController,
+              focusNode: _rootStore.noteStore.fullScreenContentFocusNode,
               scrollController: _rootStore.noteStore.fullScreenScrollController,
               readOnly: !_rootStore.noteStore.isFullScreenEditing,
               expands: true,
