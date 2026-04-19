@@ -4,6 +4,7 @@ import 'package:app/src/pages/fullscreen_note/fullscreen_note.dart';
 import 'package:app/src/stores/home/home_store.dart';
 import 'package:app/src/stores/main/root_store.dart';
 import 'package:app/src/widgets/global/empty_state.dart';
+import 'package:app/src/widgets/home/animated_grid_layout_builder.dart';
 import 'package:app/src/widgets/home/header.dart';
 import 'package:app/src/widgets/home/note/note_thumbnail.dart';
 import 'package:flutter/material.dart';
@@ -41,57 +42,75 @@ class _HomePageState extends State<HomePage> {
           child: Padding(
             padding: EdgeInsets.fromLTRB(
               ResponsiveUtils.spacing(SpacingSize.large),
-              ResponsiveUtils.spacing(SpacingSize.small) + context.safeTop,
+              0,
               ResponsiveUtils.spacing(SpacingSize.large),
               ResponsiveUtils.spacing(SpacingSize.small) + context.safeBottom,
             ),
-            child: Column(
-              children: [
-                Header(greetingMessage: _homeStore.greetingMessage),
-                _rootStore.noteStore.notes.isEmpty
-                    ? Expanded(
-                        child: Center(
-                          child: EmptyState(
-                            icon: RemixIcons.sticky_note_fill,
-                            message: 'Nenhuma nota encontrada',
-                            ctaText: 'Criar minha primeira nota',
-                            onCtaPressed: () => _rootStore.noteStore
-                                .showNewNoteDialog(context, null),
-                          ),
-                        ),
-                      )
-                    : Expanded(
-                        child: GridView.builder(
-                          controller: _homeStore.scrollController,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                mainAxisSpacing: ResponsiveUtils.spacing(
-                                  SpacingSize.small,
-                                ),
-                                crossAxisSpacing: ResponsiveUtils.spacing(
-                                  SpacingSize.small,
-                                ),
-                                childAspectRatio: 0.75,
-                              ),
-                          itemCount: _rootStore.noteStore.notes.length,
-                          itemBuilder: (context, index) {
+            child: CustomScrollView(
+              controller: _homeStore.scrollController,
+              slivers: [
+                SliverPadding(
+                  padding: EdgeInsets.only(
+                    top: ResponsiveUtils.spacing(SpacingSize.small) +
+                        context.safeTop,
+                  ),
+                  sliver: SliverToBoxAdapter(
+                    child: Header(greetingMessage: _homeStore.greetingMessage),
+                  ),
+                ),
+                if (_rootStore.noteStore.notes.isEmpty)
+                  SliverFillRemaining(
+                    hasScrollBody: false,
+                    child: Center(
+                      child: EmptyState(
+                        icon: RemixIcons.sticky_note_fill,
+                        message: 'Nenhuma nota encontrada',
+                        ctaText: 'Criar minha primeira nota',
+                        onCtaPressed: () => _rootStore.noteStore
+                            .showNewNoteDialog(context, null),
+                      ),
+                    ),
+                  )
+                else
+                  SliverToBoxAdapter(
+                    child: AnimatedGridLayoutBuilder(
+                      notes: _rootStore.noteStore.notes,
+                      itemBuilder: (context, currentNote, index) {
+                        return Observer(
+                          builder: (_) {
+                            final isMarkedForDeletion = _rootStore
+                                .noteStore.markedForDeletion
+                                .any((n) => n.id == currentNote.id);
+                            final deletionProgress = _rootStore
+                                .noteStore.deletionProgress[currentNote.id];
+
                             return NoteThumbnail(
                               index: index,
                               onTap: () => Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (context) {
-                                    return FullscreenNote(
-                                      note: _rootStore.noteStore.notes[index],
-                                    );
+                                    return FullscreenNote(note: currentNote);
                                   },
                                 ),
                               ),
-                              note: _rootStore.noteStore.notes[index],
+                              onEdit: () => _rootStore.noteStore
+                                  .showNewNoteDialog(context, currentNote),
+                              onDelete: () {
+                                if (isMarkedForDeletion) {
+                                  _rootStore.noteStore.undoDelete(currentNote);
+                                } else {
+                                  _rootStore.noteStore.deleteNote(currentNote);
+                                }
+                              },
+                              isMarkedForDeletion: isMarkedForDeletion,
+                              deletionProgress: deletionProgress,
+                              note: currentNote,
                             );
                           },
-                        ),
-                      ),
+                        );
+                      },
+                    ),
+                  ),
               ],
             ),
           ),
