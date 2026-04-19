@@ -4,9 +4,8 @@ import 'package:app/src/core/theme/app_typography.dart';
 import 'package:app/src/core/utils/responsive_utils.dart';
 import 'package:app/src/widgets/global/custom_elevated_button.dart';
 import 'package:app/src/widgets/global/custom_text_form_field.dart';
-import 'package:app/src/widgets/profile/section_card.dart';
+import 'package:app/src/widgets/profile/glassy_profile_section.dart';
 import 'package:flutter/material.dart';
-
 
 // TODO: Refatorar para usar state management
 // TODO: Adicionar integração com backend (atualizar usuário, excluir conta)
@@ -57,7 +56,7 @@ class _ProfileState extends State<Profile> {
             ),
           ),
           SizedBox(height: ResponsiveUtils.spacing(SpacingSize.medium)),
-          SectionCard(
+          GlassyProfileSection(
             title: 'Nome de usuário',
             icon: Icons.person_outline_rounded,
             iconColor: AppPalette.primary,
@@ -105,7 +104,7 @@ class _ProfileState extends State<Profile> {
             ),
           ),
           SizedBox(height: ResponsiveUtils.spacing(SpacingSize.medium)),
-          SectionCard(
+          GlassyProfileSection(
             title: 'Excluir conta',
             icon: Icons.delete_outline_rounded,
             iconColor: Theme.of(context).colorScheme.error,
