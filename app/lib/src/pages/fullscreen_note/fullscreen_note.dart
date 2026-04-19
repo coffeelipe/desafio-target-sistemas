@@ -4,6 +4,7 @@ import 'package:app/src/core/theme/app_typography.dart';
 import 'package:app/src/core/utils/responsive_utils.dart';
 import 'package:app/src/models/note.dart';
 import 'package:app/src/stores/main/root_store.dart';
+import 'package:app/src/widgets/fullscreen_note/discard_changes_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
@@ -19,32 +20,6 @@ class FullscreenNote extends StatefulWidget {
 
 class _FullscreenNoteState extends State<FullscreenNote> {
   late final RootStore _rootStore;
-
-  Future<bool> _confirmExitWhileEditing(BuildContext context) async {
-    final result = await showDialog<bool>(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-
-          title: const Text('Descartar alterações?'),
-          content: const Text(
-            'Você está editando esta nota. Se sair agora, suas alterações não salvas serão perdidas.',
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Continuar editando'),
-            ),
-            FilledButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: const Text('Sair'),
-            ),
-          ],
-        );
-      },
-    );
-    return result ?? false;
-  }
 
   @override
   void initState() {
@@ -69,7 +44,7 @@ class _FullscreenNoteState extends State<FullscreenNote> {
               return;
             }
 
-            final shouldExit = await _confirmExitWhileEditing(context);
+            final shouldExit = await DiscardChangesDialog.show(context);
             if (!shouldExit || !context.mounted) return;
 
             _rootStore.noteStore.isFullScreenEditing = false;
@@ -81,11 +56,10 @@ class _FullscreenNoteState extends State<FullscreenNote> {
               backgroundColor: AppPalette.scaffoldColor,
               elevation:
                   _rootStore.noteStore.fullScreenScrollController.hasClients &&
-                          _rootStore.noteStore.fullScreenScrollController
-                                  .offset >
-                              0.5
-                      ? 4
-                      : 0,
+                      _rootStore.noteStore.fullScreenScrollController.offset >
+                          0.5
+                  ? 4
+                  : 0,
               shadowColor: AppPalette.blackShade.withValues(alpha: 0.1),
               surfaceTintColor: Colors.transparent,
               title: TextFormField(
@@ -96,8 +70,9 @@ class _FullscreenNoteState extends State<FullscreenNote> {
                   contentPadding: EdgeInsets.zero,
                   filled: false,
                 ),
-                style:
-                    AppTypography.heading2.apply(color: AppPalette.blackShade),
+                style: AppTypography.heading2.apply(
+                  color: AppPalette.blackShade,
+                ),
                 readOnly: !_rootStore.noteStore.isFullScreenEditing,
               ),
               actions: [
