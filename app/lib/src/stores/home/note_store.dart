@@ -106,6 +106,14 @@ abstract class _NoteStoreBase with Store {
 
   @action
   Future<void> showNewNoteDialog(BuildContext context, Note? note) async {
+    if (note == null) {
+      dialogTitleController.clear();
+      dialogContentController.clear();
+    } else {
+      dialogTitleController.text = note.title ?? '';
+      dialogContentController.text = note.content;
+    }
+
     await showDialog(
       context: context,
       builder: (_) {

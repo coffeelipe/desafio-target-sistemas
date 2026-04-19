@@ -66,7 +66,6 @@ class NoteDialog extends StatelessWidget {
                 label: 'Título',
                 child: TextFormField(
                   controller: titleController,
-                  initialValue: initialTitle,
                   onTapOutside: (event) => FocusScope.of(context).unfocus(),
                   textInputAction: TextInputAction.next,
                   inputFormatters: [ValidationUtils.noEmojiFormatter],
@@ -80,7 +79,6 @@ class NoteDialog extends StatelessWidget {
                   constraints: const BoxConstraints(minHeight: 160),
                   child: TextFormField(
                     controller: contentController,
-                    initialValue: initialContent,
                     onTapOutside: (event) => FocusScope.of(context).unfocus(),
                     keyboardType: TextInputType.multiline,
                     textInputAction: TextInputAction.newline,
