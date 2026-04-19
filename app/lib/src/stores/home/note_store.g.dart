@@ -9,6 +9,72 @@ part of 'note_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$NoteStore on _NoteStoreBase, Store {
+  Computed<int>? _$totalLinesComputed;
+
+  @override
+  int get totalLines => (_$totalLinesComputed ??= Computed<int>(
+    () => super.totalLines,
+    name: '_NoteStoreBase.totalLines',
+  )).value;
+  Computed<int>? _$totalNotesComputed;
+
+  @override
+  int get totalNotes => (_$totalNotesComputed ??= Computed<int>(
+    () => super.totalNotes,
+    name: '_NoteStoreBase.totalNotes',
+  )).value;
+  Computed<int>? _$totalWordsComputed;
+
+  @override
+  int get totalWords => (_$totalWordsComputed ??= Computed<int>(
+    () => super.totalWords,
+    name: '_NoteStoreBase.totalWords',
+  )).value;
+  Computed<int>? _$totalCharactersComputed;
+
+  @override
+  int get totalCharacters => (_$totalCharactersComputed ??= Computed<int>(
+    () => super.totalCharacters,
+    name: '_NoteStoreBase.totalCharacters',
+  )).value;
+  Computed<int>? _$totalLettersComputed;
+
+  @override
+  int get totalLetters => (_$totalLettersComputed ??= Computed<int>(
+    () => super.totalLetters,
+    name: '_NoteStoreBase.totalLetters',
+  )).value;
+  Computed<int>? _$totalDigitsComputed;
+
+  @override
+  int get totalDigits => (_$totalDigitsComputed ??= Computed<int>(
+    () => super.totalDigits,
+    name: '_NoteStoreBase.totalDigits',
+  )).value;
+  Computed<int>? _$totalSpecialCharactersComputed;
+
+  @override
+  int get totalSpecialCharacters =>
+      (_$totalSpecialCharactersComputed ??= Computed<int>(
+        () => super.totalSpecialCharacters,
+        name: '_NoteStoreBase.totalSpecialCharacters',
+      )).value;
+  Computed<int>? _$totalWhitespaceCharactersComputed;
+
+  @override
+  int get totalWhitespaceCharacters =>
+      (_$totalWhitespaceCharactersComputed ??= Computed<int>(
+        () => super.totalWhitespaceCharacters,
+        name: '_NoteStoreBase.totalWhitespaceCharacters',
+      )).value;
+  Computed<int>? _$totalEditsComputed;
+
+  @override
+  int get totalEdits => (_$totalEditsComputed ??= Computed<int>(
+    () => super.totalEdits,
+    name: '_NoteStoreBase.totalEdits',
+  )).value;
+
   late final _$deletionProgressAtom = Atom(
     name: '_NoteStoreBase.deletionProgress',
     context: context,
@@ -39,6 +105,24 @@ mixin _$NoteStore on _NoteStoreBase, Store {
   set notes(ObservableList<Note> value) {
     _$notesAtom.reportWrite(value, super.notes, () {
       super.notes = value;
+    });
+  }
+
+  late final _$noteEditCountsAtom = Atom(
+    name: '_NoteStoreBase.noteEditCounts',
+    context: context,
+  );
+
+  @override
+  ObservableMap<String, int> get noteEditCounts {
+    _$noteEditCountsAtom.reportRead();
+    return super.noteEditCounts;
+  }
+
+  @override
+  set noteEditCounts(ObservableMap<String, int> value) {
+    _$noteEditCountsAtom.reportWrite(value, super.noteEditCounts, () {
+      super.noteEditCounts = value;
     });
   }
 
@@ -202,8 +286,18 @@ mixin _$NoteStore on _NoteStoreBase, Store {
     return '''
 deletionProgress: ${deletionProgress},
 notes: ${notes},
+noteEditCounts: ${noteEditCounts},
 isFullScreenEditing: ${isFullScreenEditing},
-markedForDeletion: ${markedForDeletion}
+markedForDeletion: ${markedForDeletion},
+totalLines: ${totalLines},
+totalNotes: ${totalNotes},
+totalWords: ${totalWords},
+totalCharacters: ${totalCharacters},
+totalLetters: ${totalLetters},
+totalDigits: ${totalDigits},
+totalSpecialCharacters: ${totalSpecialCharacters},
+totalWhitespaceCharacters: ${totalWhitespaceCharacters},
+totalEdits: ${totalEdits}
     ''';
   }
 }

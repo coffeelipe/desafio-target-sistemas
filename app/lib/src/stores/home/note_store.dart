@@ -85,18 +85,17 @@ abstract class _NoteStoreBase with Store {
   @action
   void createNote() {
     if (dialogContentController.text.trim().isNotEmpty) {
-      notes.add(
-        Note.fromContent(
-          id: _getNextAvailableId().toString(),
-          title: dialogTitleController.text.trim().isEmpty
-              ? null
-              : dialogTitleController.text.trim(),
-          content: dialogContentController.text,
-        ),
+      final note = Note.fromContent(
+        id: _getNextAvailableId().toString(),
+        title: dialogTitleController.text.trim().isEmpty
+            ? null
+            : dialogTitleController.text.trim(),
+        content: dialogContentController.text,
       );
+      notes.add(note);
+      noteEditCounts[note.id] = 0;
       dialogTitleController.clear();
       dialogContentController.clear();
-      print('created note with id: ${notes.last.id}');
     }
   }
 
@@ -123,6 +122,7 @@ abstract class _NoteStoreBase with Store {
             notes.removeWhere((n) => n.id == note.id);
             markedForDeletion.removeWhere((n) => n.id == note.id);
             deletionProgress.remove(note.id);
+            noteEditCounts.remove(note.id);
           }
         }
       });
@@ -141,7 +141,14 @@ abstract class _NoteStoreBase with Store {
   void updateNote(Note note) {
     final index = notes.indexWhere((n) => n.id == note.id);
     if (index != -1) {
+      final current = notes[index];
+      final didChange =
+          current.content != note.content || current.title != note.title;
       notes[index] = note;
+
+      if (didChange) {
+        noteEditCounts[note.id] = (noteEditCounts[note.id] ?? 0) + 1;
+      }
     }
     dialogContentController.clear();
     dialogTitleController.clear();
