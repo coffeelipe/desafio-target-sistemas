@@ -1,4 +1,3 @@
-import 'package:app/src/models/note.dart';
 import 'package:app/src/stores/main_scaffold/main_scaffold_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
