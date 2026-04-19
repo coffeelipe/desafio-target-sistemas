@@ -79,7 +79,7 @@ class CustomNavBar extends StatelessWidget {
                     shape: const CircleBorder(),
                     backgroundColor: AppPalette.primary,
                     child: const Icon(
-                      Icons.add_rounded,
+                      RemixIcons.sticky_note_add_line,
                       color: Colors.white,
                       size: 32,
                     ),
