@@ -29,7 +29,7 @@ abstract class _MainScaffoldStoreBase with Store {
 
   @action
   void onFabPressed(BuildContext context) {
-    context.read<RootStore>().noteStore.showNewNoteDialog(context);
+    context.read<RootStore>().noteStore.showNewNoteDialog(context, null);
   }
 
   @action
