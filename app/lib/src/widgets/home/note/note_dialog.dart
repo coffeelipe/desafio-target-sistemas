@@ -84,7 +84,6 @@ class NoteDialog extends StatelessWidget {
                     textInputAction: TextInputAction.newline,
                     maxLines: 10,
                     minLines: 6,
-                    inputFormatters: [ValidationUtils.noEmojiFormatter],
                     decoration: const InputDecoration(
                       hintText: 'Escreva sua nota aqui…',
                     ),
