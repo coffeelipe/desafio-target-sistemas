@@ -9,6 +9,7 @@ import 'package:app/src/widgets/global/custom_elevated_button.dart';
 import 'package:app/src/widgets/global/custom_text_form_field.dart';
 import 'package:app/src/widgets/profile/delete_account_dialog.dart';
 import 'package:app/src/widgets/profile/glassy_profile_section.dart';
+import 'package:app/src/widgets/profile/logout_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
@@ -239,36 +240,18 @@ class _ProfileState extends State<Profile> {
   }
 
   Future<void> _openLogoutDialog(AuthStore authStore) async {
-    await showDialog<void>(
-      context: context,
-      builder: (dialogContext) {
-        return AlertDialog(
-          title: const Text('Sair?'),
-          content: const Text('Tem certeza que deseja encerrar sua sessão?'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(dialogContext).pop(),
-              child: const Text('Cancelar'),
-            ),
-            FilledButton(
-              onPressed: () async {
-                final NavigatorState rootNavigator = Navigator.of(context);
-                Navigator.of(dialogContext).pop();
-                await authStore.signOut();
-                if (!mounted) {
-                  return;
-                }
-                rootNavigator.pushNamedAndRemoveUntil(
-                  '/login',
-                  (route) => false,
-                );
-              },
-              child: const Text('Sair'),
-            ),
-          ],
-        );
-      },
-    );
+    final bool didConfirm = await LogoutDialog.show(context);
+    if (!didConfirm || !mounted) {
+      return;
+    }
+
+    final NavigatorState rootNavigator = Navigator.of(context);
+    await authStore.signOut();
+    if (!mounted) {
+      return;
+    }
+
+    rootNavigator.pushNamedAndRemoveUntil('/login', (route) => false);
   }
 
   Future<void> _openDeleteAccountDialog() async {
