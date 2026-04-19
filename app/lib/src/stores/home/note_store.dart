@@ -12,13 +12,21 @@ abstract class _NoteStoreBase with Store {
   late final RootStore root;
   _NoteStoreBase({required this.root});
 
+  final TextEditingController dialogTitleController = TextEditingController();
+  final TextEditingController dialogContentController = TextEditingController();
+
+  final TextEditingController fullScreenTitleController =
+      TextEditingController();
+  final TextEditingController fullScreenContentController =
+      TextEditingController();
+  final FocusNode fullScreenContentFocusNode = FocusNode();
+  final ScrollController fullScreenScrollController = ScrollController();
+
   @observable
   List<Note> notes = [];
 
-  @action
-  void openNote() {
-    // open the note dialog with the content of the selected note thumbnail
-  }
+  @observable
+  bool isFullScreenEditing = false;
 
   @action
   void createNote() {
