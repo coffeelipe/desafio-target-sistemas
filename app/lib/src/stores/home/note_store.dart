@@ -52,8 +52,14 @@ abstract class _NoteStoreBase with Store {
   }
 
   @action
-  void updateNote() {
-    // update the content of the selected note and update the corresponding note thumbnail
+  void updateNote(Note note) {
+    final index = notes.indexWhere((n) => n.id == note.id);
+    if (index != -1) {
+      notes[index] = note;
+    }
+    dialogContentController.clear();
+    dialogTitleController.clear();
+    root.navigatorKey.currentState?.pop();
   }
 
   @action
