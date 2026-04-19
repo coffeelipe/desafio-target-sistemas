@@ -30,7 +30,10 @@ abstract class _MainScaffoldStoreBase with Store {
   bool get isFABVisible => isNavBarVisible && pageViewState.pageIndex == 0;
 
   @action
-  void setNavBarVisibility(bool value) => isNavBarVisible = value;
+  void setNavBarVisibility(bool value) {
+    if (isNavBarVisible == value) return;
+    isNavBarVisible = value;
+  }
 
   @action
   void onFabPressed(BuildContext context) {
