@@ -9,6 +9,7 @@ import 'package:app/src/widgets/authentication/login_form.dart';
 import 'package:app/src/widgets/global/foreground_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -20,16 +21,30 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   late final LoginFormState _formStateStore;
+  ReactionDisposer? _authReactionDisposer;
 
   @override
   void initState() {
     super.initState();
     final AuthStore authStore = context.read<RootStore>().authStore;
     _formStateStore = LoginFormState(authStore: authStore);
+
+    _authReactionDisposer = reaction<bool>(
+      (_) => authStore.isLoggedInServerSide,
+      (isLoggedIn) {
+        if (!isLoggedIn || !mounted) return;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) return;
+          Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+        });
+      },
+      fireImmediately: true,
+    );
   }
 
   @override
   void dispose() {
+    _authReactionDisposer?.call();
     _formStateStore.dispose();
     super.dispose();
   }
@@ -39,9 +54,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: SingleChildScrollView(
         child: ConstrainedBox(
-          constraints: BoxConstraints(
-            minHeight: context.screenHeight,
-          ),
+          constraints: BoxConstraints(minHeight: context.screenHeight),
           child: SafeArea(
             child: Center(
               child: ForegroundCard(

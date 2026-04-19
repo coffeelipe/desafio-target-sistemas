@@ -7,6 +7,7 @@ import 'package:app/src/widgets/authentication/registration_form.dart';
 import 'package:app/src/widgets/global/foreground_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:mobx/mobx.dart';
 import 'package:provider/provider.dart';
 
 class RegistrationPage extends StatefulWidget {
@@ -18,16 +19,30 @@ class RegistrationPage extends StatefulWidget {
 
 class _RegistrationPageState extends State<RegistrationPage> {
   late final RegistrationFormState _formStateStore;
+  ReactionDisposer? _authReactionDisposer;
 
   @override
   void initState() {
     super.initState();
     final authStore = context.read<RootStore>().authStore;
     _formStateStore = RegistrationFormState(authStore: authStore);
+
+    _authReactionDisposer = reaction<bool>(
+      (_) => authStore.isLoggedInServerSide,
+      (isLoggedIn) {
+        if (!isLoggedIn || !mounted) return;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) return;
+          Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+        });
+      },
+      fireImmediately: true,
+    );
   }
 
   @override
   void dispose() {
+    _authReactionDisposer?.call();
     _formStateStore.dispose();
     super.dispose();
   }
