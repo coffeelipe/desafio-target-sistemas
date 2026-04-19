@@ -9,6 +9,13 @@ part of 'profile_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$ProfileStore on _ProfileStoreBase, Store {
+  Computed<bool>? _$hasUsernameInputComputed;
+
+  @override
+  bool get hasUsernameInput => (_$hasUsernameInputComputed ??= Computed<bool>(
+    () => super.hasUsernameInput,
+    name: '_ProfileStoreBase.hasUsernameInput',
+  )).value;
   Computed<bool>? _$isBusyComputed;
 
   @override
@@ -24,21 +31,21 @@ mixin _$ProfileStore on _ProfileStoreBase, Store {
     name: '_ProfileStoreBase.canSubmitUsername',
   )).value;
 
-  late final _$hasUsernameInputAtom = Atom(
-    name: '_ProfileStoreBase.hasUsernameInput',
+  late final _$usernameInputAtom = Atom(
+    name: '_ProfileStoreBase.usernameInput',
     context: context,
   );
 
   @override
-  bool get hasUsernameInput {
-    _$hasUsernameInputAtom.reportRead();
-    return super.hasUsernameInput;
+  String get usernameInput {
+    _$usernameInputAtom.reportRead();
+    return super.usernameInput;
   }
 
   @override
-  set hasUsernameInput(bool value) {
-    _$hasUsernameInputAtom.reportWrite(value, super.hasUsernameInput, () {
-      super.hasUsernameInput = value;
+  set usernameInput(String value) {
+    _$usernameInputAtom.reportWrite(value, super.usernameInput, () {
+      super.usernameInput = value;
     });
   }
 
@@ -108,6 +115,7 @@ mixin _$ProfileStore on _ProfileStoreBase, Store {
   @override
   String toString() {
     return '''
+usernameInput: ${usernameInput},
 hasUsernameInput: ${hasUsernameInput},
 isBusy: ${isBusy},
 canSubmitUsername: ${canSubmitUsername}

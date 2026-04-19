@@ -12,6 +12,7 @@ import 'package:app/src/widgets/profile/glassy_profile_section.dart';
 import 'package:app/src/widgets/profile/logout_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 // TODO: Refatorar para usar state management
@@ -69,14 +70,19 @@ class _ProfileState extends State<Profile> {
             iconColor: AppPalette.primary,
             child: Column(
               children: [
-                CustomTextFormField(
-                  controller: profileStore.usernameController,
-                  focusNode: profileStore.usernameFocusNode,
-                  label: 'Usuário',
-                  hintText: 'Seu novo nome de usuário',
-                  maxLength: 16,
-                  keyboardType: TextInputType.name,
-                  onChanged: profileStore.onUsernameChanged,
+                Form(
+                  key: profileStore.usernameFormKey,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  child: CustomTextFormField(
+                    controller: profileStore.usernameController,
+                    focusNode: profileStore.usernameFocusNode,
+                    label: 'Usuário',
+                    hintText: 'Seu novo nome de usuário',
+                    maxLength: 16,
+                    keyboardType: TextInputType.name,
+                    onChanged: profileStore.onUsernameChanged,
+                    validator: profileStore.validateUsername,
+                  ),
                 ),
                 SizedBox(height: ResponsiveUtils.spacing(SpacingSize.small)),
                 Observer(
@@ -91,7 +97,12 @@ class _ProfileState extends State<Profile> {
                         child: GradientButton(
                           onPressed: () => _handleUpdateUsername(profileStore),
                           child: isBusy
-                              ? const Center(child: CircularProgressIndicator())
+                              ? const Center(
+                                  child: SpinKitThreeBounce(
+                                    color: Colors.white,
+                                    size: 18,
+                                  ),
+                                )
                               : const Text(
                                   'Atualizar usuário',
                                   style: TextStyle(
@@ -141,19 +152,16 @@ class _ProfileState extends State<Profile> {
                           ),
                           shape: const StadiumBorder(),
                         ),
-                        icon: isBusy
-                            ? const SizedBox(
-                                width: 18,
-                                height: 18,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                ),
+                        icon: isBusy ? null : const Icon(Icons.logout_rounded),
+                        label: isBusy
+                            ? const SpinKitThreeBounce(
+                                color: AppPalette.caption,
+                                size: 18,
                               )
-                            : const Icon(Icons.logout_rounded),
-                        label: const Text(
-                          'Sair',
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        ),
+                            : const Text(
+                                'Sair',
+                                style: TextStyle(fontWeight: FontWeight.w600),
+                              ),
                       );
                     },
                   ),
@@ -197,18 +205,17 @@ class _ProfileState extends State<Profile> {
                           shape: const StadiumBorder(),
                         ),
                         icon: isBusy
-                            ? const SizedBox(
-                                width: 18,
-                                height: 18,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                ),
-                              )
+                            ? null
                             : const Icon(Icons.delete_forever_rounded),
-                        label: const Text(
-                          'Excluir conta',
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        ),
+                        label: isBusy
+                            ? const SpinKitThreeBounce(
+                                color: AppPalette.primaryVariant,
+                                size: 18,
+                              )
+                            : const Text(
+                                'Excluir conta',
+                                style: TextStyle(fontWeight: FontWeight.w600),
+                              ),
                       );
                     },
                   ),

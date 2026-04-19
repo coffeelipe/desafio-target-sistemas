@@ -1,3 +1,5 @@
+import 'package:app/src/core/error/validation_patterns.dart';
+import 'package:app/src/core/utils/validation_utils.dart';
 import 'package:app/src/stores/main/root_store.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
@@ -23,6 +25,8 @@ class ProfileActionResult {
 abstract class _ProfileStoreBase with Store {
   final RootStore root;
 
+  final GlobalKey<FormState> usernameFormKey = GlobalKey<FormState>();
+
   final TextEditingController usernameController = TextEditingController();
   final FocusNode usernameFocusNode = FocusNode();
 
@@ -31,13 +35,26 @@ abstract class _ProfileStoreBase with Store {
   _ProfileStoreBase({required this.root});
 
   @observable
-  bool hasUsernameInput = false;
+  String usernameInput = '';
+
+  @computed
+  bool get hasUsernameInput => usernameInput.trim().isNotEmpty;
 
   @computed
   bool get isBusy => root.authStore.isLoading;
 
   @computed
-  bool get canSubmitUsername => hasUsernameInput && !isBusy;
+  bool get canSubmitUsername => validateUsername(usernameInput) == null && !isBusy;
+
+  String? validateUsername(String? value) {
+    final String nextValue = value ?? '';
+    final RegExp validationPattern = ValidationPatterns.usernameRegex;
+
+    if (nextValue.isEmpty || !validationPattern.hasMatch(nextValue)) {
+      return ValidationUtils.computeErrorMessage(FieldType.username, nextValue);
+    }
+    return null;
+  }
 
   @action
   void prefillUsernameIfNeeded() {
@@ -48,7 +65,7 @@ abstract class _ProfileStoreBase with Store {
     final String initialName = (root.userProfileStore.displayName ?? '').trim();
     if (initialName.isNotEmpty) {
       usernameController.text = initialName;
-      hasUsernameInput = true;
+      usernameInput = initialName;
     }
 
     _didPrefillUsername = true;
@@ -56,28 +73,27 @@ abstract class _ProfileStoreBase with Store {
 
   @action
   void onUsernameChanged(String value) {
-    final bool nextHasInput = value.trim().isNotEmpty;
-    if (nextHasInput == hasUsernameInput) {
-      return;
-    }
-    hasUsernameInput = nextHasInput;
+    usernameInput = value;
   }
 
   @action
   Future<ProfileActionResult> updateUsername() async {
-    final String newName = usernameController.text.trim();
+    usernameFormKey.currentState?.validate();
+
+    final String newName = usernameController.text;
 
     usernameFocusNode.unfocus();
 
-    if (newName.isEmpty) {
-      return const ProfileActionResult.failure('Informe um nome de usuário.');
+    final String? validationError = validateUsername(newName);
+    if (validationError != null) {
+      return ProfileActionResult.failure(validationError);
     }
 
-    final bool didUpdate = await root.authStore.updateDisplayName(newName);
+    final bool didUpdate = await root.authStore.updateDisplayName(newName.trim());
 
     if (didUpdate) {
       usernameController.clear();
-      hasUsernameInput = false;
+      usernameInput = '';
       return const ProfileActionResult.success('Nome de usuário atualizado.');
     }
 
