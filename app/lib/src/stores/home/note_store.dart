@@ -30,7 +30,20 @@ abstract class _NoteStoreBase with Store {
 
   @action
   void createNote() {
-    // create a new note and add it to the list of note thumbnails
+    if (dialogContentController.text.trim().isNotEmpty) {
+      notes.add(
+        Note.fromContent(
+          id: _getNextAvailableId().toString(),
+          title: dialogTitleController.text.trim().isEmpty
+              ? null
+              : dialogTitleController.text.trim(),
+          content: dialogContentController.text,
+        ),
+      );
+      dialogTitleController.clear();
+      dialogContentController.clear();
+      root.navigatorKey.currentState?.pop();
+    }
   }
 
   @action
