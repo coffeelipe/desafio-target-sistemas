@@ -85,10 +85,10 @@ class _FullscreenNoteState extends State<FullscreenNote> {
                         : RemixIcons.pencil_line,
                   ),
                 ),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(RemixIcons.pie_chart_2_line),
-                ),
+                // IconButton(
+                //   onPressed: () {},
+                //   icon: const Icon(RemixIcons.pie_chart_2_line),
+                // ),
               ],
               leading: IconButton(
                 onPressed: () => Navigator.of(context).maybePop(),
