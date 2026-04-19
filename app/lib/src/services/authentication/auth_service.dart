@@ -1,7 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
+// ignore_for_file: avoid_print
+
 class AuthService {
   static const String _serviceTag = '[AUTH_SERVICE]';
+
+  Future<void> signOut() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+    } on FirebaseAuthException catch (e) {
+      print('$_serviceTag Caught exception during sign out: $e');
+    }
+  }
 
   Future<UserCredential?> registerUser(
     String email,
